@@ -26,15 +26,15 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#33C3F0",
+          DEFAULT: "#000000",
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#403E43",
+          DEFAULT: "#666666",
           foreground: "#ffffff",
         },
         accent: {
-          DEFAULT: "#F97316",
+          DEFAULT: "#333333",
           foreground: "#ffffff",
         },
         destructive: {
@@ -42,21 +42,13 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#F6F6F7",
-          foreground: "#403E43",
+          DEFAULT: "#f6f6f6",
+          foreground: "#333333",
         },
         card: {
           DEFAULT: "#ffffff",
-          foreground: "#403E43",
+          foreground: "#000000",
         },
-        cool: {
-          100: "#F6F6F7",
-          200: "#C8C8C9",
-          300: "#8A898C",
-          400: "#403E43",
-          500: "#33C3F0",
-          600: "#0EA5E9",
-        }
       },
       keyframes: {
         "fade-in": {
