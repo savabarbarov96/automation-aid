@@ -1,9 +1,9 @@
 
-import { Robot, Users, LineChart, Database, MessageSquare, Zap } from "lucide-react";
+import { Bot, Users, LineChart, Database, MessageSquare, Zap } from "lucide-react";
 
 const features = [
   {
-    icon: Robot,
+    icon: Bot,
     title: "AI-Powered Automation",
     description: "Leverage cutting-edge AI to automate repetitive tasks and streamline workflows."
   },
