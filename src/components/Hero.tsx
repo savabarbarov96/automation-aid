@@ -6,9 +6,9 @@ export const Hero = () => {
     <section className="min-h-screen relative overflow-hidden pt-40 pb-32 px-4">
       {/* Oil stain animation bubbles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-[800px] h-[800px] bg-primary/20 rounded-full blur-3xl animate-blob"></div>
-        <div className="absolute top-0 -right-40 w-[600px] h-[600px] bg-accent/20 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-40 left-40 w-[700px] h-[700px] bg-primary/20 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
+        <div className="absolute -top-40 -left-40 w-[800px] h-[800px] bg-primary/30 rounded-full blur-xl animate-blob"></div>
+        <div className="absolute top-0 -right-40 w-[600px] h-[600px] bg-accent/30 rounded-full blur-xl animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-40 left-40 w-[700px] h-[700px] bg-primary/30 rounded-full blur-xl animate-blob animation-delay-4000"></div>
       </div>
 
       <div className="container mx-auto relative">
