@@ -26,15 +26,15 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#000000",
+          DEFAULT: "#0EA5E9", // Ocean Blue
           foreground: "#ffffff",
         },
         secondary: {
-          DEFAULT: "#666666",
+          DEFAULT: "#403E43", // Charcoal Gray
           foreground: "#ffffff",
         },
         accent: {
-          DEFAULT: "#333333",
+          DEFAULT: "#F97316", // Vibrant Orange
           foreground: "#ffffff",
         },
         destructive: {
@@ -42,13 +42,21 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#f6f6f6",
-          foreground: "#333333",
+          DEFAULT: "#F6F6F7", // Light Gray
+          foreground: "#403E43",
         },
         card: {
           DEFAULT: "#ffffff",
-          foreground: "#000000",
+          foreground: "#333333",
         },
+        cool: {
+          100: "#F6F6F7", // Lightest Gray
+          200: "#C8C8C9", // Light Gray
+          300: "#8A898C", // Medium Gray
+          400: "#403E43", // Dark Gray
+          500: "#0EA5E9", // Ocean Blue
+          600: "#0284C7", // Darker Blue
+        }
       },
       keyframes: {
         "fade-in": {
