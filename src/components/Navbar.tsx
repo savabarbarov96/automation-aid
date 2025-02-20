@@ -9,8 +9,8 @@ export const Navbar = () => {
     <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-cool-100">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-24">
-          <div className="flex items-center">
-            <img src="/lovable-uploads/0b1d58aa-e581-427c-b9ac-ba4a7b283d30.png" alt="Quantum Automations Logo" className="h-20" />
+          <div className="flex items-center -ml-4">
+            <img src="/lovable-uploads/0b1d58aa-e581-427c-b9ac-ba4a7b283d30.png" alt="Quantum Automations Logo" className="h-28" />
           </div>
 
           {/* Desktop Menu */}
