@@ -14,7 +14,7 @@ export const Hero = () => {
         {/* Second bubble with connecting line */}
         <div className="absolute top-40 right-1/4 animate-blob animation-delay-2000">
           <div className="relative">
-            <div className="absolute right-full top-1/2 w-[200px] h-[2px] bg-black/10 transform -translate-y-1/2"></div>
+            <div className="absolute right-1/2 top-1/2 w-[400px] h-[2px] bg-black/10 transform -translate-y-1/2 -translate-x-full origin-right"></div>
             <div className="w-[80px] h-[80px] bg-black/20 rounded-full blur-sm"></div>
           </div>
         </div>
@@ -22,7 +22,7 @@ export const Hero = () => {
         {/* Third bubble with connecting line */}
         <div className="absolute bottom-40 left-1/3 animate-blob animation-delay-4000">
           <div className="relative">
-            <div className="absolute right-full top-1/2 w-[150px] h-[2px] bg-black/10 transform -translate-y-1/2"></div>
+            <div className="absolute left-1/2 top-1/2 w-[300px] h-[2px] bg-black/10 transform -translate-y-1/2 -translate-x-full rotate-45 origin-right"></div>
             <div className="w-[120px] h-[120px] bg-black/20 rounded-full blur-sm"></div>
           </div>
         </div>
