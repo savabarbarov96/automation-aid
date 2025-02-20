@@ -29,16 +29,16 @@ export default {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#0EA5E9", // Ocean Blue
-          foreground: "#ffffff",
+          DEFAULT: "#9EFF00", // New neon green color
+          foreground: "#000000", // Black text for contrast
         },
         secondary: {
           DEFAULT: "#403E43", // Charcoal Gray
           foreground: "#ffffff",
         },
         accent: {
-          DEFAULT: "#F97316", // Vibrant Orange
-          foreground: "#ffffff",
+          DEFAULT: "#9EFF00", // Matching accent color
+          foreground: "#000000",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
@@ -57,8 +57,8 @@ export default {
           200: "#C8C8C9", // Light Gray
           300: "#8A898C", // Medium Gray
           400: "#403E43", // Dark Gray
-          500: "#0EA5E9", // Ocean Blue
-          600: "#0284C7", // Darker Blue
+          500: "#9EFF00", // New primary color
+          600: "#8BE000", // Slightly darker shade for hover states
         }
       },
       keyframes: {
