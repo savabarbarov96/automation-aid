@@ -20,45 +20,45 @@ export default {
     },
     extend: {
       fontFamily: {
-        'orbitron': ['Orbitron', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        background: "#1A1F2C", // Dark background
+        foreground: "#F6F6F7",
         primary: {
-          DEFAULT: "#9EFF00", // New neon green color
-          foreground: "#000000", // Black text for contrast
+          DEFAULT: "#88D06F", // More subtle green
+          foreground: "#1A1F2C",
         },
         secondary: {
-          DEFAULT: "#403E43", // Charcoal Gray
+          DEFAULT: "#403E43",
           foreground: "#ffffff",
         },
         accent: {
-          DEFAULT: "#9EFF00", // Matching accent color
-          foreground: "#000000",
+          DEFAULT: "#88D06F",
+          foreground: "#1A1F2C",
         },
         destructive: {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#F6F6F7", // Light Gray
-          foreground: "#403E43",
+          DEFAULT: "#221F26", // Darker muted
+          foreground: "#F6F6F7",
         },
         card: {
-          DEFAULT: "#ffffff",
-          foreground: "#333333",
+          DEFAULT: "#2A2D3A", // Dark card background
+          foreground: "#F6F6F7",
         },
         cool: {
-          100: "#F6F6F7", // Lightest Gray
-          200: "#C8C8C9", // Light Gray
-          300: "#8A898C", // Medium Gray
-          400: "#403E43", // Dark Gray
-          500: "#9EFF00", // New primary color
-          600: "#8BE000", // Slightly darker shade for hover states
+          100: "#2A2D3A", // Dark
+          200: "#353744", // Slightly lighter
+          300: "#F6F6F7", // Light text
+          400: "#F6F6F7", // Light text
+          500: "#88D06F", // Subtle green
+          600: "#7AB964", // Darker green for hover
         }
       },
       keyframes: {
