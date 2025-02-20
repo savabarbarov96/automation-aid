@@ -8,9 +8,9 @@ export const Navbar = () => {
   return (
     <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-200">
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
-            <img src="/lovable-uploads/0b1d58aa-e581-427c-b9ac-ba4a7b283d30.png" alt="Quantum Automations Logo" className="h-12" />
+            <img src="/lovable-uploads/0b1d58aa-e581-427c-b9ac-ba4a7b283d30.png" alt="Quantum Automations Logo" className="h-16" />
           </div>
 
           {/* Desktop Menu */}
@@ -33,7 +33,7 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden absolute top-16 left-0 right-0 bg-white border-b border-gray-200 animate-slide-in">
+          <div className="md:hidden absolute top-20 left-0 right-0 bg-white border-b border-gray-200 animate-slide-in">
             <div className="flex flex-col space-y-4 px-4 py-6">
               <a href="#features" className="text-black hover:text-gray-600 transition-colors">Features</a>
               <a href="#testimonials" className="text-black hover:text-gray-600 transition-colors">Testimonials</a>
