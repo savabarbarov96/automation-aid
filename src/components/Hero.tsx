@@ -27,14 +27,14 @@ export const Hero = () => {
           <h1 className="font-inter text-5xl md:text-7xl font-bold text-cool-300 mb-8 animate-fade-in leading-tight">
             Accelerating Business Growth Through Intelligent Automation
           </h1>
-          <p className="text-xl md:text-2xl text-cool-300/80 mb-12 animate-fade-in max-w-3xl mx-auto" style={{ animationDelay: "0.2s" }}>
+          <p className="text-xl md:text-2xl text-cool-300 mb-12 animate-fade-in max-w-3xl mx-auto" style={{ animationDelay: "0.2s" }}>
             We empower your sales & marketing teams with automations so you can close more deals.
           </p>
           <div className="flex flex-wrap justify-center gap-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <button className="font-inter bg-accent text-accent-foreground px-10 py-4 rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2 text-lg font-medium">
               Get Started <ArrowRight size={24} />
             </button>
-            <button className="font-inter bg-cool-200 text-cool-300 px-10 py-4 rounded-lg hover:bg-cool-200/90 transition-colors text-lg font-medium">
+            <button className="font-inter bg-cool-200 text-white px-10 py-4 rounded-lg hover:bg-cool-200/90 transition-colors text-lg font-medium">
               Learn More
             </button>
           </div>
