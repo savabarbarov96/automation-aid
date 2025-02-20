@@ -3,7 +3,7 @@ import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
   return (
-    <section className="min-h-screen relative overflow-hidden pt-40 pb-32 px-4">
+    <section className="min-h-screen relative overflow-hidden pt-48 pb-32 px-4">
       {/* Connected bubbles animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* First bubble */}
