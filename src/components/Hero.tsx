@@ -8,23 +8,17 @@ export const Hero = () => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* First bubble */}
         <div className="absolute top-20 left-20 animate-blob">
-          <div className="w-[40px] h-[40px] bg-black/20 rounded-full blur-sm"></div>
+          <div className="w-[120px] h-[120px] bg-black/20 rounded-full blur-sm"></div>
         </div>
         
-        {/* Second bubble with connecting line */}
+        {/* Second bubble */}
         <div className="absolute top-40 right-1/4 animate-blob animation-delay-2000">
-          <div className="relative">
-            <div className="absolute right-1/2 top-1/2 w-[300px] h-[8px] bg-black/20 blur-sm transform -translate-y-1/2 rotate-[30deg] -translate-x-[150px]"></div>
-            <div className="w-[40px] h-[40px] bg-black/20 rounded-full blur-sm"></div>
-          </div>
+          <div className="w-[150px] h-[150px] bg-black/20 rounded-full blur-sm"></div>
         </div>
         
-        {/* Third bubble with connecting line */}
+        {/* Third bubble */}
         <div className="absolute bottom-40 left-1/3 animate-blob animation-delay-4000">
-          <div className="relative">
-            <div className="absolute left-1/2 bottom-1/2 w-[200px] h-[8px] bg-black/20 blur-sm transform -translate-x-full rotate-[135deg] origin-right"></div>
-            <div className="w-[40px] h-[40px] bg-black/20 rounded-full blur-sm"></div>
-          </div>
+          <div className="w-[180px] h-[180px] bg-black/20 rounded-full blur-sm"></div>
         </div>
       </div>
 
