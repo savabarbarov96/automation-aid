@@ -6,11 +6,26 @@ export const Hero = () => {
     <section className="min-h-screen relative overflow-hidden pt-40 pb-32 px-4">
       {/* Connected bubbles animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-[100px] h-[100px] bg-black/20 rounded-full blur-sm animate-blob"></div>
-        <div className="absolute top-40 right-1/4 w-[80px] h-[80px] bg-black/20 rounded-full blur-sm animate-blob animation-delay-2000 
-          before:content-[''] before:absolute before:w-[200px] before:h-[2px] before:bg-black/10 before:top-1/2 before:right-full before:transform before:-translate-y-1/2"></div>
-        <div className="absolute bottom-40 left-1/3 w-[120px] h-[120px] bg-black/20 rounded-full blur-sm animate-blob animation-delay-4000
-          before:content-[''] before:absolute before:w-[150px] before:h-[2px] before:bg-black/10 before:top-1/2 before:right-full before:transform before:-translate-y-1/2"></div>
+        {/* First bubble */}
+        <div className="absolute top-20 left-20 animate-blob">
+          <div className="w-[100px] h-[100px] bg-black/20 rounded-full blur-sm"></div>
+        </div>
+        
+        {/* Second bubble with connecting line */}
+        <div className="absolute top-40 right-1/4 animate-blob animation-delay-2000">
+          <div className="relative">
+            <div className="absolute right-full top-1/2 w-[200px] h-[2px] bg-black/10 transform -translate-y-1/2"></div>
+            <div className="w-[80px] h-[80px] bg-black/20 rounded-full blur-sm"></div>
+          </div>
+        </div>
+        
+        {/* Third bubble with connecting line */}
+        <div className="absolute bottom-40 left-1/3 animate-blob animation-delay-4000">
+          <div className="relative">
+            <div className="absolute right-full top-1/2 w-[150px] h-[2px] bg-black/10 transform -translate-y-1/2"></div>
+            <div className="w-[120px] h-[120px] bg-black/20 rounded-full blur-sm"></div>
+          </div>
+        </div>
       </div>
 
       <div className="container mx-auto relative">
