@@ -44,8 +44,8 @@ export const Blog = () => {
     <section id="blog" className="py-24 bg-muted">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-4">Latest Updates & Insights</h2>
-          <p className="text-lg text-secondary mx-auto max-w-2xl">
+          <h2 className="text-4xl font-bold mb-4 text-white">Latest Updates & Insights</h2>
+          <p className="text-lg text-white mx-auto max-w-2xl">
             Stay informed about the latest developments in automation technology and industry trends.
           </p>
         </div>
@@ -62,18 +62,18 @@ export const Blog = () => {
               </div>
               <CardHeader>
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-sm text-secondary">{post.category}</span>
-                  <span className="text-sm text-secondary">{post.readTime}</span>
+                  <span className="text-sm text-white">{post.category}</span>
+                  <span className="text-sm text-white">{post.readTime}</span>
                 </div>
-                <CardTitle className="text-xl mb-2 hover:text-primary cursor-pointer">
+                <CardTitle className="text-xl mb-2 hover:text-primary cursor-pointer text-white">
                   {post.title}
                 </CardTitle>
-                <CardDescription>{post.description}</CardDescription>
+                <CardDescription className="text-white">{post.description}</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-secondary">{post.date}</span>
-                  <Button variant="ghost" className="p-0 hover:bg-transparent">
+                  <span className="text-sm text-white">{post.date}</span>
+                  <Button variant="ghost" className="p-0 hover:bg-transparent text-white">
                     Read More <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
