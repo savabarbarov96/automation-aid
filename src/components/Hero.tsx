@@ -13,10 +13,10 @@ export const Hero = () => {
             We empower your sales & marketing teams with automations so you can close more deals.
           </p>
           <div className="flex flex-wrap justify-center gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            <button className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-cool-600 transition-colors flex items-center gap-2">
+            <button className="bg-accent text-white px-8 py-3 rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2">
               Get Started <ArrowRight size={20} />
             </button>
-            <button className="border border-cool-200 text-cool-400 px-8 py-3 rounded-lg hover:bg-cool-100 transition-colors">
+            <button className="bg-primary text-white px-8 py-3 rounded-lg hover:bg-primary/90 transition-colors">
               Learn More
             </button>
           </div>
