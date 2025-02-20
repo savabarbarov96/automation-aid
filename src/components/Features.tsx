@@ -39,8 +39,8 @@ export const Features = () => {
     <section id="features" className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-primary mb-4">Our Solutions</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-black mb-4">Our Solutions</h2>
+          <p className="text-gray-700 max-w-2xl mx-auto">
             Transform your business with our comprehensive suite of automation solutions.
           </p>
         </div>
@@ -51,9 +51,9 @@ export const Features = () => {
               className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <feature.icon className="w-12 h-12 text-accent mb-4" />
-              <h3 className="text-xl font-semibold text-primary mb-2">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+              <feature.icon className="w-12 h-12 text-black mb-4" />
+              <h3 className="text-xl font-semibold text-black mb-2">{feature.title}</h3>
+              <p className="text-gray-700">{feature.description}</p>
             </div>
           ))}
         </div>
