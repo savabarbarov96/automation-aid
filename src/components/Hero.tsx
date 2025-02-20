@@ -4,11 +4,13 @@ import { ArrowRight } from "lucide-react";
 export const Hero = () => {
   return (
     <section className="min-h-screen relative overflow-hidden pt-40 pb-32 px-4">
-      {/* Oil stain animation bubbles */}
+      {/* Connected bubbles animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-[800px] h-[800px] bg-primary/30 rounded-full blur-xl animate-blob"></div>
-        <div className="absolute top-0 -right-40 w-[600px] h-[600px] bg-accent/30 rounded-full blur-xl animate-blob animation-delay-2000"></div>
-        <div className="absolute -bottom-40 left-40 w-[700px] h-[700px] bg-primary/30 rounded-full blur-xl animate-blob animation-delay-4000"></div>
+        <div className="absolute top-20 left-20 w-[100px] h-[100px] bg-black/20 rounded-full blur-sm animate-blob"></div>
+        <div className="absolute top-40 right-1/4 w-[80px] h-[80px] bg-black/20 rounded-full blur-sm animate-blob animation-delay-2000 
+          before:content-[''] before:absolute before:w-[200px] before:h-[2px] before:bg-black/10 before:top-1/2 before:right-full before:transform before:-translate-y-1/2"></div>
+        <div className="absolute bottom-40 left-1/3 w-[120px] h-[120px] bg-black/20 rounded-full blur-sm animate-blob animation-delay-4000
+          before:content-[''] before:absolute before:w-[150px] before:h-[2px] before:bg-black/10 before:top-1/2 before:right-full before:transform before:-translate-y-1/2"></div>
       </div>
 
       <div className="container mx-auto relative">
