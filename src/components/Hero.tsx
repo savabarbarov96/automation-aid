@@ -22,7 +22,7 @@ export const Hero = () => {
         </div>
       </div>
 
-      <div className="container mx-auto relative pt-20"> {/* Added pt-20 for top padding */}
+      <div className="container mx-auto relative pt-40"> {/* Increased padding-top to 40 (10rem) */}
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="font-inter text-5xl md:text-7xl font-bold text-cool-300 mb-8 animate-fade-in leading-tight">
             Accelerating Business Growth Through Intelligent Automation
