@@ -39,8 +39,8 @@ export const Features = () => {
     <section id="features" className="py-16 bg-cool-100">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-cool-400 mb-4">Our Solutions</h2>
-          <p className="text-cool-300 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-black mb-4">Our Solutions</h2>
+          <p className="text-black max-w-2xl mx-auto">
             Transform your business with our comprehensive suite of automation solutions.
           </p>
         </div>
