@@ -8,17 +8,17 @@ export const Hero = () => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* First bubble */}
         <div className="absolute top-20 left-20 animate-blob">
-          <div className="w-[450px] h-[450px] bg-black/15 rounded-full blur-lg"></div>
+          <div className="w-[250px] h-[250px] bg-black/15 rounded-full blur-xl"></div>
         </div>
         
         {/* Second bubble */}
         <div className="absolute top-40 right-1/4 animate-blob animation-delay-2000">
-          <div className="w-[500px] h-[500px] bg-black/15 rounded-full blur-lg"></div>
+          <div className="w-[300px] h-[300px] bg-black/15 rounded-full blur-xl"></div>
         </div>
         
         {/* Third bubble */}
         <div className="absolute bottom-40 left-1/3 animate-blob animation-delay-4000">
-          <div className="w-[550px] h-[550px] bg-black/15 rounded-full blur-lg"></div>
+          <div className="w-[350px] h-[350px] bg-black/15 rounded-full blur-xl"></div>
         </div>
       </div>
 
