@@ -74,11 +74,14 @@ export default {
           "0%": {
             transform: "translate(0px, 0px) scale(1)",
           },
-          "33%": {
-            transform: "translate(100px, -50px) scale(1.2)",
+          "25%": {
+            transform: "translate(150px, -80px) scale(1.3)",
           },
-          "66%": {
-            transform: "translate(-60px, 60px) scale(0.8)",
+          "50%": {
+            transform: "translate(-100px, 100px) scale(0.7)",
+          },
+          "75%": {
+            transform: "translate(80px, 60px) scale(1.2)",
           },
           "100%": {
             transform: "translate(0px, 0px) scale(1)",
@@ -88,7 +91,7 @@ export default {
       animation: {
         "fade-in": "fade-in 0.5s ease-out",
         "slide-in": "slide-in 0.5s ease-out",
-        "blob": "blob 15s cubic-bezier(0.4, 0, 0.2, 1) infinite", // Reduced from 25s to 15s
+        "blob": "blob 12s cubic-bezier(0.4, 0, 0.2, 1) infinite", // Even faster animation
       },
     },
   },
