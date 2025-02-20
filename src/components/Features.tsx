@@ -52,8 +52,8 @@ export const Features = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <feature.icon className="w-12 h-12 text-primary mb-4" />
-              <h3 className="text-xl font-semibold text-cool-400 mb-2">{feature.title}</h3>
-              <p className="text-cool-300">{feature.description}</p>
+              <h3 className="text-xl font-semibold text-black mb-2">{feature.title}</h3>
+              <p className="text-black">{feature.description}</p>
             </div>
           ))}
         </div>
