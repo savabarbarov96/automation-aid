@@ -6,7 +6,7 @@ export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <nav className="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-cool-100">
+    <nav className="fixed w-full bg-cool-100/95 backdrop-blur-md z-50 border-b border-cool-100">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-24">
           <div className="flex items-center -ml-4">
@@ -15,9 +15,9 @@ export const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-cool-100 hover:text-primary transition-colors">Features</a>
-            <a href="#testimonials" className="text-cool-100 hover:text-primary transition-colors">Testimonials</a>
-            <a href="#contact" className="text-cool-100 hover:text-primary transition-colors">Contact</a>
+            <a href="#features" className="text-white hover:text-primary transition-colors">Features</a>
+            <a href="#testimonials" className="text-white hover:text-primary transition-colors">Testimonials</a>
+            <a href="#contact" className="text-white hover:text-primary transition-colors">Contact</a>
             <button className="bg-accent text-accent-foreground px-6 py-2 rounded-lg hover:bg-accent/90 transition-colors">
               Get Started
             </button>
@@ -25,7 +25,7 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-cool-100">
+            <button onClick={() => setIsOpen(!isOpen)} className="text-white">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -33,11 +33,11 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden absolute top-24 left-0 right-0 bg-white border-b border-cool-100 animate-slide-in">
+          <div className="md:hidden absolute top-24 left-0 right-0 bg-cool-100/95 border-b border-cool-100 animate-slide-in">
             <div className="flex flex-col space-y-4 px-4 py-6">
-              <a href="#features" className="text-cool-100 hover:text-primary transition-colors">Features</a>
-              <a href="#testimonials" className="text-cool-100 hover:text-primary transition-colors">Testimonials</a>
-              <a href="#contact" className="text-cool-100 hover:text-primary transition-colors">Contact</a>
+              <a href="#features" className="text-white hover:text-primary transition-colors">Features</a>
+              <a href="#testimonials" className="text-white hover:text-primary transition-colors">Testimonials</a>
+              <a href="#contact" className="text-white hover:text-primary transition-colors">Contact</a>
               <button className="bg-accent text-accent-foreground px-6 py-2 rounded-lg hover:bg-accent/90 transition-colors w-full">
                 Get Started
               </button>
