@@ -7,18 +7,18 @@ export const Hero = () => {
       {/* Connected bubbles animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* First bubble */}
-        <div className="absolute -top-20 -left-20 animate-blob">
-          <div className="w-[600px] h-[600px] bg-cool-500/30 rounded-full blur-2xl"></div>
+        <div className="absolute -top-40 -left-40 animate-blob">
+          <div className="w-[800px] h-[800px] bg-cool-500/40 rounded-full blur-3xl"></div>
         </div>
         
         {/* Second bubble */}
-        <div className="absolute top-1/3 right-0 animate-blob animation-delay-2000">
-          <div className="w-[800px] h-[800px] bg-[#8B5CF6]/20 rounded-full blur-2xl"></div>
+        <div className="absolute top-1/4 -right-20 animate-blob animation-delay-2000">
+          <div className="w-[1000px] h-[1000px] bg-[#8B5CF6]/30 rounded-full blur-3xl"></div>
         </div>
         
         {/* Third bubble */}
-        <div className="absolute -bottom-40 left-1/4 animate-blob animation-delay-4000">
-          <div className="w-[700px] h-[700px] bg-[#0EA5E9]/20 rounded-full blur-2xl"></div>
+        <div className="absolute -bottom-40 left-1/3 animate-blob animation-delay-4000">
+          <div className="w-[900px] h-[900px] bg-[#0EA5E9]/30 rounded-full blur-3xl"></div>
         </div>
       </div>
 
