@@ -6,51 +6,78 @@ export const Hero = () => {
     <section className="min-h-screen relative overflow-hidden flex items-center px-4 bg-background">
       {/* Network sphere background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Central sphere */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-          <div className="relative">
-            <div className="w-64 h-64 bg-white/20 rounded-full blur-sm"></div>
-            <div className="absolute inset-0 bg-white/10 rounded-full blur-lg"></div>
-            
-            {/* Outer spheres */}
-            <div className="absolute -left-8 -top-8 w-8 h-8">
+        {/* Network of spheres */}
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full max-w-7xl">
+          <div className="relative w-full h-full">
+            {/* Top row */}
+            <div className="absolute left-1/4 top-0 w-12 h-12">
               <div className="w-full h-full bg-accent rounded-full blur-[2px]"></div>
-              <div className="absolute top-1/2 left-full w-16 h-0.5 bg-accent/50 blur-[1px] origin-left -rotate-45"></div>
+              <div className="absolute bottom-0 left-1/2 h-24 w-0.5 bg-accent/30 blur-[1px] origin-top rotate-12"></div>
             </div>
             
-            <div className="absolute left-1/2 -top-12 w-8 h-8 -translate-x-1/2">
+            <div className="absolute left-2/4 -top-4 w-16 h-16">
               <div className="w-full h-full bg-[#D946EF] rounded-full blur-[2px]"></div>
-              <div className="absolute top-full left-1/2 h-12 w-0.5 bg-[#D946EF]/50 blur-[1px]"></div>
+              <div className="absolute bottom-0 left-1/2 h-32 w-0.5 bg-[#D946EF]/30 blur-[1px]"></div>
             </div>
             
-            <div className="absolute -right-8 -top-8 w-8 h-8">
+            <div className="absolute right-1/4 top-0 w-12 h-12">
               <div className="w-full h-full bg-[#0EA5E9] rounded-full blur-[2px]"></div>
-              <div className="absolute top-1/2 right-full w-16 h-0.5 bg-[#0EA5E9]/50 blur-[1px] origin-right rotate-45"></div>
+              <div className="absolute bottom-0 left-1/2 h-24 w-0.5 bg-[#0EA5E9]/30 blur-[1px] origin-top -rotate-12"></div>
             </div>
-            
-            <div className="absolute -left-12 top-1/2 w-8 h-8 -translate-y-1/2">
-              <div className="w-full h-full bg-accent rounded-full blur-[2px]"></div>
-              <div className="absolute top-1/2 left-full w-16 h-0.5 bg-accent/50 blur-[1px]"></div>
-            </div>
-            
-            <div className="absolute -right-12 top-1/2 w-8 h-8 -translate-y-1/2">
+
+            {/* Middle row */}
+            <div className="absolute left-0 top-1/2 w-20 h-20 -translate-y-1/2">
               <div className="w-full h-full bg-[#D946EF] rounded-full blur-[2px]"></div>
-              <div className="absolute top-1/2 right-full w-16 h-0.5 bg-[#D946EF]/50 blur-[1px]"></div>
+              <div className="absolute top-1/2 left-full w-32 h-0.5 bg-[#D946EF]/30 blur-[1px]"></div>
             </div>
-            
-            <div className="absolute -left-8 -bottom-8 w-8 h-8">
+
+            <div className="absolute right-0 top-1/2 w-20 h-20 -translate-y-1/2">
+              <div className="w-full h-full bg-accent rounded-full blur-[2px]"></div>
+              <div className="absolute top-1/2 right-full w-32 h-0.5 bg-accent/30 blur-[1px]"></div>
+            </div>
+
+            {/* Additional middle spheres */}
+            <div className="absolute left-1/4 top-1/2 w-16 h-16 -translate-y-1/2">
               <div className="w-full h-full bg-[#0EA5E9] rounded-full blur-[2px]"></div>
-              <div className="absolute bottom-1/2 left-full w-16 h-0.5 bg-[#0EA5E9]/50 blur-[1px] origin-left rotate-45"></div>
+              <div className="absolute top-1/2 left-full w-24 h-0.5 bg-[#0EA5E9]/30 blur-[1px] rotate-12"></div>
             </div>
-            
-            <div className="absolute left-1/2 -bottom-12 w-8 h-8 -translate-x-1/2">
-              <div className="w-full h-full bg-accent rounded-full blur-[2px]"></div>
-              <div className="absolute bottom-full left-1/2 h-12 w-0.5 bg-accent/50 blur-[1px]"></div>
-            </div>
-            
-            <div className="absolute -right-8 -bottom-8 w-8 h-8">
+
+            <div className="absolute right-1/4 top-1/2 w-16 h-16 -translate-y-1/2">
               <div className="w-full h-full bg-[#D946EF] rounded-full blur-[2px]"></div>
-              <div className="absolute bottom-1/2 right-full w-16 h-0.5 bg-[#D946EF]/50 blur-[1px] origin-right -rotate-45"></div>
+              <div className="absolute top-1/2 right-full w-24 h-0.5 bg-[#D946EF]/30 blur-[1px] -rotate-12"></div>
+            </div>
+
+            {/* Bottom row */}
+            <div className="absolute left-1/4 bottom-0 w-12 h-12">
+              <div className="w-full h-full bg-[#0EA5E9] rounded-full blur-[2px]"></div>
+              <div className="absolute top-0 left-1/2 h-24 w-0.5 bg-[#0EA5E9]/30 blur-[1px] origin-bottom -rotate-12"></div>
+            </div>
+
+            <div className="absolute left-2/4 -bottom-4 w-16 h-16">
+              <div className="w-full h-full bg-accent rounded-full blur-[2px]"></div>
+              <div className="absolute top-0 left-1/2 h-32 w-0.5 bg-accent/30 blur-[1px]"></div>
+            </div>
+
+            <div className="absolute right-1/4 bottom-0 w-12 h-12">
+              <div className="w-full h-full bg-[#D946EF] rounded-full blur-[2px]"></div>
+              <div className="absolute top-0 left-1/2 h-24 w-0.5 bg-[#D946EF]/30 blur-[1px] origin-bottom rotate-12"></div>
+            </div>
+
+            {/* Extra spheres for depth */}
+            <div className="absolute left-1/3 top-1/3 w-10 h-10">
+              <div className="w-full h-full bg-[#0EA5E9] rounded-full blur-[1px]"></div>
+            </div>
+
+            <div className="absolute right-1/3 top-1/3 w-10 h-10">
+              <div className="w-full h-full bg-accent rounded-full blur-[1px]"></div>
+            </div>
+
+            <div className="absolute left-1/3 bottom-1/3 w-10 h-10">
+              <div className="w-full h-full bg-[#D946EF] rounded-full blur-[1px]"></div>
+            </div>
+
+            <div className="absolute right-1/3 bottom-1/3 w-10 h-10">
+              <div className="w-full h-full bg-[#0EA5E9] rounded-full blur-[1px]"></div>
             </div>
           </div>
         </div>
