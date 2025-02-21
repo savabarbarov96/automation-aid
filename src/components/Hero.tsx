@@ -81,7 +81,7 @@ export const Hero = () => {
         <div className="relative w-full h-[600px] flex items-center justify-center">
           {/* Central hub */}
           <div className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
-            <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-pulse">
+            <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
                 <div className="w-12 h-12 rounded-full bg-accent shadow-lg" >
                   <img src="/logos/ns.png" alt="Quantum Automations Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
@@ -90,10 +90,20 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Octahedral arrangement of logos */}
+          {/* Connecting arrows - using pseudo-elements for arrows */}
+          <div className="absolute inset-0">
+            <div className="absolute inset-0 before:content-[''] before:absolute before:w-full before:h-full before:border-2 before:border-accent/10 before:rounded-full">
+              <div className="absolute left-1/2 top-0 h-[50%] w-[2px] bg-gradient-to-b from-accent/20 to-transparent transform -translate-x-1/2 rotate-0"></div>
+              <div className="absolute left-0 top-1/2 w-[50%] h-[2px] bg-gradient-to-r from-transparent to-accent/20 transform -translate-y-1/2"></div>
+              <div className="absolute right-0 top-1/2 w-[50%] h-[2px] bg-gradient-to-l from-transparent to-accent/20 transform -translate-y-1/2"></div>
+              <div className="absolute left-1/4 bottom-1/4 w-[2px] h-[30%] bg-gradient-to-t from-transparent to-accent/20 transform rotate-45"></div>
+              <div className="absolute right-1/4 bottom-1/4 w-[2px] h-[30%] bg-gradient-to-t from-transparent to-accent/20 transform -rotate-45"></div>
+            </div>
+          </div>
+
           {/* Top logo */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
                 <img src="/logos/gd.png"  alt="Quantum Automations Logo"  />
               </div>
@@ -102,23 +112,23 @@ export const Hero = () => {
 
           {/* Bottom logo */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/m.png"  alt="Make Logo"  />
-            </div>
+              </div>
             </div>
           </div>
 
           {/* Left logos */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_15s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30" >
                 <img src="/logos/n8n.png"  alt={"N8N Logo"}  />
               </div>
             </div>
           </div>
           <div className="absolute left-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_13s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
                 <img src="/logos/at.png" alt="Airtable Logo"  />
               </div>
@@ -127,14 +137,14 @@ export const Hero = () => {
 
           {/* Right logos */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_14s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/cgpt.png"  alt="CGPT Logo"  />
               </div>
             </div>
           </div>
           <div className="absolute right-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_16s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src="/logos/wa.png"  alt="Whatsapp Logo"  />
               </div>
@@ -143,24 +153,18 @@ export const Hero = () => {
 
           {/* Bottom left and right logos */}
           <div className="absolute left-[15%] bottom-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_17s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/apify.png"  alt="Apify Logo"  />
               </div>
             </div>
           </div>
           <div className="absolute right-[15%] bottom-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_18s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src={"/logos/retell.png"}  alt="Retell Logo"  />
               </div>
             </div>
-          </div>
-
-          {/* Connecting lines using pseudo-elements */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 before:content-[''] before:absolute before:w-full before:h-full before:border-2 before:border-accent/10 before:rounded-full before:animate-pulse" />
-            <div className="absolute inset-0 before:content-[''] before:absolute before:w-full before:h-full before:border-2 before:border-[#D946EF]/10 before:rounded-full before:animate-pulse before:rotate-45" />
           </div>
         </div>
       </div>
