@@ -39,8 +39,8 @@ export const Features = () => {
     <section id="features" className="py-16 bg-cool-100">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-cool-400 mb-4">Our Solutions</h2>
-          <p className="text-cool-300 max-w-2xl mx-auto">
+          <h2 className="text-3xl font-bold text-[#000080] mb-4">Our Solutions</h2>
+          <p className="text-[#000080] max-w-2xl mx-auto">
             Transform your business with our comprehensive suite of automation solutions.
           </p>
         </div>
@@ -52,8 +52,8 @@ export const Features = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <feature.icon className="w-12 h-12 text-primary mb-4" />
-              <h3 className="text-xl font-semibold text-black mb-2">{feature.title}</h3>
-              <p className="text-black">{feature.description}</p>
+              <h3 className="text-xl font-semibold text-[#000080] mb-2">{feature.title}</h3>
+              <p className="text-[#000080]">{feature.description}</p>
             </div>
           ))}
         </div>
