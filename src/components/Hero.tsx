@@ -8,64 +8,87 @@ export const Hero = () => {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* Interactive network nodes */}
         <div className="absolute w-full h-full">
-          {/* Front layer - closest to camera (larger, more vibrant) */}
-          <div className="absolute left-1/4 top-1/3 animate-[float_12s_ease-in-out_infinite]">
+          {/* Front layer - closest to camera (larger, most vibrant) */}
+          <div className="absolute left-1/4 top-1/3 animate-[float_8s_ease-in-out_infinite]">
             <div className="relative">
-              <div className="w-48 h-48 bg-accent/30 rounded-full blur-xl"></div>
-              <div className="absolute -inset-4 bg-accent/20 rounded-full blur-2xl animate-pulse"></div>
+              <div className="w-48 h-48 bg-accent/40 rounded-full blur-md"></div>
+              <div className="absolute -inset-4 bg-accent/30 rounded-full blur-lg animate-pulse"></div>
             </div>
           </div>
           
-          <div className="absolute right-1/4 bottom-1/3 animate-[float_15s_ease-in-out_infinite] [animation-delay:0.8s]">
+          <div className="absolute right-1/4 bottom-1/3 animate-[float_10s_ease-in-out_infinite] [animation-delay:1.2s]">
             <div className="relative">
-              <div className="w-52 h-52 bg-[#D946EF]/25 rounded-full blur-xl"></div>
-              <div className="absolute -inset-6 bg-[#D946EF]/15 rounded-full blur-2xl animate-pulse"></div>
+              <div className="w-52 h-52 bg-[#D946EF]/35 rounded-full blur-md"></div>
+              <div className="absolute -inset-6 bg-[#D946EF]/25 rounded-full blur-lg animate-pulse"></div>
             </div>
           </div>
 
           {/* Middle layer */}
-          <div className="absolute left-2/3 top-1/4 animate-[float_14s_ease-in-out_infinite] [animation-delay:0.5s]">
+          <div className="absolute left-2/3 top-1/4 animate-[float_12s_ease-in-out_infinite] [animation-delay:0.5s]">
             <div className="relative">
-              <div className="w-40 h-40 bg-[#0EA5E9]/20 rounded-full blur-xl"></div>
-              <div className="absolute -inset-4 bg-[#0EA5E9]/10 rounded-full blur-2xl animate-pulse"></div>
+              <div className="w-40 h-40 bg-[#0EA5E9]/30 rounded-full blur-md"></div>
+              <div className="absolute -inset-4 bg-[#0EA5E9]/20 rounded-full blur-lg animate-pulse"></div>
             </div>
           </div>
 
-          <div className="absolute right-2/3 bottom-1/4 animate-[float_13s_ease-in-out_infinite] [animation-delay:1.2s]">
+          <div className="absolute right-2/3 bottom-1/4 animate-[float_9s_ease-in-out_infinite] [animation-delay:0.8s]">
             <div className="relative">
-              <div className="w-36 h-36 bg-accent/20 rounded-full blur-xl"></div>
-              <div className="absolute -inset-3 bg-accent/10 rounded-full blur-2xl animate-pulse"></div>
+              <div className="w-36 h-36 bg-accent/30 rounded-full blur-md"></div>
+              <div className="absolute -inset-3 bg-accent/20 rounded-full blur-lg animate-pulse"></div>
+            </div>
+          </div>
+
+          {/* Additional middle layer spheres */}
+          <div className="absolute left-1/2 top-1/4 animate-[float_11s_ease-in-out_infinite] [animation-delay:1.5s]">
+            <div className="relative">
+              <div className="w-44 h-44 bg-[#D946EF]/25 rounded-full blur-md"></div>
+              <div className="absolute -inset-4 bg-[#D946EF]/15 rounded-full blur-lg animate-pulse"></div>
+            </div>
+          </div>
+
+          <div className="absolute right-1/2 bottom-1/2 animate-[float_13s_ease-in-out_infinite] [animation-delay:0.3s]">
+            <div className="relative">
+              <div className="w-32 h-32 bg-[#0EA5E9]/25 rounded-full blur-md"></div>
+              <div className="absolute -inset-3 bg-[#0EA5E9]/15 rounded-full blur-lg animate-pulse"></div>
             </div>
           </div>
 
           {/* Background layer - furthest from camera (smaller, less vibrant) */}
-          <div className="absolute left-1/3 top-1/2 animate-[float_16s_ease-in-out_infinite] [animation-delay:0.3s]">
+          <div className="absolute left-1/3 top-1/2 animate-[float_14s_ease-in-out_infinite] [animation-delay:1s]">
             <div className="relative">
-              <div className="w-32 h-32 bg-[#D946EF]/15 rounded-full blur-xl"></div>
-              <div className="absolute -inset-3 bg-[#D946EF]/5 rounded-full blur-2xl animate-pulse"></div>
+              <div className="w-24 h-24 bg-[#D946EF]/20 rounded-full blur-md"></div>
+              <div className="absolute -inset-2 bg-[#D946EF]/10 rounded-full blur-lg animate-pulse"></div>
             </div>
           </div>
 
-          <div className="absolute right-1/3 top-1/3 animate-[float_17s_ease-in-out_infinite] [animation-delay:1.5s]">
+          <div className="absolute right-1/3 top-1/3 animate-[float_15s_ease-in-out_infinite] [animation-delay:0.7s]">
             <div className="relative">
-              <div className="w-28 h-28 bg-[#0EA5E9]/15 rounded-full blur-xl"></div>
-              <div className="absolute -inset-2 bg-[#0EA5E9]/5 rounded-full blur-2xl animate-pulse"></div>
+              <div className="w-20 h-20 bg-[#0EA5E9]/20 rounded-full blur-md"></div>
+              <div className="absolute -inset-2 bg-[#0EA5E9]/10 rounded-full blur-lg animate-pulse"></div>
             </div>
           </div>
 
           {/* Additional distant spheres */}
-          <div className="absolute left-1/2 bottom-1/3 animate-[float_15s_ease-in-out_infinite] [animation-delay:0.7s]">
+          <div className="absolute left-2/3 bottom-1/3 animate-[float_16s_ease-in-out_infinite] [animation-delay:1.8s]">
             <div className="relative">
-              <div className="w-24 h-24 bg-accent/10 rounded-full blur-xl"></div>
-              <div className="absolute -inset-2 bg-accent/5 rounded-full blur-2xl animate-pulse"></div>
+              <div className="w-16 h-16 bg-accent/15 rounded-full blur-md"></div>
+              <div className="absolute -inset-1 bg-accent/10 rounded-full blur-lg animate-pulse"></div>
             </div>
           </div>
 
-          {/* Ambient particles */}
+          <div className="absolute right-1/4 top-2/3 animate-[float_17s_ease-in-out_infinite] [animation-delay:0.2s]">
+            <div className="relative">
+              <div className="w-28 h-28 bg-[#D946EF]/20 rounded-full blur-md"></div>
+              <div className="absolute -inset-2 bg-[#D946EF]/10 rounded-full blur-lg animate-pulse"></div>
+            </div>
+          </div>
+
+          {/* Small ambient particles */}
           <div className="absolute inset-0">
-            <div className="absolute left-1/4 top-1/2 w-2 h-2 bg-accent/40 rounded-full blur-sm animate-pulse"></div>
-            <div className="absolute right-1/3 top-1/3 w-3 h-3 bg-[#D946EF]/30 rounded-full blur-sm animate-pulse [animation-delay:0.5s]"></div>
-            <div className="absolute left-2/3 bottom-1/3 w-2 h-2 bg-[#0EA5E9]/40 rounded-full blur-sm animate-pulse [animation-delay:1s]"></div>
+            <div className="absolute left-1/4 top-1/2 w-3 h-3 bg-accent/50 rounded-full blur-sm animate-pulse"></div>
+            <div className="absolute right-1/3 top-1/3 w-4 h-4 bg-[#D946EF]/40 rounded-full blur-sm animate-pulse [animation-delay:0.5s]"></div>
+            <div className="absolute left-2/3 bottom-1/3 w-3 h-3 bg-[#0EA5E9]/50 rounded-full blur-sm animate-pulse [animation-delay:1s]"></div>
+            <div className="absolute right-1/2 top-2/3 w-2 h-2 bg-accent/40 rounded-full blur-sm animate-pulse [animation-delay:1.5s]"></div>
           </div>
         </div>
       </div>
