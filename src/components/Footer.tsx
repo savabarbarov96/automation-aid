@@ -62,7 +62,7 @@ export const Footer = () => {
               </a>
             </div>
             <p className="text-white/80 text-sm">
-              © {new Date().getFullYear()} Your Company Name. All rights reserved.
+              © 2024 Quantum Automations. All rights reserved.
             </p>
           </div>
         </div>
