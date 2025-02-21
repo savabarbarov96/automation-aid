@@ -1,3 +1,4 @@
+
 import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
@@ -80,70 +81,78 @@ export const Hero = () => {
         <div className="relative w-full h-[600px] flex items-center justify-center">
           {/* Connecting curved lines */}
           <div className="absolute inset-0">
-            <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
               {/* Top curve */}
               <path
-                d="M 50% 15% Q 50% 27.5% 50% 40%"
+                d="M 300 90 Q 300 165 300 240"
                 stroke="#9b87f5"
-                strokeWidth="2"
+                strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
+                className="opacity-70"
               />
               {/* Bottom curve */}
               <path
-                d="M 50% 85% Q 50% 72.5% 50% 60%"
+                d="M 300 510 Q 300 435 300 360"
                 stroke="#9b87f5"
-                strokeWidth="2"
+                strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
+                className="opacity-70"
               />
               {/* Left curve */}
               <path
-                d="M 15% 50% Q 27.5% 50% 40% 50%"
+                d="M 90 300 Q 165 300 240 300"
                 stroke="#9b87f5"
-                strokeWidth="2"
+                strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
+                className="opacity-70"
               />
               {/* Right curve */}
               <path
-                d="M 85% 50% Q 72.5% 50% 60% 50%"
+                d="M 510 300 Q 435 300 360 300"
                 stroke="#9b87f5"
-                strokeWidth="2"
+                strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
+                className="opacity-70"
               />
               {/* Top Left curve */}
               <path
-                d="M 25% 30% Q 33.5% 36% 42% 42%"
+                d="M 150 180 Q 201 216 252 252"
                 stroke="#9b87f5"
-                strokeWidth="2"
+                strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
+                className="opacity-70"
               />
               {/* Top Right curve */}
               <path
-                d="M 75% 30% Q 66.5% 36% 58% 42%"
+                d="M 450 180 Q 399 216 348 252"
                 stroke="#9b87f5"
-                strokeWidth="2"
+                strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
+                className="opacity-70"
               />
               {/* Bottom Left curve */}
               <path
-                d="M 25% 70% Q 33.5% 64% 42% 58%"
+                d="M 150 420 Q 201 384 252 348"
                 stroke="#9b87f5"
-                strokeWidth="2"
+                strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
+                className="opacity-70"
               />
               {/* Bottom Right curve */}
               <path
-                d="M 75% 70% Q 66.5% 64% 58% 58%"
+                d="M 450 420 Q 399 384 348 348"
                 stroke="#9b87f5"
-                strokeWidth="2"
+                strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
+                className="opacity-70"
               />
             </svg>
           </div>
