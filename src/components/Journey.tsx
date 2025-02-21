@@ -71,7 +71,7 @@ export const Journey = () => {
   }, []);
 
   return (
-    <section className="py-24 bg-background relative overflow-hidden">
+    <section id={`journey`} className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold text-center text-cool-300 mb-16">
           Through the Quantum Tunnel: 7 Stages to Roadblock Liberation
