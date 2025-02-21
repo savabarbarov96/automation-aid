@@ -18,13 +18,12 @@ export const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/#features" className="text-gray-800 hover:text-primary transition-colors">Features</Link>
-            <Link to="/#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</Link>
+            <a href="#features" className="text-gray-800 hover:text-primary transition-colors">Features</a>
+            <a href="#work" className="text-gray-800 hover:text-primary transition-colors">Our Work</a>
+            <a href="#journey" className="text-gray-800 hover:text-primary transition-colors">Journey</a>
+            <a href="#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</a>
+            <a href="#faq" className="text-gray-800 hover:text-primary transition-colors">FAQ</a>
             <Link to="/resources" className="text-gray-800 hover:text-primary transition-colors">Resources</Link>
-            <Link to="/#contact" className="text-gray-800 hover:text-primary transition-colors">Contact</Link>
-            <button className="bg-primary text-[#000080] px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-              Get Started
-            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -39,13 +38,12 @@ export const Navbar = () => {
         {isOpen && (
           <div className="md:hidden absolute top-24 left-0 right-0 bg-white/95 border-b border-gray-200 animate-slide-in">
             <div className="flex flex-col space-y-4 px-4 py-6">
-              <Link to="/#features" className="text-gray-800 hover:text-primary transition-colors">Features</Link>
-              <Link to="/#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</Link>
+              <a href="#features" className="text-gray-800 hover:text-primary transition-colors">Features</a>
+              <a href="#work" className="text-gray-800 hover:text-primary transition-colors">Our Work</a>
+              <a href="#journey" className="text-gray-800 hover:text-primary transition-colors">Journey</a>
+              <a href="#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</a>
+              <a href="#faq" className="text-gray-800 hover:text-primary transition-colors">FAQ</a>
               <Link to="/resources" className="text-gray-800 hover:text-primary transition-colors">Resources</Link>
-              <Link to="/#contact" className="text-gray-800 hover:text-primary transition-colors">Contact</Link>
-              <button className="bg-primary text-[#000080] px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full">
-                Get Started
-              </button>
             </div>
           </div>
         )}
