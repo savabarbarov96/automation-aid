@@ -1,4 +1,3 @@
-
 import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
@@ -93,36 +92,70 @@ export const Hero = () => {
           {/* Connecting arrows */}
           <div className="absolute inset-0">
             <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-              {/* Top arrow */}
-              <line x1="50%" y1="15%" x2="50%" y2="40%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Bottom arrow */}
-              <line x1="50%" y1="85%" x2="50%" y2="60%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Left arrow */}
-              <line x1="15%" y1="50%" x2="40%" y2="50%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Right arrow */}
-              <line x1="85%" y1="50%" x2="60%" y2="50%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Top Left arrow */}
-              <line x1="25%" y1="30%" x2="42%" y2="42%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Top Right arrow */}
-              <line x1="75%" y1="30%" x2="58%" y2="42%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Bottom Left arrow */}
-              <line x1="25%" y1="70%" x2="42%" y2="58%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Bottom Right arrow */}
-              <line x1="75%" y1="70%" x2="58%" y2="58%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              
-              {/* Arrow marker definition */}
-              <defs>
-                <marker
-                  id="arrowhead"
-                  markerWidth="10"
-                  markerHeight="7"
-                  refX="9"
-                  refY="3.5"
-                  orient="auto"
-                >
-                  <polygon points="0 0, 10 3.5, 0 7" fill="#9b87f5" />
-                </marker>
-              </defs>
+              {/* Top connection */}
+              <path
+                d="M 50% 15%, Q 50% 27.5%, 50% 40%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeOpacity="0.3"
+              />
+              {/* Bottom connection */}
+              <path
+                d="M 50% 85%, Q 50% 72.5%, 50% 60%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeOpacity="0.3"
+              />
+              {/* Left connection */}
+              <path
+                d="M 15% 50%, Q 27.5% 50%, 40% 50%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeOpacity="0.3"
+              />
+              {/* Right connection */}
+              <path
+                d="M 85% 50%, Q 72.5% 50%, 60% 50%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeOpacity="0.3"
+              />
+              {/* Top Left connection */}
+              <path
+                d="M 25% 30%, Q 33.5% 36%, 42% 42%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeOpacity="0.3"
+              />
+              {/* Top Right connection */}
+              <path
+                d="M 75% 30%, Q 66.5% 36%, 58% 42%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeOpacity="0.3"
+              />
+              {/* Bottom Left connection */}
+              <path
+                d="M 25% 70%, Q 33.5% 64%, 42% 58%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeOpacity="0.3"
+              />
+              {/* Bottom Right connection */}
+              <path
+                d="M 75% 70%, Q 66.5% 64%, 58% 58%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeOpacity="0.3"
+              />
             </svg>
           </div>
 
@@ -192,7 +225,7 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Connecting lines using pseudo-elements */}
+          {/* Connecting lines */}
           <div className="absolute inset-0">
             <div className="absolute inset-0 before:content-[''] before:absolute before:w-full before:h-full before:border-2 before:border-accent/10 before:rounded-full before:animate-pulse" />
             <div className="absolute inset-0 before:content-[''] before:absolute before:w-full before:h-full before:border-2 before:border-[#D946EF]/10 before:rounded-full before:animate-pulse before:rotate-45" />
