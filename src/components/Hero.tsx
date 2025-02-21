@@ -1,4 +1,3 @@
-
 import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
@@ -82,72 +81,72 @@ export const Hero = () => {
           {/* Connecting curved lines */}
           <div className="absolute inset-0">
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-              {/* Top curve */}
+              {/* Top curve - Adjusted to connect with center node and top node */}
               <path
-                d="M 300 90 Q 300 165 300 240"
+                d="M 300 300 Q 300 270 300 240"
                 stroke="#9b87f5"
                 strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
                 className="opacity-70"
               />
-              {/* Bottom curve */}
+              {/* Bottom curve - Adjusted to connect with center node and bottom node */}
               <path
-                d="M 300 510 Q 300 435 300 360"
+                d="M 300 300 Q 300 330 300 360"
                 stroke="#9b87f5"
                 strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
                 className="opacity-70"
               />
-              {/* Left curve */}
+              {/* Left curve - Adjusted to connect with center node and left node */}
               <path
-                d="M 90 300 Q 165 300 240 300"
+                d="M 300 300 Q 270 300 240 300"
                 stroke="#9b87f5"
                 strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
                 className="opacity-70"
               />
-              {/* Right curve */}
+              {/* Right curve - Adjusted to connect with center node and right node */}
               <path
-                d="M 510 300 Q 435 300 360 300"
+                d="M 300 300 Q 330 300 360 300"
                 stroke="#9b87f5"
                 strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
                 className="opacity-70"
               />
-              {/* Top Left curve */}
+              {/* Top Left curve - Adjusted to connect with center node and top left node */}
               <path
-                d="M 150 180 Q 201 216 252 252"
+                d="M 300 300 Q 276 276 252 252"
                 stroke="#9b87f5"
                 strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
                 className="opacity-70"
               />
-              {/* Top Right curve */}
+              {/* Top Right curve - Adjusted to connect with center node and top right node */}
               <path
-                d="M 450 180 Q 399 216 348 252"
+                d="M 300 300 Q 324 276 348 252"
                 stroke="#9b87f5"
                 strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
                 className="opacity-70"
               />
-              {/* Bottom Left curve */}
+              {/* Bottom Left curve - Adjusted to connect with center node and bottom left node */}
               <path
-                d="M 150 420 Q 201 384 252 348"
+                d="M 300 300 Q 276 324 252 348"
                 stroke="#9b87f5"
                 strokeWidth="3"
                 fill="none"
                 strokeDasharray="4"
                 className="opacity-70"
               />
-              {/* Bottom Right curve */}
+              {/* Bottom Right curve - Adjusted to connect with center node and bottom right node */}
               <path
-                d="M 450 420 Q 399 384 348 348"
+                d="M 300 300 Q 324 324 348 348"
                 stroke="#9b87f5"
                 strokeWidth="3"
                 fill="none"
