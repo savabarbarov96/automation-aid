@@ -31,7 +31,7 @@ export const Hero = () => {
             We empower your sales & marketing teams with automations so you can close more deals.
           </p>
           <div className="flex flex-wrap justify-center gap-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            <button className="font-inter bg-accent text-accent-foreground px-10 py-4 rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2 text-lg font-medium">
+            <button className="font-inter bg-accent text-white px-10 py-4 rounded-lg hover:bg-accent/90 transition-colors flex items-center gap-2 text-lg font-medium">
               Get Started <ArrowRight size={24} />
             </button>
             <button className="font-inter bg-cool-200 text-white px-10 py-4 rounded-lg hover:bg-cool-200/90 transition-colors text-lg font-medium">

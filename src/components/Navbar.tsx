@@ -18,7 +18,7 @@ export const Navbar = () => {
             <a href="#features" className="text-gray-800 hover:text-primary transition-colors">Features</a>
             <a href="#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</a>
             <a href="#contact" className="text-gray-800 hover:text-primary transition-colors">Contact</a>
-            <button className="bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+            <button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
               Get Started
             </button>
           </div>
@@ -38,7 +38,7 @@ export const Navbar = () => {
               <a href="#features" className="text-gray-800 hover:text-primary transition-colors">Features</a>
               <a href="#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</a>
               <a href="#contact" className="text-gray-800 hover:text-primary transition-colors">Contact</a>
-              <button className="bg-primary text-primary-foreground px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full">
+              <button className="bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full">
                 Get Started
               </button>
             </div>
