@@ -169,7 +169,7 @@ export const Hero = () => {
           </div>
 
           {/* Top logo */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4 animate-[float_8s_ease-in-out_infinite]">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
             <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30">
                 <img src="/logos/gd.png" alt="Quantum Automations Logo" />
@@ -178,7 +178,7 @@ export const Hero = () => {
           </div>
 
           {/* Bottom logo */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4 animate-[float_8s_ease-in-out_infinite] [animation-delay:1s]">
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
                 <img src="/logos/m.png" alt="Make Logo" />
@@ -187,14 +187,14 @@ export const Hero = () => {
           </div>
 
           {/* Left logos */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4 animate-[float_8s_ease-in-out_infinite] [animation-delay:2s]">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src="/logos/n8n.png" alt="N8N Logo" />
               </div>
             </div>
           </div>
-          <div className="absolute left-[15%] top-[25%] transform animate-[float_8s_ease-in-out_infinite] [animation-delay:3s]">
+          <div className="absolute left-[15%] top-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30">
                 <img src="/logos/at.png" alt="Airtable Logo" />
@@ -203,14 +203,14 @@ export const Hero = () => {
           </div>
 
           {/* Right logos */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4 animate-[float_8s_ease-in-out_infinite] [animation-delay:4s]">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
                 <img src="/logos/cgpt.png" alt="CGPT Logo" />
               </div>
             </div>
           </div>
-          <div className="absolute right-[15%] top-[25%] transform animate-[float_8s_ease-in-out_infinite] [animation-delay:5s]">
+          <div className="absolute right-[15%] top-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src="/logos/wa.png" alt="Whatsapp Logo" />
@@ -219,14 +219,14 @@ export const Hero = () => {
           </div>
 
           {/* Bottom left and right logos */}
-          <div className="absolute left-[15%] bottom-[25%] transform animate-[float_8s_ease-in-out_infinite] [animation-delay:6s]">
+          <div className="absolute left-[15%] bottom-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
                 <img src="/logos/apify.png" alt="Apify Logo" />
               </div>
             </div>
           </div>
-          <div className="absolute right-[15%] bottom-[25%] transform animate-[float_8s_ease-in-out_infinite] [animation-delay:7s]">
+          <div className="absolute right-[15%] bottom-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src="/logos/retell.png" alt="Retell Logo" />
