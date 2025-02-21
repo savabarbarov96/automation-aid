@@ -1,4 +1,3 @@
-
 import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
@@ -168,8 +167,8 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Top logo */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
+          {/* Top logo - Moved closer */}
+          <div className="absolute top-[15%] left-1/2 -translate-x-1/2">
             <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30">
                 <img src="/logos/gd.png" alt="Quantum Automations Logo" />
@@ -177,8 +176,8 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Bottom logo */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
+          {/* Bottom logo - Moved closer */}
+          <div className="absolute bottom-[15%] left-1/2 -translate-x-1/2">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
                 <img src="/logos/m.png" alt="Make Logo" />
@@ -186,39 +185,25 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Left logos */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
+          {/* Left logo - Moved closer */}
+          <div className="absolute left-[15%] top-1/2 -translate-y-1/2">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src="/logos/n8n.png" alt="N8N Logo" />
               </div>
             </div>
           </div>
-          <div className="absolute left-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#D946EF]/30">
-                <img src="/logos/at.png" alt="Airtable Logo" />
-              </div>
-            </div>
-          </div>
 
-          {/* Right logos */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
+          {/* Right logo - Moved closer */}
+          <div className="absolute right-[15%] top-1/2 -translate-y-1/2">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
                 <img src="/logos/cgpt.png" alt="CGPT Logo" />
               </div>
             </div>
           </div>
-          <div className="absolute right-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-accent/30">
-                <img src="/logos/wa.png" alt="Whatsapp Logo" />
-              </div>
-            </div>
-          </div>
 
-          {/* Bottom left and right logos */}
+          {/* Corner logos */}
           <div className="absolute left-[15%] bottom-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
