@@ -1,3 +1,4 @@
+
 import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
@@ -82,39 +83,39 @@ export const Hero = () => {
           <div className="absolute inset-0">
             <svg className="absolute inset-0 w-full h-full -z-10" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
               {/* Central to Top */}
-              <line x1="300" y1="300" x2="300" y2="240" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="300" x2="300" y2="240" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Central to Bottom */}
-              <line x1="300" y1="300" x2="300" y2="360" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="300" x2="300" y2="360" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Central to Left */}
-              <line x1="300" y1="300" x2="240" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="300" x2="240" y2="300" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Central to Right */}
-              <line x1="300" y1="300" x2="360" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="300" x2="360" y2="300" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Central to TopLeft */}
-              <line x1="300" y1="300" x2="252" y2="252" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="300" x2="252" y2="252" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Central to TopRight */}
-              <line x1="300" y1="300" x2="348" y2="252" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="300" x2="348" y2="252" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Central to BottomLeft */}
-              <line x1="300" y1="300" x2="252" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="300" x2="252" y2="348" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Central to BottomRight */}
-              <line x1="300" y1="300" x2="348" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="300" x2="348" y2="348" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               
               {/* Node to Node connections */}
               {/* Top to Left */}
-              <line x1="300" y1="240" x2="240" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="240" x2="240" y2="300" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Top to Right */}
-              <line x1="300" y1="240" x2="360" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="240" x2="360" y2="300" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Bottom to Left */}
-              <line x1="300" y1="360" x2="240" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="360" x2="240" y2="300" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* Bottom to Right */}
-              <line x1="300" y1="360" x2="360" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="300" y1="360" x2="360" y2="300" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* TopLeft to TopRight */}
-              <line x1="252" y1="252" x2="348" y2="252" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="252" y1="252" x2="348" y2="252" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* BottomLeft to BottomRight */}
-              <line x1="252" y1="348" x2="348" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="252" y1="348" x2="348" y2="348" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* TopLeft to BottomLeft */}
-              <line x1="252" y1="252" x2="252" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="252" y1="252" x2="252" y2="348" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
               {/* TopRight to BottomRight */}
-              <line x1="348" y1="252" x2="348" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              <line x1="348" y1="252" x2="348" y2="348" stroke="#ffffff" strokeWidth="1" className="opacity-50" />
             </svg>
           </div>
 
