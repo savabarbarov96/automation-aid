@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 
@@ -10,29 +9,39 @@ interface TimelineEvent {
 
 const timelineEvents: TimelineEvent[] = [
   {
-    year: "2020",
-    title: "Company Foundation",
-    description: "Quantum Automations was founded with a vision to revolutionize business automation."
+    year: "Stage 1",
+    title: "Enter the Tunnel. Discovery Call (15 Min)",
+    description: "Let's map your current marketing, identify roadblocks, and ignite your tunnel journey in a quick 15-minute call."
   },
   {
-    year: "2021",
-    title: "First Major Client",
-    description: "Successfully implemented automation solutions for our first enterprise client."
+    year: "Stage 2",
+    title: "Tunnel Vision. Analyze Your Bottlenecks",
+    description: "We'll pinpoint the exact marketing barriers holding you back through a deep analysis of your current processes."
   },
   {
-    year: "2022",
-    title: "Global Expansion",
-    description: "Expanded operations to serve clients across three continents."
+    year: "Stage 3",
+    title: "The Phase-Shift. See AI in Action for You",
+    description: "Prepare to witness a personalized AI demonstration, revealing how you can tunnel through your specific marketing limitations."
   },
   {
-    year: "2023",
-    title: "AI Integration",
-    description: "Launched our advanced AI-powered automation platform."
+    year: "Stage 4",
+    title: "Navigation Blueprint. Secure Your Liberation Plan",
+    description: "Review your custom proposal – your actionable blueprint to navigate the Quantum Tunnel and achieve marketing freedom."
   },
   {
-    year: "2024",
-    title: "Industry Recognition",
-    description: "Named as one of the top automation solution providers globally."
+    year: "Stage 5",
+    title: "Activate Your Quantum Engine. Implement AI Workflows",
+    description: "Our team expertly installs your AI workflows, seamlessly integrating them to power your journey through the tunnel."
+  },
+  {
+    year: "Stage 6",
+    title: "Emerge Liberated. Go LIVE with AI Automation",
+    description: "Your AI-powered marketing is now live! Start experiencing liberation from roadblocks and see immediate results."
+  },
+  {
+    year: "Stage 7",
+    title: "Revenue Entanglement. Attain Perpetual Growth",
+    description: "Embrace the deep connection of Revenue Entanglement, watch as leads surge, ROI multiplies, and your revenue stream becomes perpetually enhanced by AI."
   }
 ];
 
@@ -65,13 +74,10 @@ export const Journey = () => {
     <section className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold text-center text-cool-300 mb-16">
-          Our Journey
+          Through the Quantum Tunnel: 7 Stages to Roadblock Liberation
         </h2>
         <div className="relative">
-          {/* Vertical line */}
           <div className="absolute left-4 md:left-1/2 h-full w-0.5 bg-primary/30 -translate-x-1/2" />
-          
-          {/* Timeline events */}
           <div className="relative space-y-12">
             {timelineEvents.map((event, index) => (
               <div
@@ -84,10 +90,7 @@ export const Journey = () => {
                   "transition-opacity duration-1000"
                 )}
               >
-                {/* Year bubble */}
                 <div className="absolute left-4 md:left-1/2 w-8 h-8 bg-primary rounded-full -translate-x-1/2 z-10 shadow-lg" />
-                
-                {/* Content */}
                 <div className={cn(
                   "w-full md:w-[calc(50%-4rem)]",
                   "bg-cool-100 p-6 rounded-lg shadow-lg",
@@ -105,6 +108,16 @@ export const Journey = () => {
               </div>
             ))}
           </div>
+        </div>
+        <div className="text-center mt-16">
+          <a
+            href="https://cal.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-primary text-[#000080] px-10 py-4 rounded-lg hover:bg-primary/90 transition-colors text-lg font-medium"
+          >
+            Take the Quantum Leap with AI Automations - Book Now
+          </a>
         </div>
       </div>
     </section>

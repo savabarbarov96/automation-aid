@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 
-type Category = "All" | "Branding" | "Web Design" | "Mobile App" | "Digital Marketing" | "UI/UX" | "Product Design";
+type Category = "All" | "LinkedIn Solutions" | "Lead Generation" | "Marketing Automations" | "Voice Agents";
 
 interface Project {
   title: string;
@@ -15,26 +14,32 @@ interface Project {
 
 const projects: Project[] = [
   {
-    title: "Minimalist Brand Identity",
-    category: "Branding",
+    title: "LinkedIn Growth Strategy",
+    category: "LinkedIn Solutions",
     image: "/placeholder.svg",
     link: "#"
   },
   {
-    title: "Sleek Web Experience",
-    category: "Web Design",
+    title: "Automated Lead Generation",
+    category: "Lead Generation",
     image: "/placeholder.svg",
     link: "#"
   },
   {
-    title: "Intuitive Mobile App",
-    category: "Mobile App",
+    title: "Marketing Workflow Automation",
+    category: "Marketing Automations",
+    image: "/placeholder.svg",
+    link: "#"
+  },
+  {
+    title: "AI Voice Assistant Integration",
+    category: "Voice Agents",
     image: "/placeholder.svg",
     link: "#"
   }
 ];
 
-const categories: Category[] = ["All", "Branding", "Web Design", "Mobile App", "Digital Marketing", "UI/UX", "Product Design"];
+const categories: Category[] = ["All", "LinkedIn Solutions", "Lead Generation", "Marketing Automations", "Voice Agents"];
 
 export const Work = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category>("All");

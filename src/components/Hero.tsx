@@ -62,10 +62,10 @@ export const Hero = () => {
         {/* Left side content */}
         <div className="text-left">
           <h1 className="font-inter text-5xl md:text-7xl font-bold text-cool-300 mb-8 animate-fade-in leading-tight">
-            Accelerating Business Growth Through Intelligent Automation
+            Stop Incremental Gains. Take a Quantum Leap in your Lead Generation
           </h1>
           <p className="text-xl md:text-2xl text-cool-300 mb-12 animate-fade-in max-w-3xl" style={{ animationDelay: "0.2s" }}>
-            We empower your sales & marketing teams with automations so you can close more deals.
+            Unleash Exponential Growth with Quantum Automations
           </p>
           <div className="flex flex-wrap gap-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
             <button className="font-inter bg-primary text-[#000080] px-10 py-4 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 text-lg font-medium">
