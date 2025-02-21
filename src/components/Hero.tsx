@@ -10,22 +10,51 @@ export const Hero = () => {
         <div className="absolute w-full h-full">
           <div className="absolute left-1/4 top-1/4 animate-float">
             <div className="w-4 h-4 bg-accent/30 rounded-full blur-sm"></div>
-            <div className="w-40 h-[1px] bg-gradient-to-r from-accent/20 to-transparent absolute top-1/2 -right-40 rotate-45"></div>
           </div>
           
           <div className="absolute right-1/3 top-1/3 animate-float [animation-delay:1s]">
             <div className="w-6 h-6 bg-accent/40 rounded-full blur-sm"></div>
-            <div className="w-60 h-[1px] bg-gradient-to-l from-accent/20 to-transparent absolute top-1/2 -left-60 -rotate-45"></div>
           </div>
           
           <div className="absolute left-1/2 bottom-1/4 animate-float [animation-delay:2s]">
             <div className="w-8 h-8 bg-accent/30 rounded-full blur-sm"></div>
-            <div className="w-40 h-[1px] bg-gradient-to-r from-accent/20 to-transparent absolute top-1/2 -right-40"></div>
           </div>
           
           <div className="absolute right-1/4 top-2/3 animate-float [animation-delay:1.5s]">
             <div className="w-5 h-5 bg-accent/50 rounded-full blur-sm"></div>
-            <div className="w-32 h-[1px] bg-gradient-to-l from-accent/20 to-transparent absolute top-1/2 -left-32 rotate-12"></div>
+          </div>
+
+          {/* Additional nodes */}
+          <div className="absolute left-1/6 top-1/6 animate-float [animation-delay:2.5s]">
+            <div className="w-7 h-7 bg-accent/35 rounded-full blur-sm"></div>
+          </div>
+
+          <div className="absolute right-1/5 top-1/5 animate-float [animation-delay:3s]">
+            <div className="w-6 h-6 bg-accent/40 rounded-full blur-sm"></div>
+          </div>
+
+          <div className="absolute left-3/4 top-1/3 animate-float [animation-delay:1.8s]">
+            <div className="w-5 h-5 bg-accent/45 rounded-full blur-sm"></div>
+          </div>
+
+          <div className="absolute right-2/3 bottom-1/3 animate-float [animation-delay:2.2s]">
+            <div className="w-8 h-8 bg-accent/35 rounded-full blur-sm"></div>
+          </div>
+
+          <div className="absolute left-1/3 bottom-1/2 animate-float [animation-delay:3.5s]">
+            <div className="w-6 h-6 bg-accent/40 rounded-full blur-sm"></div>
+          </div>
+
+          <div className="absolute right-1/2 top-1/6 animate-float [animation-delay:2.8s]">
+            <div className="w-7 h-7 bg-accent/35 rounded-full blur-sm"></div>
+          </div>
+
+          <div className="absolute left-2/3 bottom-2/3 animate-float [animation-delay:1.2s]">
+            <div className="w-5 h-5 bg-accent/45 rounded-full blur-sm"></div>
+          </div>
+
+          <div className="absolute right-3/4 top-2/5 animate-float [animation-delay:3.2s]">
+            <div className="w-6 h-6 bg-accent/40 rounded-full blur-sm"></div>
           </div>
           
           {/* Large central sphere */}
