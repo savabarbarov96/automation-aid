@@ -1,3 +1,4 @@
+
 import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
@@ -85,64 +86,72 @@ export const Hero = () => {
               <path
                 d="M 300 90 Q 300 165 300 240"
                 stroke="#9b87f5"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 fill="none"
+                strokeDasharray="4"
                 className="opacity-70"
               />
               {/* Bottom curve */}
               <path
                 d="M 300 510 Q 300 435 300 360"
                 stroke="#9b87f5"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 fill="none"
+                strokeDasharray="4"
                 className="opacity-70"
               />
               {/* Left curve */}
               <path
                 d="M 90 300 Q 165 300 240 300"
                 stroke="#9b87f5"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 fill="none"
+                strokeDasharray="4"
                 className="opacity-70"
               />
               {/* Right curve */}
               <path
                 d="M 510 300 Q 435 300 360 300"
                 stroke="#9b87f5"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 fill="none"
+                strokeDasharray="4"
                 className="opacity-70"
               />
               {/* Top Left curve */}
               <path
                 d="M 150 180 Q 201 216 252 252"
                 stroke="#9b87f5"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 fill="none"
+                strokeDasharray="4"
                 className="opacity-70"
               />
               {/* Top Right curve */}
               <path
                 d="M 450 180 Q 399 216 348 252"
                 stroke="#9b87f5"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 fill="none"
+                strokeDasharray="4"
                 className="opacity-70"
               />
               {/* Bottom Left curve */}
               <path
                 d="M 150 420 Q 201 384 252 348"
                 stroke="#9b87f5"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 fill="none"
+                strokeDasharray="4"
                 className="opacity-70"
               />
               {/* Bottom Right curve */}
               <path
                 d="M 450 420 Q 399 384 348 348"
                 stroke="#9b87f5"
-                strokeWidth="1.5"
+                strokeWidth="3"
                 fill="none"
+                strokeDasharray="4"
                 className="opacity-70"
               />
             </svg>
