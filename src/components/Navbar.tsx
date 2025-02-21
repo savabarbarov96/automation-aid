@@ -20,7 +20,7 @@ export const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/#features" className="text-gray-800 hover:text-primary transition-colors">Features</Link>
             <Link to="/#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</Link>
-            <Link to="/blog" className="text-gray-800 hover:text-primary transition-colors">Blog</Link>
+            <Link to="/resources" className="text-gray-800 hover:text-primary transition-colors">Resources</Link>
             <Link to="/#contact" className="text-gray-800 hover:text-primary transition-colors">Contact</Link>
             <button className="bg-primary text-[#000080] px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
               Get Started
@@ -41,7 +41,7 @@ export const Navbar = () => {
             <div className="flex flex-col space-y-4 px-4 py-6">
               <Link to="/#features" className="text-gray-800 hover:text-primary transition-colors">Features</Link>
               <Link to="/#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</Link>
-              <Link to="/blog" className="text-gray-800 hover:text-primary transition-colors">Blog</Link>
+              <Link to="/resources" className="text-gray-800 hover:text-primary transition-colors">Resources</Link>
               <Link to="/#contact" className="text-gray-800 hover:text-primary transition-colors">Contact</Link>
               <button className="bg-primary text-[#000080] px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full">
                 Get Started
@@ -52,4 +52,3 @@ export const Navbar = () => {
       </div>
     </nav>
   );
-};

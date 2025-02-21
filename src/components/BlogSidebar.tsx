@@ -26,7 +26,7 @@ export const BlogSidebar = () => {
 
   return (
     <div className="sticky top-24 w-64 bg-card rounded-lg p-4">
-      <h2 className="text-xl font-bold mb-4 text-white">Articles</h2>
+      <h2 className="text-xl font-bold mb-4 text-white">Resources</h2>
       <div className="space-y-2">
         {blogPosts.map((post) => (
           <button

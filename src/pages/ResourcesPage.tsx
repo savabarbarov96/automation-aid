@@ -3,7 +3,7 @@ import { Blog } from "@/components/Blog";
 import { BlogSidebar } from "@/components/BlogSidebar";
 import { Navbar } from "@/components/Navbar";
 
-const BlogPage = () => {
+const ResourcesPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -21,4 +21,4 @@ const BlogPage = () => {
   );
 };
 
-export default BlogPage;
+export default ResourcesPage;
