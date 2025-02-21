@@ -15,17 +15,17 @@ export const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-[#000080] hover:text-primary transition-colors">Features</a>
-            <a href="#testimonials" className="text-[#000080] hover:text-primary transition-colors">Testimonials</a>
-            <a href="#contact" className="text-[#000080] hover:text-primary transition-colors">Contact</a>
-            <button className="bg-primary text-[#000080] px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
+            <a href="#features" className="text-gray-800 hover:text-primary transition-colors">Features</a>
+            <a href="#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</a>
+            <a href="#contact" className="text-gray-800 hover:text-primary transition-colors">Contact</a>
+            <button className="bg-primary text-[#E5DEFF] px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors">
               Get Started
             </button>
           </div>
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-[#000080]">
+            <button onClick={() => setIsOpen(!isOpen)} className="text-gray-800">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -35,10 +35,10 @@ export const Navbar = () => {
         {isOpen && (
           <div className="md:hidden absolute top-24 left-0 right-0 bg-white/95 border-b border-gray-200 animate-slide-in">
             <div className="flex flex-col space-y-4 px-4 py-6">
-              <a href="#features" className="text-[#000080] hover:text-primary transition-colors">Features</a>
-              <a href="#testimonials" className="text-[#000080] hover:text-primary transition-colors">Testimonials</a>
-              <a href="#contact" className="text-[#000080] hover:text-primary transition-colors">Contact</a>
-              <button className="bg-primary text-[#000080] px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full">
+              <a href="#features" className="text-gray-800 hover:text-primary transition-colors">Features</a>
+              <a href="#testimonials" className="text-gray-800 hover:text-primary transition-colors">Testimonials</a>
+              <a href="#contact" className="text-gray-800 hover:text-primary transition-colors">Contact</a>
+              <button className="bg-primary text-[#E5DEFF] px-6 py-2 rounded-lg hover:bg-primary/90 transition-colors w-full">
                 Get Started
               </button>
             </div>

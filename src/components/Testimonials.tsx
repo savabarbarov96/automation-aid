@@ -43,8 +43,8 @@ export const Testimonials = () => {
     <section id="testimonials" className="py-24 bg-muted">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-4 text-[#000080]">What Our Clients Say</h2>
-          <p className="text-lg text-[#000080] mx-auto max-w-2xl">
+          <h2 className="text-4xl font-bold mb-4 text-white">What Our Clients Say</h2>
+          <p className="text-lg text-white mx-auto max-w-2xl">
             Discover how our automation solutions have transformed businesses and improved operations across industries.
           </p>
         </div>
@@ -60,8 +60,8 @@ export const Testimonials = () => {
                     className="w-12 h-12 rounded-full"
                   />
                   <div>
-                    <h3 className="font-semibold text-[#000080]">{testimonial.name}</h3>
-                    <p className="text-sm text-[#000080]">
+                    <h3 className="font-semibold text-white">{testimonial.name}</h3>
+                    <p className="text-sm text-white">
                       {testimonial.role} at {testimonial.company}
                     </p>
                   </div>
@@ -74,7 +74,7 @@ export const Testimonials = () => {
                     />
                   ))}
                 </div>
-                <p className="text-[#000080]">{testimonial.content}</p>
+                <p className="text-white">{testimonial.content}</p>
               </CardContent>
             </Card>
           ))}
