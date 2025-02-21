@@ -1,9 +1,11 @@
 
+import { useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
 
 interface BlogPost {
+  id: string;
   title: string;
   description: string;
   date: string;
@@ -12,8 +14,9 @@ interface BlogPost {
   readTime: string;
 }
 
-const blogPosts: BlogPost[] = [
+export const blogPosts: BlogPost[] = [
   {
+    id: "post-1",
     title: "The Future of Industrial Automation: 2024 Trends",
     description: "Explore the latest trends shaping the future of industrial automation, from AI integration to sustainable manufacturing practices.",
     date: "March 15, 2024",
@@ -22,6 +25,7 @@ const blogPosts: BlogPost[] = [
     readTime: "5 min read"
   },
   {
+    id: "post-2",
     title: "How RPA is Transforming Manufacturing",
     description: "Discover how Robotic Process Automation is revolutionizing manufacturing operations and improving efficiency.",
     date: "March 10, 2024",
@@ -30,6 +34,7 @@ const blogPosts: BlogPost[] = [
     readTime: "4 min read"
   },
   {
+    id: "post-3",
     title: "Success Story: Smart Factory Implementation",
     description: "Learn how our smart factory solutions helped a leading manufacturer achieve 150% productivity increase.",
     date: "March 5, 2024",
@@ -40,19 +45,47 @@ const blogPosts: BlogPost[] = [
 ];
 
 export const Blog = () => {
-  return (
-    <section id="blog" className="py-24 bg-muted">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-4 text-white">Latest Updates & Insights</h2>
-          <p className="text-lg text-white mx-auto max-w-2xl">
-            Stay informed about the latest developments in automation technology and industry trends.
-          </p>
-        </div>
+  const postRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {blogPosts.map((post, index) => (
-            <Card key={index} className="overflow-hidden hover:shadow-lg transition-shadow animate-fade-in">
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const activePostId = entry.target.id;
+            // Dispatch custom event when a post becomes visible
+            window.dispatchEvent(
+              new CustomEvent("postInView", { detail: { postId: activePostId } })
+            );
+          }
+        });
+      },
+      {
+        threshold: 0.5, // Trigger when 50% of the element is visible
+      }
+    );
+
+    // Observe all post elements
+    blogPosts.forEach((post) => {
+      if (postRefs.current[post.id]) {
+        observer.observe(postRefs.current[post.id]!);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <section className="py-12 bg-muted">
+      <div className="space-y-8">
+        {blogPosts.map((post) => (
+          <div
+            key={post.id}
+            id={post.id}
+            ref={(el) => (postRefs.current[post.id] = el)}
+            className="scroll-mt-24"
+          >
+            <Card className="overflow-hidden hover:shadow-lg transition-shadow">
               <div className="aspect-video relative overflow-hidden">
                 <img
                   src={post.image}
@@ -65,7 +98,7 @@ export const Blog = () => {
                   <span className="text-sm text-white">{post.category}</span>
                   <span className="text-sm text-white">{post.readTime}</span>
                 </div>
-                <CardTitle className="text-xl mb-2 hover:text-primary cursor-pointer text-white">
+                <CardTitle className="text-xl mb-2 text-white">
                   {post.title}
                 </CardTitle>
                 <CardDescription className="text-white">{post.description}</CardDescription>
@@ -79,14 +112,8 @@ export const Blog = () => {
                 </div>
               </CardContent>
             </Card>
-          ))}
-        </div>
-
-        <div className="text-center animate-fade-in">
-          <Button className="px-6">
-            View All Articles <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
+          </div>
+        ))}
       </div>
     </section>
   );
