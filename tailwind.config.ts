@@ -29,7 +29,7 @@ export default {
         background: "#1A1F2C", // Dark background
         foreground: "#F6F6F7",
         primary: {
-          DEFAULT: "#88D06F", // More subtle green
+          DEFAULT: "#9b87f5", // New purple primary color
           foreground: "#1A1F2C",
         },
         secondary: {
@@ -37,7 +37,7 @@ export default {
           foreground: "#ffffff",
         },
         accent: {
-          DEFAULT: "#88D06F",
+          DEFAULT: "#9b87f5", // Updated to match primary
           foreground: "#1A1F2C",
         },
         destructive: {
@@ -57,8 +57,8 @@ export default {
           200: "#353744", // Slightly lighter
           300: "#F6F6F7", // Light text
           400: "#F6F6F7", // Light text
-          500: "#88D06F", // Subtle green
-          600: "#7AB964", // Darker green for hover
+          500: "#9b87f5", // Updated to purple
+          600: "#8B5CF6", // Darker purple for hover
         }
       },
       keyframes: {
