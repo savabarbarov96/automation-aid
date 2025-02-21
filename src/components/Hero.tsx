@@ -1,4 +1,3 @@
-
 import { ArrowRight } from "lucide-react";
 
 export const Hero = () => {
@@ -79,6 +78,76 @@ export const Hero = () => {
 
         {/* Right side - Octahedral logo arrangement */}
         <div className="relative w-full h-[600px] flex items-center justify-center">
+          {/* Connecting curved lines */}
+          <div className="absolute inset-0">
+            <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+              {/* Top curve */}
+              <path
+                d="M 50% 15% Q 50% 27.5% 50% 40%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4"
+              />
+              {/* Bottom curve */}
+              <path
+                d="M 50% 85% Q 50% 72.5% 50% 60%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4"
+              />
+              {/* Left curve */}
+              <path
+                d="M 15% 50% Q 27.5% 50% 40% 50%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4"
+              />
+              {/* Right curve */}
+              <path
+                d="M 85% 50% Q 72.5% 50% 60% 50%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4"
+              />
+              {/* Top Left curve */}
+              <path
+                d="M 25% 30% Q 33.5% 36% 42% 42%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4"
+              />
+              {/* Top Right curve */}
+              <path
+                d="M 75% 30% Q 66.5% 36% 58% 42%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4"
+              />
+              {/* Bottom Left curve */}
+              <path
+                d="M 25% 70% Q 33.5% 64% 42% 58%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4"
+              />
+              {/* Bottom Right curve */}
+              <path
+                d="M 75% 70% Q 66.5% 64% 58% 58%"
+                stroke="#9b87f5"
+                strokeWidth="2"
+                fill="none"
+                strokeDasharray="4"
+              />
+            </svg>
+          </div>
+
           {/* Central hub */}
           <div className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
             <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-pulse">
@@ -88,42 +157,6 @@ export const Hero = () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Connecting arrows */}
-          <div className="absolute inset-0">
-            <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
-              {/* Top arrow */}
-              <line x1="50%" y1="15%" x2="50%" y2="40%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Bottom arrow */}
-              <line x1="50%" y1="85%" x2="50%" y2="60%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Left arrow */}
-              <line x1="15%" y1="50%" x2="40%" y2="50%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Right arrow */}
-              <line x1="85%" y1="50%" x2="60%" y2="50%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Top Left arrow */}
-              <line x1="25%" y1="30%" x2="42%" y2="42%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Top Right arrow */}
-              <line x1="75%" y1="30%" x2="58%" y2="42%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Bottom Left arrow */}
-              <line x1="25%" y1="70%" x2="42%" y2="58%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              {/* Bottom Right arrow */}
-              <line x1="75%" y1="70%" x2="58%" y2="58%" stroke="#9b87f5" strokeWidth="2" strokeDasharray="4" markerEnd="url(#arrowhead)" />
-              
-              {/* Arrow marker definition */}
-              <defs>
-                <marker
-                  id="arrowhead"
-                  markerWidth="10"
-                  markerHeight="7"
-                  refX="9"
-                  refY="3.5"
-                  orient="auto"
-                >
-                  <polygon points="0 0, 10 3.5, 0 7" fill="#9b87f5" />
-                </marker>
-              </defs>
-            </svg>
           </div>
 
           {/* Top logo */}
