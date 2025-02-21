@@ -78,73 +78,43 @@ export const Hero = () => {
 
         {/* Right side - Octahedral logo arrangement */}
         <div className="relative w-full h-[600px] flex items-center justify-center">
-          {/* Connecting curved lines */}
+          {/* Connecting lines */}
           <div className="absolute inset-0">
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-              {/* Top curve */}
-              <path
-                d="M 300 300 Q 300 270 300 240"
-                stroke="#9b87f5"
-                strokeWidth="1"
-                fill="none"
-                className="opacity-50"
-              />
-              {/* Bottom curve */}
-              <path
-                d="M 300 300 Q 300 330 300 360"
-                stroke="#9b87f5"
-                strokeWidth="1"
-                fill="none"
-                className="opacity-50"
-              />
-              {/* Left curve */}
-              <path
-                d="M 300 300 Q 270 300 240 300"
-                stroke="#9b87f5"
-                strokeWidth="1"
-                fill="none"
-                className="opacity-50"
-              />
-              {/* Right curve */}
-              <path
-                d="M 300 300 Q 330 300 360 300"
-                stroke="#9b87f5"
-                strokeWidth="1"
-                fill="none"
-                className="opacity-50"
-              />
-              {/* Top Left curve */}
-              <path
-                d="M 300 300 Q 276 276 252 252"
-                stroke="#9b87f5"
-                strokeWidth="1"
-                fill="none"
-                className="opacity-50"
-              />
-              {/* Top Right curve */}
-              <path
-                d="M 300 300 Q 324 276 348 252"
-                stroke="#9b87f5"
-                strokeWidth="1"
-                fill="none"
-                className="opacity-50"
-              />
-              {/* Bottom Left curve */}
-              <path
-                d="M 300 300 Q 276 324 252 348"
-                stroke="#9b87f5"
-                strokeWidth="1"
-                fill="none"
-                className="opacity-50"
-              />
-              {/* Bottom Right curve */}
-              <path
-                d="M 300 300 Q 324 324 348 348"
-                stroke="#9b87f5"
-                strokeWidth="1"
-                fill="none"
-                className="opacity-50"
-              />
+            <svg className="absolute inset-0 w-full h-full -z-10" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+              {/* Central to Top */}
+              <line x1="300" y1="300" x2="300" y2="240" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Central to Bottom */}
+              <line x1="300" y1="300" x2="300" y2="360" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Central to Left */}
+              <line x1="300" y1="300" x2="240" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Central to Right */}
+              <line x1="300" y1="300" x2="360" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Central to TopLeft */}
+              <line x1="300" y1="300" x2="252" y2="252" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Central to TopRight */}
+              <line x1="300" y1="300" x2="348" y2="252" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Central to BottomLeft */}
+              <line x1="300" y1="300" x2="252" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Central to BottomRight */}
+              <line x1="300" y1="300" x2="348" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              
+              {/* Node to Node connections */}
+              {/* Top to Left */}
+              <line x1="300" y1="240" x2="240" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Top to Right */}
+              <line x1="300" y1="240" x2="360" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Bottom to Left */}
+              <line x1="300" y1="360" x2="240" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* Bottom to Right */}
+              <line x1="300" y1="360" x2="360" y2="300" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* TopLeft to TopRight */}
+              <line x1="252" y1="252" x2="348" y2="252" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* BottomLeft to BottomRight */}
+              <line x1="252" y1="348" x2="348" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* TopLeft to BottomLeft */}
+              <line x1="252" y1="252" x2="252" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
+              {/* TopRight to BottomRight */}
+              <line x1="348" y1="252" x2="348" y2="348" stroke="#9b87f5" strokeWidth="0.5" className="opacity-30" />
             </svg>
           </div>
 
