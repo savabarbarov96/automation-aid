@@ -7,10 +7,14 @@ const BlogPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      <div className="container mx-auto px-4 pt-24 flex gap-8">
-        <BlogSidebar />
-        <div className="flex-1">
-          <Blog />
+      <div className="container mx-auto px-4 pt-24">
+        <div className="flex gap-12">
+          <div className="w-64 shrink-0">
+            <BlogSidebar />
+          </div>
+          <div className="flex-1 max-w-4xl">
+            <Blog />
+          </div>
         </div>
       </div>
     </div>
