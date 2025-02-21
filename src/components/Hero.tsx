@@ -7,18 +7,18 @@ export const Hero = () => {
       {/* Connected bubbles animation */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {/* First bubble */}
-        <div className="absolute -top-40 -left-40 animate-blob">
-          <div className="w-[800px] h-[800px] bg-[#9b87f5]/40 rounded-full blur-3xl"></div>
+        <div className="absolute -top-40 -left-40 animate-blob mix-blend-soft-light">
+          <div className="w-[800px] h-[800px] bg-[#9b87f5]/40 rounded-[40%] blur-2xl transition-all duration-500"></div>
         </div>
         
         {/* Second bubble */}
-        <div className="absolute top-1/4 -right-20 animate-blob animation-delay-2000">
-          <div className="w-[1000px] h-[1000px] bg-[#8B5CF6]/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/4 -right-20 animate-blob [animation-delay:2s] mix-blend-soft-light">
+          <div className="w-[1000px] h-[1000px] bg-[#8B5CF6]/30 rounded-[60%] blur-2xl transition-all duration-500"></div>
         </div>
         
         {/* Third bubble */}
-        <div className="absolute -bottom-40 left-1/3 animate-blob animation-delay-4000">
-          <div className="w-[900px] h-[900px] bg-[#9b87f5]/30 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 left-1/3 animate-blob [animation-delay:4s] mix-blend-soft-light">
+          <div className="w-[900px] h-[900px] bg-[#9b87f5]/30 rounded-[50%] blur-2xl transition-all duration-500"></div>
         </div>
       </div>
 
