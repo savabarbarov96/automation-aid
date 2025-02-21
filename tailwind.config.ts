@@ -70,28 +70,22 @@ export default {
           "0%": { transform: "translateX(-100%)" },
           "100%": { transform: "translateX(0)" },
         },
-        blob: {
+        float: {
           "0%": {
-            transform: "translate(0px, 0px) scale(1) skew(0deg, 0deg)",
-          },
-          "25%": {
-            transform: "translate(50px, -40px) scale(1.2) skew(-5deg, 3deg)",
+            transform: "translate(0px, 0px)",
           },
           "50%": {
-            transform: "translate(-30px, 50px) scale(0.8) skew(5deg, -3deg)",
-          },
-          "75%": {
-            transform: "translate(40px, 30px) scale(1.1) skew(-3deg, 5deg)",
+            transform: "translate(20px, -20px)",
           },
           "100%": {
-            transform: "translate(0px, 0px) scale(1) skew(0deg, 0deg)",
+            transform: "translate(0px, 0px)",
           },
         },
       },
       animation: {
         "fade-in": "fade-in 0.5s ease-out",
         "slide-in": "slide-in 0.5s ease-out",
-        "blob": "blob 8s cubic-bezier(0.4, 0, 0.2, 1) infinite",
+        "float": "float 8s ease-in-out infinite",
       },
     },
   },

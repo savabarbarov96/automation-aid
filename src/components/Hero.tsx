@@ -4,21 +4,34 @@ import { ArrowRight } from "lucide-react";
 export const Hero = () => {
   return (
     <section className="min-h-screen relative overflow-hidden flex items-center px-4 bg-background">
-      {/* Connected bubbles animation */}
+      {/* Network sphere background */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* First bubble */}
-        <div className="absolute -top-40 -left-40 animate-blob mix-blend-soft-light">
-          <div className="w-[800px] h-[800px] bg-[#9b87f5]/40 rounded-[40%] blur-2xl transition-all duration-500"></div>
-        </div>
-        
-        {/* Second bubble */}
-        <div className="absolute top-1/4 -right-20 animate-blob [animation-delay:2s] mix-blend-soft-light">
-          <div className="w-[1000px] h-[1000px] bg-[#8B5CF6]/30 rounded-[60%] blur-2xl transition-all duration-500"></div>
-        </div>
-        
-        {/* Third bubble */}
-        <div className="absolute -bottom-40 left-1/3 animate-blob [animation-delay:4s] mix-blend-soft-light">
-          <div className="w-[900px] h-[900px] bg-[#9b87f5]/30 rounded-[50%] blur-2xl transition-all duration-500"></div>
+        {/* Network nodes */}
+        <div className="absolute w-full h-full">
+          <div className="absolute left-1/4 top-1/4 animate-float">
+            <div className="w-4 h-4 bg-accent/30 rounded-full blur-sm"></div>
+            <div className="w-40 h-[1px] bg-gradient-to-r from-accent/20 to-transparent absolute top-1/2 -right-40 rotate-45"></div>
+          </div>
+          
+          <div className="absolute right-1/3 top-1/3 animate-float [animation-delay:1s]">
+            <div className="w-6 h-6 bg-accent/40 rounded-full blur-sm"></div>
+            <div className="w-60 h-[1px] bg-gradient-to-l from-accent/20 to-transparent absolute top-1/2 -left-60 -rotate-45"></div>
+          </div>
+          
+          <div className="absolute left-1/2 bottom-1/4 animate-float [animation-delay:2s]">
+            <div className="w-8 h-8 bg-accent/30 rounded-full blur-sm"></div>
+            <div className="w-40 h-[1px] bg-gradient-to-r from-accent/20 to-transparent absolute top-1/2 -right-40"></div>
+          </div>
+          
+          <div className="absolute right-1/4 top-2/3 animate-float [animation-delay:1.5s]">
+            <div className="w-5 h-5 bg-accent/50 rounded-full blur-sm"></div>
+            <div className="w-32 h-[1px] bg-gradient-to-l from-accent/20 to-transparent absolute top-1/2 -left-32 rotate-12"></div>
+          </div>
+          
+          {/* Large central sphere */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+            <div className="w-64 h-64 rounded-full bg-gradient-to-br from-accent/10 to-accent/30 blur-2xl animate-pulse"></div>
+          </div>
         </div>
       </div>
 
