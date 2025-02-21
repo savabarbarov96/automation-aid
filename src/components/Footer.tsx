@@ -12,21 +12,18 @@ export const Footer = () => {
             <h3 className="text-lg font-semibold text-white">Page Sections</h3>
             <ul className="space-y-2">
               <li><a href="#features" className="text-white/80 hover:text-white transition-colors">Features</a></li>
+              <li><a href="#work" className="text-white/80 hover:text-white transition-colors">Our Work</a></li>
+              <li><a href="#journey" className="text-white/80 hover:text-white transition-colors">Journey</a></li>
               <li><a href="#testimonials" className="text-white/80 hover:text-white transition-colors">Testimonials</a></li>
-              <li><Link to="/resources" className="text-white/80 hover:text-white transition-colors">Resources</Link></li>
-              <li><a href="#contact" className="text-white/80 hover:text-white transition-colors">Contact</a></li>
+              <li><a href="#faq" className="text-white/80 hover:text-white transition-colors">FAQ</a></li>
             </ul>
           </div>
 
           {/* Resources */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold text-white">Get Started</h3>
+            <h3 className="text-lg font-semibold text-white">Resources</h3>
             <ul className="space-y-2">
-              <li>
-                <button className="text-white/80 hover:text-white transition-colors">
-                  Get Started
-                </button>
-              </li>
+              <li><Link to="/resources" className="text-white/80 hover:text-white transition-colors">Resources</Link></li>
             </ul>
           </div>
         </div>
@@ -53,4 +50,3 @@ export const Footer = () => {
     </footer>
   );
 };
-
