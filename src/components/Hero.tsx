@@ -1,6 +1,6 @@
 
 import { ArrowRight } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export const Hero = () => {
   // Create refs for all logo nodes
@@ -13,6 +13,9 @@ export const Hero = () => {
   const topRightNodeRef = useRef<HTMLDivElement>(null);
   const bottomLeftNodeRef = useRef<HTMLDivElement>(null);
   const bottomRightNodeRef = useRef<HTMLDivElement>(null);
+
+  // State to track which logo is currently highlighted
+  const [highlightedLogo, setHighlightedLogo] = useState<number>(0);
 
   useEffect(() => {
     const drawLines = () => {
@@ -43,7 +46,7 @@ export const Hero = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       // Set line style
-      ctx.strokeStyle = 'rgba(155, 135, 245, 0.1)'; // Using accent color with low opacity
+      ctx.strokeStyle = 'rgba(155, 135, 245, 0.1)';
       ctx.lineWidth = 2;
 
       // Get central node position
@@ -71,26 +74,29 @@ export const Hero = () => {
     // Draw initially
     drawLines();
 
-    // Add animation frame callback
-    let animationFrameId: number;
-    const animate = () => {
-      drawLines();
-      animationFrameId = requestAnimationFrame(animate);
-    };
-    animate();
-
     // Add resize handler
     const handleResize = () => {
       drawLines();
     };
     window.addEventListener('resize', handleResize);
 
+    // Set up random logo highlighting
+    const interval = setInterval(() => {
+      setHighlightedLogo(prev => (prev + 1) % 9); // 9 logos total including central
+    }, 3000); // Change highlight every 3 seconds
+
     // Cleanup
     return () => {
-      cancelAnimationFrame(animationFrameId);
       window.removeEventListener('resize', handleResize);
+      clearInterval(interval);
     };
   }, []);
+
+  // Function to get highlight classes for a logo index
+  const getLogoClasses = (index: number) => {
+    const baseClasses = "rounded-full backdrop-blur-sm flex items-center justify-center transition-all duration-500";
+    return `${baseClasses} ${highlightedLogo === index ? 'ring-2 ring-accent shadow-lg' : ''}`;
+  };
 
   return (
     <section className="min-h-screen relative overflow-hidden flex items-center px-4 bg-background">
@@ -177,10 +183,12 @@ export const Hero = () => {
 
           {/* Central hub */}
           <div ref={centralNodeRef} className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
-            <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-pulse">
-              <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-accent shadow-lg" >
-                  <img src="/logos/ns.png" alt="Quantum Automations Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
+            <div className={getLogoClasses(0)}>
+              <div className="w-24 h-24 bg-accent/20">
+                <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-accent shadow-lg">
+                    <img src="/logos/ns.png" alt="Quantum Automations Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
+                  </div>
                 </div>
               </div>
             </div>
@@ -188,72 +196,88 @@ export const Hero = () => {
 
           {/* Top logo */}
           <div ref={topNodeRef} className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
-              <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
-                <img src="/logos/gd.png"  alt="Quantum Automations Logo"  />
+            <div className={getLogoClasses(1)}>
+              <div className="w-16 h-16 bg-[#D946EF]/20">
+                <div className="w-12 h-12 rounded-full bg-[#D946EF]/30">
+                  <img src="/logos/gd.png" alt="Quantum Automations Logo" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Bottom logo */}
           <div ref={bottomNodeRef} className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
-              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
-                <img src="/logos/m.png"  alt="Make Logo"  />
+            <div className={getLogoClasses(2)}>
+              <div className="w-16 h-16 bg-[#0EA5E9]/20">
+                <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
+                  <img src="/logos/m.png" alt="Make Logo" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Left logo */}
           <div ref={leftNodeRef} className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_15s_ease-in-out_infinite]">
-              <div className="w-12 h-12 rounded-full bg-accent/30" >
-                <img src="/logos/n8n.png"  alt={"N8N Logo"}  />
+            <div className={getLogoClasses(3)}>
+              <div className="w-16 h-16 bg-accent/20">
+                <div className="w-12 h-12 rounded-full bg-accent/30">
+                  <img src="/logos/n8n.png" alt="N8N Logo" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Top left logo */}
           <div ref={topLeftNodeRef} className="absolute left-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_13s_ease-in-out_infinite]">
-              <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
-                <img src="/logos/at.png" alt="Airtable Logo"  />
+            <div className={getLogoClasses(4)}>
+              <div className="w-16 h-16 bg-[#D946EF]/20">
+                <div className="w-12 h-12 rounded-full bg-[#D946EF]/30">
+                  <img src="/logos/at.png" alt="Airtable Logo" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Right logo */}
           <div ref={rightNodeRef} className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_14s_ease-in-out_infinite]">
-              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
-                <img src="/logos/cgpt.png"  alt="CGPT Logo"  />
+            <div className={getLogoClasses(5)}>
+              <div className="w-16 h-16 bg-[#0EA5E9]/20">
+                <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
+                  <img src="/logos/cgpt.png" alt="CGPT Logo" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Top right logo */}
           <div ref={topRightNodeRef} className="absolute right-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_16s_ease-in-out_infinite]">
-              <div className="w-12 h-12 rounded-full bg-accent/30">
-                <img src="/logos/wa.png"  alt="Whatsapp Logo"  />
+            <div className={getLogoClasses(6)}>
+              <div className="w-16 h-16 bg-accent/20">
+                <div className="w-12 h-12 rounded-full bg-accent/30">
+                  <img src="/logos/wa.png" alt="Whatsapp Logo" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Bottom left logo */}
           <div ref={bottomLeftNodeRef} className="absolute left-[15%] bottom-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_17s_ease-in-out_infinite]">
-              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
-                <img src="/logos/apify.png"  alt="Apify Logo"  />
+            <div className={getLogoClasses(7)}>
+              <div className="w-16 h-16 bg-[#0EA5E9]/20">
+                <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
+                  <img src="/logos/apify.png" alt="Apify Logo" />
+                </div>
               </div>
             </div>
           </div>
 
           {/* Bottom right logo */}
           <div ref={bottomRightNodeRef} className="absolute right-[15%] bottom-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_18s_ease-in-out_infinite]">
-              <div className="w-12 h-12 rounded-full bg-accent/30">
-                <img src={"/logos/retell.png"}  alt="Retell Logo"  />
+            <div className={getLogoClasses(8)}>
+              <div className="w-16 h-16 bg-accent/20">
+                <div className="w-12 h-12 rounded-full bg-accent/30">
+                  <img src="/logos/retell.png" alt="Retell Logo" />
+                </div>
               </div>
             </div>
           </div>
