@@ -1,4 +1,3 @@
-
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -55,7 +54,7 @@ export const Hero = () => {
       x: startX,
       y: startY,
       progress: 0,
-      speed: 0.005 + Math.random() * 0.005, // Random speed variation
+      speed: 0.003 + Math.random() * 0.002, // Reduced speed range for more consistency
       direction: Math.random() > 0.5 ? 'toCenter' : 'fromCenter',
       startX,
       startY,
@@ -78,10 +77,8 @@ export const Hero = () => {
       nodeRefs.forEach(nodeRef => {
         const nodePos = getElementCenter(nodeRef.current);
         if (nodePos) {
-          // Create multiple particles for each line
-          for (let i = 0; i < 2; i++) {
-            particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y));
-          }
+          // Reduced number of particles per line from 2 to 1
+          particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y));
         }
       });
     };
