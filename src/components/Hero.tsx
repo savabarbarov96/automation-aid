@@ -1,6 +1,5 @@
-
 import { ArrowRight } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export const Hero = () => {
   // Create refs for all logo nodes
@@ -13,9 +12,6 @@ export const Hero = () => {
   const topRightNodeRef = useRef<HTMLDivElement>(null);
   const bottomLeftNodeRef = useRef<HTMLDivElement>(null);
   const bottomRightNodeRef = useRef<HTMLDivElement>(null);
-
-  // Track which node is currently pulsing
-  const [pulsingNode, setPulsingNode] = useState<string | null>(null);
 
   useEffect(() => {
     const canvas = document.getElementById('connection-lines') as HTMLCanvasElement;
@@ -52,20 +48,18 @@ export const Hero = () => {
       startY: number;
       endX: number;
       endY: number;
-      sourceNode: string;
     };
 
-    const createParticle = (startX: number, startY: number, endX: number, endY: number, sourceNode: string): Particle => ({
+    const createParticle = (startX: number, startY: number, endX: number, endY: number): Particle => ({
       x: startX,
       y: startY,
       progress: 0,
-      speed: 0.003 + Math.random() * 0.002,
+      speed: 0.003 + Math.random() * 0.002, // Reduced speed range for more consistency
       direction: Math.random() > 0.5 ? 'toCenter' : 'fromCenter',
       startX,
       startY,
       endX,
-      endY,
-      sourceNode
+      endY
     });
 
     let particles: Particle[] = [];
@@ -76,20 +70,15 @@ export const Hero = () => {
       if (!centralPos) return;
 
       const nodeRefs = [
-        { ref: topNodeRef, id: 'top' },
-        { ref: bottomNodeRef, id: 'bottom' },
-        { ref: leftNodeRef, id: 'left' },
-        { ref: rightNodeRef, id: 'right' },
-        { ref: topLeftNodeRef, id: 'topLeft' },
-        { ref: topRightNodeRef, id: 'topRight' },
-        { ref: bottomLeftNodeRef, id: 'bottomLeft' },
-        { ref: bottomRightNodeRef, id: 'bottomRight' }
+        topNodeRef, bottomNodeRef, leftNodeRef, rightNodeRef,
+        topLeftNodeRef, topRightNodeRef, bottomLeftNodeRef, bottomRightNodeRef
       ];
 
-      nodeRefs.forEach(({ ref, id }) => {
-        const nodePos = getElementCenter(ref.current);
+      nodeRefs.forEach(nodeRef => {
+        const nodePos = getElementCenter(nodeRef.current);
         if (nodePos) {
-          particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y, id));
+          // Reduced number of particles per line from 2 to 1
+          particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y));
         }
       });
     };
@@ -143,12 +132,6 @@ export const Hero = () => {
         // Reset particle when it reaches the end
         if (particle.progress >= 1) {
           particle.progress = 0;
-          // Set pulsing node when particle starts from outer node
-          if (direction === 'toCenter') {
-            setPulsingNode(particle.sourceNode);
-            // Remove pulsing effect after animation
-            setTimeout(() => setPulsingNode(null), 300);
-          }
           particle.direction = direction === 'toCenter' ? 'fromCenter' : 'toCenter';
         }
       });
@@ -273,91 +256,75 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Outer nodes with pulse animation */}
-          <div 
-            ref={topNodeRef} 
-            className={`absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4 ${pulsingNode === 'top' ? 'animate-[pulse_0.3s_ease-out]' : ''}`}
-          >
+          {/* Outer nodes */}
+          {/* Top logo */}
+          <div ref={topNodeRef} className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
             <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
-                <img src="/logos/gd.png" alt="Quantum Automations Logo" />
+                <img src="/logos/gd.png"  alt="Quantum Automations Logo"  />
               </div>
             </div>
           </div>
 
-          <div 
-            ref={bottomNodeRef} 
-            className={`absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4 ${pulsingNode === 'bottom' ? 'animate-[pulse_0.3s_ease-out]' : ''}`}
-          >
+          {/* Bottom logo */}
+          <div ref={bottomNodeRef} className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
-                <img src="/logos/m.png" alt="Make Logo" />
+                <img src="/logos/m.png"  alt="Make Logo"  />
               </div>
             </div>
           </div>
 
-          <div 
-            ref={leftNodeRef} 
-            className={`absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4 ${pulsingNode === 'left' ? 'animate-[pulse_0.3s_ease-out]' : ''}`}
-          >
+          {/* Left logo */}
+          <div ref={leftNodeRef} className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30" >
-                <img src="/logos/n8n.png" alt="N8N Logo" />
+                <img src="/logos/n8n.png"  alt={"N8N Logo"}  />
               </div>
             </div>
           </div>
 
-          <div 
-            ref={topLeftNodeRef} 
-            className={`absolute left-[15%] top-[25%] transform ${pulsingNode === 'topLeft' ? 'animate-[pulse_0.3s_ease-out]' : ''}`}
-          >
+          {/* Top left logo */}
+          <div ref={topLeftNodeRef} className="absolute left-[15%] top-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
-                <img src="/logos/at.png" alt="Airtable Logo" />
+                <img src="/logos/at.png" alt="Airtable Logo"  />
               </div>
             </div>
           </div>
 
-          <div 
-            ref={rightNodeRef} 
-            className={`absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4 ${pulsingNode === 'right' ? 'animate-[pulse_0.3s_ease-out]' : ''}`}
-          >
+          {/* Right logo */}
+          <div ref={rightNodeRef} className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
-                <img src="/logos/cgpt.png" alt="CGPT Logo" />
+                <img src="/logos/cgpt.png"  alt="CGPT Logo"  />
               </div>
             </div>
           </div>
 
-          <div 
-            ref={topRightNodeRef} 
-            className={`absolute right-[15%] top-[25%] transform ${pulsingNode === 'topRight' ? 'animate-[pulse_0.3s_ease-out]' : ''}`}
-          >
+          {/* Top right logo */}
+          <div ref={topRightNodeRef} className="absolute right-[15%] top-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
-                <img src="/logos/wa.png" alt="Whatsapp Logo" />
+                <img src="/logos/wa.png"  alt="Whatsapp Logo"  />
               </div>
             </div>
           </div>
 
-          <div 
-            ref={bottomLeftNodeRef} 
-            className={`absolute left-[15%] bottom-[25%] transform ${pulsingNode === 'bottomLeft' ? 'animate-[pulse_0.3s_ease-out]' : ''}`}
-          >
+          {/* Bottom left logo */}
+          <div ref={bottomLeftNodeRef} className="absolute left-[15%] bottom-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
-                <img src="/logos/apify.png" alt="Apify Logo" />
+                <img src="/logos/apify.png"  alt="Apify Logo"  />
               </div>
             </div>
           </div>
 
-          <div 
-            ref={bottomRightNodeRef} 
-            className={`absolute right-[15%] bottom-[25%] transform ${pulsingNode === 'bottomRight' ? 'animate-[pulse_0.3s_ease-out]' : ''}`}
-          >
+          {/* Bottom right logo */}
+          <div ref={bottomRightNodeRef} className="absolute right-[15%] bottom-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
-                <img src="/logos/retell.png" alt="Retell Logo" />
+                <img src={"/logos/retell.png"}  alt="Retell Logo"  />
               </div>
             </div>
           </div>
@@ -366,4 +333,3 @@ export const Hero = () => {
     </section>
   );
 };
-
