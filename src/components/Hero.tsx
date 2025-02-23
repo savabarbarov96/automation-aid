@@ -1,7 +1,97 @@
 
 import { ArrowRight } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 export const Hero = () => {
+  // Create refs for all logo nodes
+  const centralNodeRef = useRef<HTMLDivElement>(null);
+  const topNodeRef = useRef<HTMLDivElement>(null);
+  const bottomNodeRef = useRef<HTMLDivElement>(null);
+  const leftNodeRef = useRef<HTMLDivElement>(null);
+  const rightNodeRef = useRef<HTMLDivElement>(null);
+  const topLeftNodeRef = useRef<HTMLDivElement>(null);
+  const topRightNodeRef = useRef<HTMLDivElement>(null);
+  const bottomLeftNodeRef = useRef<HTMLDivElement>(null);
+  const bottomRightNodeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const drawLines = () => {
+      const canvas = document.getElementById('connection-lines') as HTMLCanvasElement;
+      if (!canvas) return;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      // Set canvas size to match container
+      const container = canvas.parentElement;
+      if (!container) return;
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+
+      // Function to get center point of an element
+      const getElementCenter = (element: HTMLDivElement | null) => {
+        if (!element) return null;
+        const rect = element.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        return {
+          x: rect.left + rect.width / 2 - containerRect.left,
+          y: rect.top + rect.height / 2 - containerRect.top
+        };
+      };
+
+      // Clear canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Set line style
+      ctx.strokeStyle = 'rgba(155, 135, 245, 0.1)'; // Using accent color with low opacity
+      ctx.lineWidth = 2;
+
+      // Get central node position
+      const centralPos = getElementCenter(centralNodeRef.current);
+      if (!centralPos) return;
+
+      // Array of node refs
+      const nodeRefs = [
+        topNodeRef, bottomNodeRef, leftNodeRef, rightNodeRef,
+        topLeftNodeRef, topRightNodeRef, bottomLeftNodeRef, bottomRightNodeRef
+      ];
+
+      // Draw lines from each node to central node
+      nodeRefs.forEach(nodeRef => {
+        const nodePos = getElementCenter(nodeRef.current);
+        if (nodePos) {
+          ctx.beginPath();
+          ctx.moveTo(nodePos.x, nodePos.y);
+          ctx.lineTo(centralPos.x, centralPos.y);
+          ctx.stroke();
+        }
+      });
+    };
+
+    // Draw initially
+    drawLines();
+
+    // Add animation frame callback
+    let animationFrameId: number;
+    const animate = () => {
+      drawLines();
+      animationFrameId = requestAnimationFrame(animate);
+    };
+    animate();
+
+    // Add resize handler
+    const handleResize = () => {
+      drawLines();
+    };
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <section className="min-h-screen relative overflow-hidden flex items-center px-4 bg-background">
       {/* Network sphere background */}
@@ -79,8 +169,14 @@ export const Hero = () => {
 
         {/* Right side - Octahedral logo arrangement */}
         <div className="relative w-full h-[600px] flex items-center justify-center">
+          {/* Canvas for connection lines */}
+          <canvas
+            id="connection-lines"
+            className="absolute inset-0 pointer-events-none"
+          />
+
           {/* Central hub */}
-          <div className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
+          <div ref={centralNodeRef} className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
             <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-pulse">
               <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
                 <div className="w-12 h-12 rounded-full bg-accent shadow-lg" >
@@ -90,9 +186,8 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Octahedral arrangement of logos */}
           {/* Top logo */}
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
+          <div ref={topNodeRef} className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
             <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
                 <img src="/logos/gd.png"  alt="Quantum Automations Logo"  />
@@ -101,23 +196,25 @@ export const Hero = () => {
           </div>
 
           {/* Bottom logo */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
+          <div ref={bottomNodeRef} className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/m.png"  alt="Make Logo"  />
-            </div>
+              </div>
             </div>
           </div>
 
-          {/* Left logos */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
+          {/* Left logo */}
+          <div ref={leftNodeRef} className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_15s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-accent/30" >
                 <img src="/logos/n8n.png"  alt={"N8N Logo"}  />
               </div>
             </div>
           </div>
-          <div className="absolute left-[15%] top-[25%] transform">
+
+          {/* Top left logo */}
+          <div ref={topLeftNodeRef} className="absolute left-[15%] top-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_13s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
                 <img src="/logos/at.png" alt="Airtable Logo"  />
@@ -125,15 +222,17 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Right logos */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
+          {/* Right logo */}
+          <div ref={rightNodeRef} className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_14s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/cgpt.png"  alt="CGPT Logo"  />
               </div>
             </div>
           </div>
-          <div className="absolute right-[15%] top-[25%] transform">
+
+          {/* Top right logo */}
+          <div ref={topRightNodeRef} className="absolute right-[15%] top-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_16s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src="/logos/wa.png"  alt="Whatsapp Logo"  />
@@ -141,26 +240,22 @@ export const Hero = () => {
             </div>
           </div>
 
-          {/* Bottom left and right logos */}
-          <div className="absolute left-[15%] bottom-[25%] transform">
+          {/* Bottom left logo */}
+          <div ref={bottomLeftNodeRef} className="absolute left-[15%] bottom-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_17s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/apify.png"  alt="Apify Logo"  />
               </div>
             </div>
           </div>
-          <div className="absolute right-[15%] bottom-[25%] transform">
+
+          {/* Bottom right logo */}
+          <div ref={bottomRightNodeRef} className="absolute right-[15%] bottom-[25%] transform">
             <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_18s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src={"/logos/retell.png"}  alt="Retell Logo"  />
               </div>
             </div>
-          </div>
-
-          {/* Connecting lines using pseudo-elements */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 before:content-[''] before:absolute before:w-full before:h-full before:border-2 before:border-accent/10 before:rounded-full before:animate-pulse" />
-            <div className="absolute inset-0 before:content-[''] before:absolute before:w-full before:h-full before:border-2 before:border-[#D946EF]/10 before:rounded-full before:animate-pulse before:rotate-45" />
           </div>
         </div>
       </div>
