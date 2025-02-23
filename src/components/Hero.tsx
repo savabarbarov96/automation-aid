@@ -79,157 +79,80 @@ export const Hero = () => {
 
         {/* Right side - Octahedral logo arrangement */}
         <div className="relative w-full h-[600px] flex items-center justify-center">
-          {/* Connecting curved lines */}
-          <div className="absolute inset-0">
-            <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
-              {/* Top curve */}
-              <path
-                d="M 300 90 Q 300 165 300 240"
-                stroke="#9b87f5"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="4"
-                className="opacity-70"
-              />
-              {/* Bottom curve */}
-              <path
-                d="M 300 510 Q 300 435 300 360"
-                stroke="#9b87f5"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="4"
-                className="opacity-70"
-              />
-              {/* Left curve */}
-              <path
-                d="M 90 300 Q 165 300 240 300"
-                stroke="#9b87f5"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="4"
-                className="opacity-70"
-              />
-              {/* Right curve */}
-              <path
-                d="M 510 300 Q 435 300 360 300"
-                stroke="#9b87f5"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="4"
-                className="opacity-70"
-              />
-              {/* Top Left curve */}
-              <path
-                d="M 150 180 Q 201 216 252 252"
-                stroke="#9b87f5"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="4"
-                className="opacity-70"
-              />
-              {/* Top Right curve */}
-              <path
-                d="M 450 180 Q 399 216 348 252"
-                stroke="#9b87f5"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="4"
-                className="opacity-70"
-              />
-              {/* Bottom Left curve */}
-              <path
-                d="M 150 420 Q 201 384 252 348"
-                stroke="#9b87f5"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="4"
-                className="opacity-70"
-              />
-              {/* Bottom Right curve */}
-              <path
-                d="M 450 420 Q 399 384 348 348"
-                stroke="#9b87f5"
-                strokeWidth="3"
-                fill="none"
-                strokeDasharray="4"
-                className="opacity-70"
-              />
-            </svg>
-          </div>
-
           {/* Central hub */}
           <div className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
             <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-pulse">
               <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
-                <div className="w-12 h-12 rounded-full bg-accent shadow-lg">
+                <div className="w-12 h-12 rounded-full bg-accent shadow-lg" >
                   <img src="/logos/ns.png" alt="Quantum Automations Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
                 </div>
               </div>
             </div>
           </div>
 
+          {/* Octahedral arrangement of logos */}
           {/* Top logo */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#D946EF]/30">
-                <img src="/logos/gd.png" alt="Quantum Automations Logo" />
+            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
+              <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
+                <img src="/logos/gd.png"  alt="Quantum Automations Logo"  />
               </div>
             </div>
           </div>
 
           {/* Bottom logo */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
-                <img src="/logos/m.png" alt="Make Logo" />
-              </div>
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
+              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
+                <img src="/logos/m.png"  alt="Make Logo"  />
+            </div>
             </div>
           </div>
 
           {/* Left logos */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-accent/30">
-                <img src="/logos/n8n.png" alt="N8N Logo" />
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_15s_ease-in-out_infinite]">
+              <div className="w-12 h-12 rounded-full bg-accent/30" >
+                <img src="/logos/n8n.png"  alt={"N8N Logo"}  />
               </div>
             </div>
           </div>
           <div className="absolute left-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#D946EF]/30">
-                <img src="/logos/at.png" alt="Airtable Logo" />
+            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_13s_ease-in-out_infinite]">
+              <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
+                <img src="/logos/at.png" alt="Airtable Logo"  />
               </div>
             </div>
           </div>
 
           {/* Right logos */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
-                <img src="/logos/cgpt.png" alt="CGPT Logo" />
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_14s_ease-in-out_infinite]">
+              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
+                <img src="/logos/cgpt.png"  alt="CGPT Logo"  />
               </div>
             </div>
           </div>
           <div className="absolute right-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_16s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-accent/30">
-                <img src="/logos/wa.png" alt="Whatsapp Logo" />
+                <img src="/logos/wa.png"  alt="Whatsapp Logo"  />
               </div>
             </div>
           </div>
 
           {/* Bottom left and right logos */}
           <div className="absolute left-[15%] bottom-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
-              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30">
-                <img src="/logos/apify.png" alt="Apify Logo" />
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_17s_ease-in-out_infinite]">
+              <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
+                <img src="/logos/apify.png"  alt="Apify Logo"  />
               </div>
             </div>
           </div>
           <div className="absolute right-[15%] bottom-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_18s_ease-in-out_infinite]">
               <div className="w-12 h-12 rounded-full bg-accent/30">
-                <img src="/logos/retell.png" alt="Retell Logo" />
+                <img src={"/logos/retell.png"}  alt="Retell Logo"  />
               </div>
             </div>
           </div>
