@@ -1,4 +1,3 @@
-
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -71,12 +70,12 @@ export const Hero = () => {
       x: startX,
       y: startY,
       progress: 0,
-      speed: 0.002 + Math.random() * 0.003,
-      size: 1.5 + Math.random() * 1.5,
+      speed: 0.001 + Math.random() * 0.002,
+      size: 1 + Math.random(),
       opacity: 0.6 + Math.random() * 0.4,
       color,
       pulsePhase: Math.random() * Math.PI * 2,
-      direction: Math.random() > 0.5 ? 'toCenter' : 'fromCenter',
+      direction: Math.random() > 0.3 ? 'toCenter' : 'fromCenter',
       startX,
       startY,
       endX,
@@ -104,10 +103,8 @@ export const Hero = () => {
       nodeRefs.forEach(({ ref, color }) => {
         const nodePos = getElementCenter(ref.current);
         if (nodePos) {
-          // Create multiple particles per connection
-          for (let i = 0; i < 2; i++) {
-            particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y, color));
-          }
+          // Reduced from 2 to 1 particle per connection
+          particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y, color));
         }
       });
     };
@@ -180,8 +177,8 @@ export const Hero = () => {
         if (particle.progress >= 1) {
           particle.progress = 0;
           particle.direction = direction === 'toCenter' ? 'fromCenter' : 'toCenter';
-          particle.speed = 0.002 + Math.random() * 0.003; // Randomize speed on reset
-          particle.size = 1.5 + Math.random() * 1.5; // Randomize size on reset
+          particle.speed = 0.001 + Math.random() * 0.002; // Randomize speed on reset
+          particle.size = 1 + Math.random(); // Randomize size on reset
         }
       });
     };
