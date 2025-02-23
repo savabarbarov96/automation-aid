@@ -1,4 +1,3 @@
-
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef } from "react";
 
@@ -248,7 +247,7 @@ export const Hero = () => {
 
           {/* Central hub */}
           <div ref={centralNodeRef} className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
-            <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-pulse">
+            <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
                 <div className="w-12 h-12 rounded-full bg-accent shadow-lg" >
                   <img src="/logos/ns.png" alt="Quantum Automations Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
@@ -334,4 +333,3 @@ export const Hero = () => {
     </section>
   );
 };
-
