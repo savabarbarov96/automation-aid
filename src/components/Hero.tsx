@@ -37,28 +37,12 @@ export const Hero = () => {
       };
     };
 
-    // Particle colors for different services
-    const serviceColors = {
-      top: '#D946EF',      // Gradient
-      bottom: '#0EA5E9',   // Make
-      left: '#9b87f5',     // N8N
-      right: '#0EA5E9',    // ChatGPT
-      topLeft: '#D946EF',  // Airtable
-      topRight: '#9b87f5', // WhatsApp
-      bottomLeft: '#0EA5E9', // Apify
-      bottomRight: '#9b87f5', // Retell
-    };
-
-    // Create enhanced particles
+    // Create particles for each line
     type Particle = {
       x: number;
       y: number;
       progress: number;
       speed: number;
-      size: number;
-      opacity: number;
-      color: string;
-      pulsePhase: number;
       direction: 'toCenter' | 'fromCenter';
       startX: number;
       startY: number;
@@ -66,16 +50,12 @@ export const Hero = () => {
       endY: number;
     };
 
-    const createParticle = (startX: number, startY: number, endX: number, endY: number, color: string): Particle => ({
+    const createParticle = (startX: number, startY: number, endX: number, endY: number): Particle => ({
       x: startX,
       y: startY,
       progress: 0,
-      speed: 0.001 + Math.random() * 0.002,
-      size: 1 + Math.random(),
-      opacity: 0.6 + Math.random() * 0.4,
-      color,
-      pulsePhase: Math.random() * Math.PI * 2,
-      direction: Math.random() > 0.3 ? 'toCenter' : 'fromCenter',
+      speed: 0.003 + Math.random() * 0.002, // Reduced speed range for more consistency
+      direction: Math.random() > 0.5 ? 'toCenter' : 'fromCenter',
       startX,
       startY,
       endX,
@@ -90,21 +70,15 @@ export const Hero = () => {
       if (!centralPos) return;
 
       const nodeRefs = [
-        { ref: topNodeRef, color: serviceColors.top },
-        { ref: bottomNodeRef, color: serviceColors.bottom },
-        { ref: leftNodeRef, color: serviceColors.left },
-        { ref: rightNodeRef, color: serviceColors.right },
-        { ref: topLeftNodeRef, color: serviceColors.topLeft },
-        { ref: topRightNodeRef, color: serviceColors.topRight },
-        { ref: bottomLeftNodeRef, color: serviceColors.bottomLeft },
-        { ref: bottomRightNodeRef, color: serviceColors.bottomRight }
+        topNodeRef, bottomNodeRef, leftNodeRef, rightNodeRef,
+        topLeftNodeRef, topRightNodeRef, bottomLeftNodeRef, bottomRightNodeRef
       ];
 
-      nodeRefs.forEach(({ ref, color }) => {
-        const nodePos = getElementCenter(ref.current);
+      nodeRefs.forEach(nodeRef => {
+        const nodePos = getElementCenter(nodeRef.current);
         if (nodePos) {
-          // Reduced from 2 to 1 particle per connection
-          particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y, color));
+          // Reduced number of particles per line from 2 to 1
+          particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y));
         }
       });
     };
@@ -112,31 +86,21 @@ export const Hero = () => {
     const drawLines = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw connection lines with gradients
-      ctx.lineWidth = 1;
-      
+      // Draw connection lines
+      ctx.strokeStyle = 'rgba(155, 135, 245, 0.1)';
+      ctx.lineWidth = 2;
+
       const centralPos = getElementCenter(centralNodeRef.current);
       if (!centralPos) return;
 
       const nodeRefs = [
-        { ref: topNodeRef, color: serviceColors.top },
-        { ref: bottomNodeRef, color: serviceColors.bottom },
-        { ref: leftNodeRef, color: serviceColors.left },
-        { ref: rightNodeRef, color: serviceColors.right },
-        { ref: topLeftNodeRef, color: serviceColors.topLeft },
-        { ref: topRightNodeRef, color: serviceColors.topRight },
-        { ref: bottomLeftNodeRef, color: serviceColors.bottomLeft },
-        { ref: bottomRightNodeRef, color: serviceColors.bottomRight }
+        topNodeRef, bottomNodeRef, leftNodeRef, rightNodeRef,
+        topLeftNodeRef, topRightNodeRef, bottomLeftNodeRef, bottomRightNodeRef
       ];
 
-      nodeRefs.forEach(({ ref, color }) => {
-        const nodePos = getElementCenter(ref.current);
+      nodeRefs.forEach(nodeRef => {
+        const nodePos = getElementCenter(nodeRef.current);
         if (nodePos) {
-          const gradient = ctx.createLinearGradient(nodePos.x, nodePos.y, centralPos.x, centralPos.y);
-          gradient.addColorStop(0, color + '20');
-          gradient.addColorStop(1, '#9b87f520');
-          
-          ctx.strokeStyle = gradient;
           ctx.beginPath();
           ctx.moveTo(nodePos.x, nodePos.y);
           ctx.lineTo(centralPos.x, centralPos.y);
@@ -144,7 +108,8 @@ export const Hero = () => {
         }
       });
 
-      // Draw and update particles
+      // Draw particles
+      ctx.fillStyle = '#9b87f5';
       particles.forEach(particle => {
         const { direction } = particle;
         const [fromX, fromY] = direction === 'toCenter' 
@@ -154,31 +119,20 @@ export const Hero = () => {
           ? [particle.endX, particle.endY] 
           : [particle.startX, particle.startY];
 
-        // Calculate current position
         particle.x = fromX + (toX - fromX) * particle.progress;
         particle.y = fromY + (toY - fromY) * particle.progress;
 
-        // Calculate dynamic opacity based on progress and pulse
-        const progressOpacity = Math.sin(particle.progress * Math.PI);
-        const pulseOpacity = (Math.sin(particle.pulsePhase) + 1) * 0.5;
-        const finalOpacity = particle.opacity * progressOpacity * (0.7 + pulseOpacity * 0.3);
-
-        // Draw particle with dynamic properties
         ctx.beginPath();
-        ctx.fillStyle = `${particle.color}${Math.floor(finalOpacity * 255).toString(16).padStart(2, '0')}`;
-        ctx.arc(particle.x, particle.y, particle.size * (0.8 + pulseOpacity * 0.4), 0, Math.PI * 2);
+        ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
         ctx.fill();
 
-        // Update particle progress and pulse phase
+        // Update particle progress
         particle.progress += particle.speed;
-        particle.pulsePhase += 0.05;
 
         // Reset particle when it reaches the end
         if (particle.progress >= 1) {
           particle.progress = 0;
           particle.direction = direction === 'toCenter' ? 'fromCenter' : 'toCenter';
-          particle.speed = 0.001 + Math.random() * 0.002; // Randomize speed on reset
-          particle.size = 1 + Math.random(); // Randomize size on reset
         }
       });
     };
