@@ -15,48 +15,92 @@ export const Hero = () => {
   const bottomRightNodeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const drawLines = () => {
-      const canvas = document.getElementById('connection-lines') as HTMLCanvasElement;
-      if (!canvas) return;
+    const canvas = document.getElementById('connection-lines') as HTMLCanvasElement;
+    if (!canvas) return;
 
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
-      // Set canvas size to match container
-      const container = canvas.parentElement;
-      if (!container) return;
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
+    // Set canvas size to match container
+    const container = canvas.parentElement;
+    if (!container) return;
+    canvas.width = container.clientWidth;
+    canvas.height = container.clientHeight;
 
-      // Function to get center point of an element
-      const getElementCenter = (element: HTMLDivElement | null) => {
-        if (!element) return null;
-        const rect = element.getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        return {
-          x: rect.left + rect.width / 2 - containerRect.left,
-          y: rect.top + rect.height / 2 - containerRect.top
-        };
+    // Function to get center point of an element
+    const getElementCenter = (element: HTMLDivElement | null) => {
+      if (!element) return null;
+      const rect = element.getBoundingClientRect();
+      const containerRect = container.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2 - containerRect.left,
+        y: rect.top + rect.height / 2 - containerRect.top
       };
+    };
 
-      // Clear canvas
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Create particles for each line
+    type Particle = {
+      x: number;
+      y: number;
+      progress: number;
+      speed: number;
+      direction: 'toCenter' | 'fromCenter';
+      startX: number;
+      startY: number;
+      endX: number;
+      endY: number;
+    };
 
-      // Set line style
-      ctx.strokeStyle = 'rgba(155, 135, 245, 0.1)'; // Using accent color with low opacity
-      ctx.lineWidth = 2;
+    const createParticle = (startX: number, startY: number, endX: number, endY: number): Particle => ({
+      x: startX,
+      y: startY,
+      progress: 0,
+      speed: 0.005 + Math.random() * 0.005, // Random speed variation
+      direction: Math.random() > 0.5 ? 'toCenter' : 'fromCenter',
+      startX,
+      startY,
+      endX,
+      endY
+    });
 
-      // Get central node position
+    let particles: Particle[] = [];
+
+    const initializeParticles = () => {
+      particles = [];
       const centralPos = getElementCenter(centralNodeRef.current);
       if (!centralPos) return;
 
-      // Array of node refs
       const nodeRefs = [
         topNodeRef, bottomNodeRef, leftNodeRef, rightNodeRef,
         topLeftNodeRef, topRightNodeRef, bottomLeftNodeRef, bottomRightNodeRef
       ];
 
-      // Draw lines from each node to central node
+      nodeRefs.forEach(nodeRef => {
+        const nodePos = getElementCenter(nodeRef.current);
+        if (nodePos) {
+          // Create multiple particles for each line
+          for (let i = 0; i < 2; i++) {
+            particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y));
+          }
+        }
+      });
+    };
+
+    const drawLines = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw connection lines
+      ctx.strokeStyle = 'rgba(155, 135, 245, 0.1)';
+      ctx.lineWidth = 2;
+
+      const centralPos = getElementCenter(centralNodeRef.current);
+      if (!centralPos) return;
+
+      const nodeRefs = [
+        topNodeRef, bottomNodeRef, leftNodeRef, rightNodeRef,
+        topLeftNodeRef, topRightNodeRef, bottomLeftNodeRef, bottomRightNodeRef
+      ];
+
       nodeRefs.forEach(nodeRef => {
         const nodePos = getElementCenter(nodeRef.current);
         if (nodePos) {
@@ -66,12 +110,40 @@ export const Hero = () => {
           ctx.stroke();
         }
       });
+
+      // Draw particles
+      ctx.fillStyle = '#9b87f5';
+      particles.forEach(particle => {
+        const { direction } = particle;
+        const [fromX, fromY] = direction === 'toCenter' 
+          ? [particle.startX, particle.startY] 
+          : [particle.endX, particle.endY];
+        const [toX, toY] = direction === 'toCenter' 
+          ? [particle.endX, particle.endY] 
+          : [particle.startX, particle.startY];
+
+        particle.x = fromX + (toX - fromX) * particle.progress;
+        particle.y = fromY + (toY - fromY) * particle.progress;
+
+        ctx.beginPath();
+        ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Update particle progress
+        particle.progress += particle.speed;
+
+        // Reset particle when it reaches the end
+        if (particle.progress >= 1) {
+          particle.progress = 0;
+          particle.direction = direction === 'toCenter' ? 'fromCenter' : 'toCenter';
+        }
+      });
     };
 
-    // Draw initially
-    drawLines();
+    // Initialize particles
+    initializeParticles();
 
-    // Add animation frame callback
+    // Animation loop
     let animationFrameId: number;
     const animate = () => {
       drawLines();
@@ -79,9 +151,11 @@ export const Hero = () => {
     };
     animate();
 
-    // Add resize handler
+    // Handle window resize
     const handleResize = () => {
-      drawLines();
+      canvas.width = container.clientWidth;
+      canvas.height = container.clientHeight;
+      initializeParticles();
     };
     window.addEventListener('resize', handleResize);
 
@@ -169,7 +243,6 @@ export const Hero = () => {
 
         {/* Right side - Octahedral logo arrangement */}
         <div className="relative w-full h-[600px] flex items-center justify-center">
-          {/* Canvas for connection lines */}
           <canvas
             id="connection-lines"
             className="absolute inset-0 pointer-events-none"
@@ -177,7 +250,7 @@ export const Hero = () => {
 
           {/* Central hub */}
           <div ref={centralNodeRef} className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
-            <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-pulse">
+            <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
                 <div className="w-12 h-12 rounded-full bg-accent shadow-lg" >
                   <img src="/logos/ns.png" alt="Quantum Automations Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
@@ -186,9 +259,10 @@ export const Hero = () => {
             </div>
           </div>
 
+          {/* Outer nodes */}
           {/* Top logo */}
           <div ref={topNodeRef} className="absolute top-0 left-1/2 -translate-x-1/2 transform -translate-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
                 <img src="/logos/gd.png"  alt="Quantum Automations Logo"  />
               </div>
@@ -197,7 +271,7 @@ export const Hero = () => {
 
           {/* Bottom logo */}
           <div ref={bottomNodeRef} className="absolute bottom-0 left-1/2 -translate-x-1/2 transform translate-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_12s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/m.png"  alt="Make Logo"  />
               </div>
@@ -206,7 +280,7 @@ export const Hero = () => {
 
           {/* Left logo */}
           <div ref={leftNodeRef} className="absolute left-0 top-1/2 -translate-y-1/2 transform -translate-x-4">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_15s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30" >
                 <img src="/logos/n8n.png"  alt={"N8N Logo"}  />
               </div>
@@ -215,7 +289,7 @@ export const Hero = () => {
 
           {/* Top left logo */}
           <div ref={topLeftNodeRef} className="absolute left-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center animate-[float_13s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#D946EF]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#D946EF]/30" >
                 <img src="/logos/at.png" alt="Airtable Logo"  />
               </div>
@@ -224,7 +298,7 @@ export const Hero = () => {
 
           {/* Right logo */}
           <div ref={rightNodeRef} className="absolute right-0 top-1/2 -translate-y-1/2 transform translate-x-4">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_14s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/cgpt.png"  alt="CGPT Logo"  />
               </div>
@@ -233,7 +307,7 @@ export const Hero = () => {
 
           {/* Top right logo */}
           <div ref={topRightNodeRef} className="absolute right-[15%] top-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_16s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src="/logos/wa.png"  alt="Whatsapp Logo"  />
               </div>
@@ -242,7 +316,7 @@ export const Hero = () => {
 
           {/* Bottom left logo */}
           <div ref={bottomLeftNodeRef} className="absolute left-[15%] bottom-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center animate-[float_17s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-[#0EA5E9]/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-[#0EA5E9]/30" >
                 <img src="/logos/apify.png"  alt="Apify Logo"  />
               </div>
@@ -251,7 +325,7 @@ export const Hero = () => {
 
           {/* Bottom right logo */}
           <div ref={bottomRightNodeRef} className="absolute right-[15%] bottom-[25%] transform">
-            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-[float_18s_ease-in-out_infinite]">
+            <div className="w-16 h-16 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
               <div className="w-12 h-12 rounded-full bg-accent/30">
                 <img src={"/logos/retell.png"}  alt="Retell Logo"  />
               </div>
