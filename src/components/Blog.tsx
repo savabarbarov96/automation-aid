@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface BlogPost {
   id: string;
@@ -10,9 +11,9 @@ interface BlogPost {
   description: string;
   date: string;
   category: string;
-  image: string;
   readTime: string;
   content?: string;
+  slug: string;
 }
 
 export const blogPosts: BlogPost[] = [
@@ -22,8 +23,8 @@ export const blogPosts: BlogPost[] = [
     description: "Explore the latest trends shaping the future of industrial automation, from AI integration to sustainable manufacturing practices.",
     date: "March 15, 2024",
     category: "Industry Trends",
-    image: "/placeholder.svg",
     readTime: "5 min read",
+    slug: "future-industrial-automation-2024-trends",
     content: `Industrial automation is undergoing a revolutionary transformation in 2024. 
     The integration of artificial intelligence and machine learning has opened new horizons 
     for manufacturing efficiency and productivity. Smart factories are becoming increasingly 
@@ -40,8 +41,8 @@ export const blogPosts: BlogPost[] = [
     description: "Discover how Robotic Process Automation is revolutionizing manufacturing operations and improving efficiency.",
     date: "March 10, 2024",
     category: "Technology",
-    image: "/placeholder.svg",
     readTime: "4 min read",
+    slug: "how-rpa-transforming-manufacturing",
     content: `Robotic Process Automation (RPA) is revolutionizing the manufacturing sector 
     by streamlining operations and reducing human error. From inventory management to 
     quality control, RPA is making its mark across various aspects of manufacturing.
@@ -57,8 +58,8 @@ export const blogPosts: BlogPost[] = [
     description: "Learn how our smart factory solutions helped a leading manufacturer achieve 150% productivity increase.",
     date: "March 5, 2024",
     category: "Case Study",
-    image: "/placeholder.svg",
     readTime: "6 min read",
+    slug: "success-story-smart-factory-implementation",
     content: `In this case study, we explore how a leading manufacturer implemented smart 
     factory solutions to achieve remarkable results. The company faced challenges with 
     production efficiency and quality consistency. Through the implementation of IoT 
@@ -73,6 +74,8 @@ export const blogPosts: BlogPost[] = [
 
 export const Blog = () => {
   const postRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -80,9 +83,14 @@ export const Blog = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const activePostId = entry.target.id;
-            window.dispatchEvent(
-              new CustomEvent("postInView", { detail: { postId: activePostId } })
-            );
+            const activePost = blogPosts.find(post => post.id === activePostId);
+            if (activePost) {
+              window.dispatchEvent(
+                new CustomEvent("postInView", { detail: { postId: activePostId } })
+              );
+              // Update URL with the slug without triggering a page reload
+              window.history.replaceState(null, '', `/resources/${activePost.slug}`);
+            }
           }
         });
       },
@@ -98,7 +106,7 @@ export const Blog = () => {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [navigate]);
 
   return (
     <section className="space-y-12">
@@ -110,13 +118,6 @@ export const Blog = () => {
           className="scroll-mt-24"
         >
           <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="aspect-video relative overflow-hidden">
-              <img
-                src={post.image}
-                alt={post.title}
-                className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
-              />
-            </div>
             <CardHeader>
               <div className="flex justify-between items-center mb-2">
                 <span className="text-sm text-white">{post.category}</span>

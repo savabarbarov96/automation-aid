@@ -2,8 +2,11 @@
 import { Blog } from "@/components/Blog";
 import { BlogSidebar } from "@/components/BlogSidebar";
 import { Navbar } from "@/components/Navbar";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 const ResourcesPage = () => {
+  const location = useLocation();
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -13,7 +16,10 @@ const ResourcesPage = () => {
             <BlogSidebar />
           </div>
           <div className="flex-1 max-w-4xl">
-            <Blog />
+            <Routes>
+              <Route path="/" element={<Blog />} />
+              <Route path="/:slug" element={<Blog />} />
+            </Routes>
           </div>
         </div>
       </div>
