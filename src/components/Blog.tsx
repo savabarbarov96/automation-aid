@@ -121,21 +121,23 @@ export const Blog = () => {
           if (entry.isIntersecting) {
             const activePostId = entry.target.id;
             const activePost = blogPosts.find(post => post.id === activePostId);
-            if (activePost) {
+            if (activePost && location.pathname !== `/resources/${activePost.slug}`) {
               window.dispatchEvent(
                 new CustomEvent("postInView", { detail: { postId: activePostId } })
               );
-              // Update URL with the slug without triggering a page reload
-              window.history.replaceState(null, '', `/resources/${activePost.slug}`);
+              // Use navigate instead of history.replaceState for better route handling
+              navigate(`/resources/${activePost.slug}`, { replace: true });
             }
           }
         });
       },
       {
-        threshold: 0.5,
+        threshold: 0.3, // Lower threshold for better detection
+        rootMargin: "-100px 0px -100px 0px" // Add margins to improve detection
       }
     );
 
+    // Observe all posts
     blogPosts.forEach((post) => {
       if (postRefs.current[post.id]) {
         observer.observe(postRefs.current[post.id]!);
@@ -143,7 +145,7 @@ export const Blog = () => {
     });
 
     return () => observer.disconnect();
-  }, [navigate]);
+  }, [navigate, location.pathname]);
 
   return (
     <section className="space-y-12">

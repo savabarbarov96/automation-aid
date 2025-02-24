@@ -10,18 +10,23 @@ const ResourcesPage = () => {
   const location = useLocation();
 
   useEffect(() => {
-    // Handle initial load with slug
     const path = location.pathname;
     const slug = path.split('/resources/')[1];
+    
     if (slug) {
-      const postElement = document.getElementById(
-        blogPosts.find(post => post.slug === slug)?.id || ''
-      );
-      if (postElement) {
-        postElement.scrollIntoView({ behavior: "instant" });
+      const post = blogPosts.find(post => post.slug === slug);
+      if (post) {
+        const postElement = document.getElementById(post.id);
+        if (postElement) {
+          // Use smooth scrolling for better UX
+          postElement.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       }
+    } else {
+      // If no slug, scroll to top
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [location.pathname]);
+  }, [location.pathname]); // React to pathname changes
 
   return (
     <div className="min-h-screen bg-background">
