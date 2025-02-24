@@ -18,7 +18,7 @@ const ResourcesPage = () => {
           </div>
           <div className="flex-1 max-w-4xl">
             <Routes>
-              <Route path="/" element={<Navigate to={`/resources/${firstPostSlug}`} replace />} />
+              <Route path="/" element={<Navigate to={firstPostSlug} replace />} />
               <Route path="/:slug" element={<Blog />} />
             </Routes>
           </div>

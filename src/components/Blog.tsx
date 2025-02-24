@@ -1,8 +1,7 @@
-
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
 import { useParams, useNavigate } from "react-router-dom";
 
 interface BlogPost {
@@ -112,102 +111,91 @@ export const blogPosts: BlogPost[] = [
 export const Blog = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  // Initial scroll to selected post
+  const [canScrollUp, setCanScrollUp] = useState(false);
+  const [canScrollDown, setCanScrollDown] = useState(false);
+  const currentPostIndex = blogPosts.findIndex(post => post.slug === slug);
+  
   useEffect(() => {
-    if (slug) {
-      const post = blogPosts.find(p => p.slug === slug);
-      if (post) {
-        const element = document.getElementById(post.id);
-        if (element) {
-          setTimeout(() => {
-            element.scrollIntoView({ behavior: "smooth", block: "start" });
-          }, 100);
-        }
-      }
-    } else {
+    if (currentPostIndex !== -1) {
+      setCanScrollUp(currentPostIndex > 0);
+      setCanScrollDown(currentPostIndex < blogPosts.length - 1);
+      
+      // Scroll to top when navigating between posts
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }, [slug]);
+  }, [currentPostIndex]);
 
-  // Set up intersection observer for URL updates
-  useEffect(() => {
-    const options = {
-      threshold: 0.5,
-      rootMargin: "-100px 0px -50% 0px"
-    };
+  const handleScroll = (direction: 'up' | 'down') => {
+    if (currentPostIndex === -1) return;
+    
+    const nextIndex = direction === 'up' ? currentPostIndex - 1 : currentPostIndex + 1;
+    if (nextIndex >= 0 && nextIndex < blogPosts.length) {
+      navigate(`/resources/${blogPosts[nextIndex].slug}`);
+    }
+  };
 
-    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const postId = entry.target.id;
-          const post = blogPosts.find(p => p.id === postId);
-          if (post && post.slug !== slug) {
-            navigate(`/resources/${post.slug}`, { replace: true });
-          }
-        }
-      });
-    };
+  if (!slug || currentPostIndex === -1) {
+    return null;
+  }
 
-    observerRef.current = new IntersectionObserver(handleIntersection, options);
-
-    // Observe all blog post elements
-    blogPosts.forEach((post) => {
-      const element = document.getElementById(post.id);
-      if (element) {
-        observerRef.current?.observe(element);
-      }
-    });
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
-      }
-    };
-  }, [navigate, slug]);
+  const currentPost = blogPosts[currentPostIndex];
 
   return (
-    <section className="space-y-12">
-      {blogPosts.map((post) => (
-        <div
-          key={post.id}
-          id={post.id}
-          className="scroll-mt-24"
+    <div className="relative min-h-screen">
+      {/* Scroll up indicator */}
+      {canScrollUp && (
+        <button
+          onClick={() => handleScroll('up')}
+          className="fixed top-24 left-1/2 -translate-x-1/2 z-10 p-2 bg-primary/10 rounded-full backdrop-blur-sm transition-opacity hover:bg-primary/20"
+          aria-label="Previous post"
         >
-          <Card className="overflow-hidden hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-sm text-white">{post.category}</span>
-                <span className="text-sm text-white">{post.readTime}</span>
-              </div>
-              <CardTitle className="text-xl mb-2 text-white">
-                {post.title}
-              </CardTitle>
-              <CardDescription className="text-white">
-                {post.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="text-white prose prose-invert">
-                  {post.content?.split('\n\n').map((paragraph, idx) => (
-                    <p key={idx} className="mb-4">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-                <div className="flex justify-between items-center pt-4 border-t border-muted">
-                  <span className="text-sm text-white">{post.date}</span>
-                  <Button variant="ghost" className="p-0 hover:bg-transparent text-white">
-                    Share <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      ))}
-    </section>
+          <ChevronUp className="text-primary" />
+        </button>
+      )}
+
+      {/* Main content */}
+      <Card className="overflow-hidden hover:shadow-lg transition-shadow mt-8">
+        <CardHeader>
+          <div className="flex justify-between items-center mb-2">
+            <span className="text-sm text-white">{currentPost.category}</span>
+            <span className="text-sm text-white">{currentPost.readTime}</span>
+          </div>
+          <CardTitle className="text-xl mb-2 text-white">
+            {currentPost.title}
+          </CardTitle>
+          <CardDescription className="text-white">
+            {currentPost.description}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="text-white prose prose-invert">
+              {currentPost.content?.split('\n\n').map((paragraph, idx) => (
+                <p key={idx} className="mb-4">
+                  {paragraph}
+                </p>
+              ))}
+            </div>
+            <div className="flex justify-between items-center pt-4 border-t border-muted">
+              <span className="text-sm text-white">{currentPost.date}</span>
+              <Button variant="ghost" className="p-0 hover:bg-transparent text-white">
+                Share <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Scroll down indicator */}
+      {canScrollDown && (
+        <button
+          onClick={() => handleScroll('down')}
+          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-10 p-2 bg-primary/10 rounded-full backdrop-blur-sm transition-opacity hover:bg-primary/20"
+          aria-label="Next post"
+        >
+          <ChevronDown className="text-primary" />
+        </button>
+      )}
+    </div>
   );
 };
