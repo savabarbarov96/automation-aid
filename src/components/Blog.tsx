@@ -1,4 +1,3 @@
-
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
@@ -115,7 +114,6 @@ export const Blog = () => {
   const [canScrollUp, setCanScrollUp] = useState(false);
   const [canScrollDown, setCanScrollDown] = useState(false);
   const currentPostIndex = blogPosts.findIndex(post => post.slug === slug);
-  const containerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     if (currentPostIndex !== -1) {
@@ -139,11 +137,6 @@ export const Blog = () => {
   // Handle scroll wheel events
   useEffect(() => {
     const handleWheelEvent = (event: WheelEvent) => {
-      // Only handle wheel events when they happen near the indicators
-      const target = event.target as HTMLElement;
-      const card = containerRef.current;
-      if (!card || !target.closest('.blog-card')) return;
-
       const { deltaY } = event;
       const threshold = 50; // Minimum scroll amount to trigger navigation
 
@@ -169,7 +162,7 @@ export const Blog = () => {
   const currentPost = blogPosts[currentPostIndex];
 
   return (
-    <div className="relative min-h-screen" ref={containerRef}>
+    <div className="relative min-h-screen">
       <Card className="blog-card relative overflow-hidden hover:shadow-lg transition-shadow mt-8">
         {canScrollUp && (
           <button
