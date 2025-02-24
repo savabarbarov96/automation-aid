@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
+import { Button } from "./ui/button";
+import { ContactForm } from "./ContactForm";
 
 interface TimelineEvent {
   year: string;
@@ -46,6 +49,7 @@ const timelineEvents: TimelineEvent[] = [
 ];
 
 export const Journey = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
   const [visibleEvents, setVisibleEvents] = useState<number[]>([]);
 
   useEffect(() => {
@@ -71,10 +75,10 @@ export const Journey = () => {
   }, []);
 
   return (
-    <section id={`journey`} className="py-24 bg-background relative overflow-hidden">
+    <section id="journey" className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold text-center text-cool-300 mb-16">
-          Through the Quantum Tunnel: 7 Stages to Roadblock Liberation
+          Through the AI Tunnel: 7 Stages to Roadblock Liberation
         </h2>
         <div className="relative">
           <div className="absolute left-4 md:left-1/2 h-full w-0.5 bg-primary/30 -translate-x-1/2" />
@@ -110,14 +114,16 @@ export const Journey = () => {
           </div>
         </div>
         <div className="text-center mt-16">
-          <a
-            href="https://cal.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block bg-primary text-[#000080] px-10 py-4 rounded-lg hover:bg-primary/90 transition-colors text-lg font-medium"
-          >
-            Take the Quantum Leap with AI Automations - Book Now
-          </a>
+          <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+            <DialogTrigger asChild>
+              <Button size="lg" className="bg-primary text-[#000080] hover:bg-primary/90">
+                Book Now
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[600px]">
+              <ContactForm onSuccess={() => setIsFormOpen(false)} />
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
     </section>

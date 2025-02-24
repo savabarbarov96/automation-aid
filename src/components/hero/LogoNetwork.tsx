@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { LogoNode } from "./LogoNode";
 
@@ -22,8 +21,15 @@ export const LogoNetwork = () => {
 
     const container = canvas.parentElement;
     if (!container) return;
-    canvas.width = container.clientWidth;
-    canvas.height = container.clientHeight;
+    
+    const resizeCanvas = () => {
+      const rect = container.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    };
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     const getElementCenter = (element: HTMLDivElement | null) => {
       if (!element) return null;
@@ -74,16 +80,19 @@ export const LogoNetwork = () => {
       nodeRefs.forEach(nodeRef => {
         const nodePos = getElementCenter(nodeRef.current);
         if (nodePos) {
-          particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y));
+          for (let i = 0; i < 3; i++) {
+            particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y));
+          }
         }
       });
     };
 
     const drawLines = () => {
+      if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       ctx.strokeStyle = 'rgba(155, 135, 245, 0.1)';
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1;
 
       const centralPos = getElementCenter(centralNodeRef.current);
       if (!centralPos) return;
@@ -117,7 +126,7 @@ export const LogoNetwork = () => {
         particle.y = fromY + (toY - fromY) * particle.progress;
 
         ctx.beginPath();
-        ctx.arc(particle.x, particle.y, 2, 0, Math.PI * 2);
+        ctx.arc(particle.x, particle.y, 1.5, 0, Math.PI * 2);
         ctx.fill();
 
         particle.progress += particle.speed;
@@ -139,10 +148,10 @@ export const LogoNetwork = () => {
     animate();
 
     const handleResize = () => {
-      canvas.width = container.clientWidth;
-      canvas.height = container.clientHeight;
+      resizeCanvas();
       initializeParticles();
     };
+
     window.addEventListener('resize', handleResize);
 
     return () => {
