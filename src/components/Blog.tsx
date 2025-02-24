@@ -1,3 +1,4 @@
+
 import { useEffect, useRef, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
@@ -114,6 +115,7 @@ export const Blog = () => {
   const [canScrollUp, setCanScrollUp] = useState(false);
   const [canScrollDown, setCanScrollDown] = useState(false);
   const currentPostIndex = blogPosts.findIndex(post => post.slug === slug);
+  const containerRef = useRef<HTMLDivElement>(null);
   
   useEffect(() => {
     if (currentPostIndex !== -1) {
@@ -134,6 +136,32 @@ export const Blog = () => {
     }
   };
 
+  // Handle scroll wheel events
+  useEffect(() => {
+    const handleWheelEvent = (event: WheelEvent) => {
+      // Only handle wheel events when they happen near the indicators
+      const target = event.target as HTMLElement;
+      const card = containerRef.current;
+      if (!card || !target.closest('.blog-card')) return;
+
+      const { deltaY } = event;
+      const threshold = 50; // Minimum scroll amount to trigger navigation
+
+      if (Math.abs(deltaY) < threshold) return;
+
+      if (deltaY < 0 && canScrollUp) {
+        event.preventDefault();
+        handleScroll('up');
+      } else if (deltaY > 0 && canScrollDown) {
+        event.preventDefault();
+        handleScroll('down');
+      }
+    };
+
+    window.addEventListener('wheel', handleWheelEvent, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheelEvent);
+  }, [canScrollUp, canScrollDown, currentPostIndex]);
+
   if (!slug || currentPostIndex === -1) {
     return null;
   }
@@ -141,20 +169,18 @@ export const Blog = () => {
   const currentPost = blogPosts[currentPostIndex];
 
   return (
-    <div className="relative min-h-screen">
-      {/* Scroll up indicator */}
-      {canScrollUp && (
-        <button
-          onClick={() => handleScroll('up')}
-          className="fixed top-24 left-1/2 -translate-x-1/2 z-10 p-2 bg-primary/10 rounded-full backdrop-blur-sm transition-opacity hover:bg-primary/20"
-          aria-label="Previous post"
-        >
-          <ChevronUp className="text-primary" />
-        </button>
-      )}
+    <div className="relative min-h-screen" ref={containerRef}>
+      <Card className="blog-card relative overflow-hidden hover:shadow-lg transition-shadow mt-8">
+        {canScrollUp && (
+          <button
+            onClick={() => handleScroll('up')}
+            className="absolute top-0 left-1/2 -translate-x-1/2 z-10 p-2 bg-primary/10 rounded-b-full backdrop-blur-sm transition-opacity hover:bg-primary/20"
+            aria-label="Previous post"
+          >
+            <ChevronUp className="text-primary" />
+          </button>
+        )}
 
-      {/* Main content */}
-      <Card className="overflow-hidden hover:shadow-lg transition-shadow mt-8">
         <CardHeader>
           <div className="flex justify-between items-center mb-2">
             <span className="text-sm text-white">{currentPost.category}</span>
@@ -184,18 +210,17 @@ export const Blog = () => {
             </div>
           </div>
         </CardContent>
-      </Card>
 
-      {/* Scroll down indicator */}
-      {canScrollDown && (
-        <button
-          onClick={() => handleScroll('down')}
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 z-10 p-2 bg-primary/10 rounded-full backdrop-blur-sm transition-opacity hover:bg-primary/20"
-          aria-label="Next post"
-        >
-          <ChevronDown className="text-primary" />
-        </button>
-      )}
+        {canScrollDown && (
+          <button
+            onClick={() => handleScroll('down')}
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 z-10 p-2 bg-primary/10 rounded-t-full backdrop-blur-sm transition-opacity hover:bg-primary/20"
+            aria-label="Next post"
+          >
+            <ChevronDown className="text-primary" />
+          </button>
+        )}
+      </Card>
     </div>
   );
 };
