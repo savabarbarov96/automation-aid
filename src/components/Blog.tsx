@@ -1,9 +1,8 @@
-
 import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 interface BlogPost {
   id: string;
@@ -111,7 +110,6 @@ export const blogPosts: BlogPost[] = [
 
 export const Blog = () => {
   const { slug } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (slug) {
@@ -128,35 +126,6 @@ export const Blog = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [slug]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            const postId = entry.target.id;
-            const post = blogPosts.find((p) => p.id === postId);
-            if (post && post.slug !== slug) {
-              navigate(`/resources/${post.slug}`, { replace: true });
-            }
-          }
-        });
-      },
-      {
-        threshold: 0.5,
-        rootMargin: "-20% 0px -20% 0px"
-      }
-    );
-
-    blogPosts.forEach((post) => {
-      const element = document.getElementById(post.id);
-      if (element) {
-        observer.observe(element);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, [navigate, slug]);
 
   return (
     <section className="space-y-12">
