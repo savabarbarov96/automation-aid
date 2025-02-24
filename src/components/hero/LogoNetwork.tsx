@@ -1,3 +1,4 @@
+
 import { useEffect, useRef } from "react";
 import { LogoNode } from "./LogoNode";
 
@@ -80,7 +81,7 @@ export const LogoNetwork = () => {
       nodeRefs.forEach(nodeRef => {
         const nodePos = getElementCenter(nodeRef.current);
         if (nodePos) {
-          for (let i = 0; i < 3; i++) {
+          for (let i = 0; i < 5; i++) { // Increased number of particles
             particles.push(createParticle(nodePos.x, nodePos.y, centralPos.x, centralPos.y));
           }
         }
@@ -91,7 +92,8 @@ export const LogoNetwork = () => {
       if (!ctx) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      ctx.strokeStyle = 'rgba(155, 135, 245, 0.1)';
+      // Draw connection lines with increased opacity
+      ctx.strokeStyle = 'rgba(155, 135, 245, 0.15)';
       ctx.lineWidth = 1;
 
       const centralPos = getElementCenter(centralNodeRef.current);
@@ -112,7 +114,11 @@ export const LogoNetwork = () => {
         }
       });
 
+      // Draw particles with glow effect
       ctx.fillStyle = '#9b87f5';
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = '#9b87f5';
+
       particles.forEach(particle => {
         const { direction } = particle;
         const [fromX, fromY] = direction === 'toCenter' 
@@ -136,6 +142,8 @@ export const LogoNetwork = () => {
           particle.direction = direction === 'toCenter' ? 'fromCenter' : 'toCenter';
         }
       });
+
+      ctx.shadowBlur = 0;
     };
 
     initializeParticles();
@@ -167,11 +175,11 @@ export const LogoNetwork = () => {
         className="absolute inset-0 pointer-events-none"
       />
 
-      {/* Central hub */}
+      {/* Central hub with pulse animation */}
       <div ref={centralNodeRef} className="absolute transform -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2 z-10">
-        <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
+        <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center animate-pulse">
           <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
-            <div className="w-12 h-12 rounded-full bg-accent shadow-lg">
+            <div className="w-12 h-12 rounded-full bg-accent shadow-lg hover:scale-110 transition-transform duration-300">
               <img src="/lovable-uploads/52b283b3-b8fa-4361-a7e5-f23ad7ab3166.png" alt="Automation Aid Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
             </div>
           </div>

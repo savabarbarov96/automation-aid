@@ -36,7 +36,7 @@ const features = [
 
 export const Features = () => {
   return (
-    <section id="features" className="py-16 bg-cool-100">
+    <section id="features" className="py-16 bg-gradient-to-b from-cool-100 to-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-cool-400 mb-4">Our Solutions</h2>
@@ -48,12 +48,18 @@ export const Features = () => {
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-cool-100 animate-fade-in"
+              className="group bg-white/5 backdrop-blur-sm p-6 rounded-lg border border-white/10 
+                        hover:bg-white/10 hover:scale-105 hover:shadow-lg transition-all duration-300 
+                        animate-fade-in"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <feature.icon className="w-12 h-12 text-primary mb-4" />
-              <h3 className="text-xl font-semibold text-black mb-2">{feature.title}</h3>
-              <p className="text-black">{feature.description}</p>
+              <feature.icon className="w-12 h-12 text-primary mb-4 group-hover:text-accent transition-colors" />
+              <h3 className="text-xl font-semibold text-cool-300 mb-2 group-hover:text-white transition-colors">
+                {feature.title}
+              </h3>
+              <p className="text-cool-300/80 group-hover:text-white/90 transition-colors">
+                {feature.description}
+              </p>
             </div>
           ))}
         </div>
