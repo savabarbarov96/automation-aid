@@ -15,7 +15,10 @@ export const BlogSidebar = () => {
       <h2 className="text-xl font-bold mb-4 text-white">Resources</h2>
       <div className="space-y-2">
         {blogPosts.map((post) => {
-          const isCurrentPost = post.slug === slug;
+          // Make sure we have both values for comparison and they match exactly
+          const currentSlug = slug || '';
+          const isCurrentPost = currentSlug === post.slug;
+          
           return (
             <button
               key={post.id}
