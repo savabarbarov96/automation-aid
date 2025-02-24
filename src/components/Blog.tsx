@@ -1,9 +1,8 @@
-
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 interface BlogPost {
   id: string;
@@ -110,42 +109,23 @@ export const blogPosts: BlogPost[] = [
 ];
 
 export const Blog = () => {
-  const postRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { slug } = useParams();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const activePostId = entry.target.id;
-            const activePost = blogPosts.find(post => post.id === activePostId);
-            if (activePost && location.pathname !== `/resources/${activePost.slug}`) {
-              window.dispatchEvent(
-                new CustomEvent("postInView", { detail: { postId: activePostId } })
-              );
-              // Use navigate instead of history.replaceState for better route handling
-              navigate(`/resources/${activePost.slug}`, { replace: true });
-            }
-          }
-        });
-      },
-      {
-        threshold: 0.3, // Lower threshold for better detection
-        rootMargin: "-100px 0px -100px 0px" // Add margins to improve detection
+    if (slug) {
+      const post = blogPosts.find(p => p.slug === slug);
+      if (post) {
+        const element = document.getElementById(post.id);
+        if (element) {
+          setTimeout(() => {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+          }, 100);
+        }
       }
-    );
-
-    // Observe all posts
-    blogPosts.forEach((post) => {
-      if (postRefs.current[post.id]) {
-        observer.observe(postRefs.current[post.id]!);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, [navigate, location.pathname]);
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [slug]);
 
   return (
     <section className="space-y-12">
@@ -153,7 +133,6 @@ export const Blog = () => {
         <div
           key={post.id}
           id={post.id}
-          ref={(el) => (postRefs.current[post.id] = el)}
           className="scroll-mt-24"
         >
           <Card className="overflow-hidden hover:shadow-lg transition-shadow">
