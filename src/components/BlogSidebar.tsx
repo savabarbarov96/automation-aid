@@ -1,10 +1,11 @@
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { blogPosts } from "./Blog";
 
 export const BlogSidebar = () => {
-  const { slug } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPath = location.pathname;
 
   const handlePostClick = (postSlug: string) => {
     navigate(`/resources/${postSlug}`);
@@ -15,9 +16,7 @@ export const BlogSidebar = () => {
       <h2 className="text-xl font-bold mb-4 text-white">Resources</h2>
       <div className="space-y-2">
         {blogPosts.map((post) => {
-          // Make sure we have both values for comparison and they match exactly
-          const currentSlug = slug || '';
-          const isCurrentPost = currentSlug === post.slug;
+          const isCurrentPost = currentPath === `/resources/${post.slug}`;
           
           return (
             <button
@@ -25,7 +24,7 @@ export const BlogSidebar = () => {
               onClick={() => handlePostClick(post.slug)}
               className={`w-full text-left p-2 rounded-md transition-colors ${
                 isCurrentPost
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary text-primary-foreground font-medium"
                   : "text-white hover:bg-muted"
               }`}
             >
