@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+
+import { useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 interface BlogPost {
   id: string;
@@ -110,7 +111,10 @@ export const blogPosts: BlogPost[] = [
 
 export const Blog = () => {
   const { slug } = useParams();
+  const navigate = useNavigate();
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
+  // Initial scroll to selected post
   useEffect(() => {
     if (slug) {
       const post = blogPosts.find(p => p.slug === slug);
@@ -126,6 +130,42 @@ export const Blog = () => {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [slug]);
+
+  // Set up intersection observer for URL updates
+  useEffect(() => {
+    const options = {
+      threshold: 0.5,
+      rootMargin: "-100px 0px -50% 0px"
+    };
+
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const postId = entry.target.id;
+          const post = blogPosts.find(p => p.id === postId);
+          if (post && post.slug !== slug) {
+            navigate(`/resources/${post.slug}`, { replace: true });
+          }
+        }
+      });
+    };
+
+    observerRef.current = new IntersectionObserver(handleIntersection, options);
+
+    // Observe all blog post elements
+    blogPosts.forEach((post) => {
+      const element = document.getElementById(post.id);
+      if (element) {
+        observerRef.current?.observe(element);
+      }
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, [navigate, slug]);
 
   return (
     <section className="space-y-12">
