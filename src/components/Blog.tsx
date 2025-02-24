@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
 import { Button } from "./ui/button";
 import { ArrowRight, ChevronDown, ChevronUp } from "lucide-react";
@@ -162,8 +163,8 @@ export const Blog = () => {
   const currentPost = blogPosts[currentPostIndex];
 
   return (
-    <div className="relative min-h-screen">
-      <Card className="blog-card relative overflow-hidden hover:shadow-lg transition-shadow mt-8">
+    <div className="relative h-[calc(100vh-96px)]">
+      <Card className="blog-card relative h-full overflow-hidden hover:shadow-lg transition-shadow">
         {canScrollUp && (
           <button
             onClick={() => handleScroll('up')}
@@ -186,7 +187,7 @@ export const Blog = () => {
             {currentPost.description}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="h-[calc(100%-200px)] overflow-y-auto scrollbar-none">
           <div className="space-y-4">
             <div className="text-white prose prose-invert">
               {currentPost.content?.split('\n\n').map((paragraph, idx) => (
