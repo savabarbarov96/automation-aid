@@ -163,7 +163,7 @@ export const LogoNetwork = () => {
         <div className="w-24 h-24 rounded-full bg-accent/20 backdrop-blur-sm flex items-center justify-center">
           <div className="w-16 h-16 rounded-full bg-accent/30 flex items-center justify-center">
             <div className="w-12 h-12 rounded-full bg-accent shadow-lg">
-              <img src="/logos/ns.png" alt="Quantum Automations Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
+              <img src="/lovable-uploads/52b283b3-b8fa-4361-a7e5-f23ad7ab3166.png" alt="Automation Aid Logo" style={{ filter: "brightness(0)", transform: "scale(2)" }} />
             </div>
           </div>
         </div>

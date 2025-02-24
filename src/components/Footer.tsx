@@ -38,7 +38,7 @@ export const Footer = () => {
               </a>
             </div>
             <p className="text-white/60 text-sm">
-              © {new Date().getFullYear()} Quantum Automations. All rights reserved.
+              © {new Date().getFullYear()} Automation Aid. All rights reserved.
             </p>
           </div>
         </div>
