@@ -1,5 +1,7 @@
 import { ArrowRight } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ContactForm } from "./ContactForm";
+import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 
 export const Hero = () => {
   // Create refs for all logo nodes
@@ -163,10 +165,17 @@ export const Hero = () => {
     };
   }, []);
 
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   return (
     <section className="min-h-screen relative overflow-hidden flex items-center px-4 bg-background">
-      {/* Network sphere background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {/* Network sphere background with parallax effect */}
+      <div 
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        style={{
+          transform: `translateY(${typeof window !== 'undefined' ? window.scrollY * 0.5}px)`,
+        }}
+      >
         {/* Interactive network nodes */}
         <div className="absolute w-full h-full">
           {/* Core network group 1 */}
@@ -219,26 +228,33 @@ export const Hero = () => {
         </div>
       </div>
 
-      <div className="container mx-auto relative grid grid-cols-1 lg:grid-cols-2 gap-12 pt-40">
+      <div className="container mx-auto relative grid grid-cols-1 lg:grid-cols-2 gap-12 pt-28">
         {/* Left side content */}
         <div className="text-left">
-          <h1 className="font-inter text-5xl md:text-7xl font-bold text-cool-300 mb-8 animate-fade-in leading-tight">
-            Stop Incremental Gains. Take a Quantum Leap in your Lead Generation
+          <h1 className="font-inter text-4xl md:text-6xl font-bold text-cool-300 mb-6 animate-fade-in leading-tight">
+            Transform Your Business with AI Automation
           </h1>
-          <p className="text-xl md:text-2xl text-cool-300 mb-12 animate-fade-in max-w-3xl" style={{ animationDelay: "0.2s" }}>
-            Unleash Exponential Growth with Quantum Automations
+          <p className="text-lg md:text-xl text-cool-300/90 mb-8 animate-fade-in max-w-2xl" style={{ animationDelay: "0.2s" }}>
+            Integrate intelligent AI solutions and automation to streamline your business operations
           </p>
-          <div className="flex flex-wrap gap-6 animate-fade-in" style={{ animationDelay: "0.4s" }}>
-            <button className="font-inter bg-primary text-[#000080] px-10 py-4 rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 text-lg font-medium">
-              Get Started <ArrowRight size={24} />
-            </button>
-            <button className="font-inter bg-accent/10 text-accent px-10 py-4 rounded-lg hover:bg-accent/20 transition-colors text-lg font-medium">
+          <div className="flex flex-wrap gap-4 animate-fade-in" style={{ animationDelay: "0.4s" }}>
+            <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+              <DialogTrigger asChild>
+                <button className="font-inter bg-primary text-[#000080] px-8 py-3 rounded-lg hover:bg-primary/90 transition-all transform hover:scale-105 flex items-center gap-2 text-lg font-medium shadow-lg">
+                  Book a Call <ArrowRight size={20} />
+                </button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[600px]">
+                <ContactForm onSuccess={() => setIsFormOpen(false)} />
+              </DialogContent>
+            </Dialog>
+            <button className="font-inter bg-accent/10 text-accent px-8 py-3 rounded-lg hover:bg-accent/20 transition-all transform hover:scale-105 text-lg font-medium border border-accent/20">
               Learn More
             </button>
           </div>
         </div>
 
-        {/* Right side - Octahedral logo arrangement */}
+        {/* Right side - Logo arrangement */}
         <div className="relative w-full h-[600px] flex items-center justify-center">
           <canvas
             id="connection-lines"
