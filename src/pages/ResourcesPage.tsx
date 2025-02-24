@@ -3,9 +3,25 @@ import { Blog } from "@/components/Blog";
 import { BlogSidebar } from "@/components/BlogSidebar";
 import { Navbar } from "@/components/Navbar";
 import { Route, Routes, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { blogPosts } from "@/components/Blog";
 
 const ResourcesPage = () => {
   const location = useLocation();
+
+  useEffect(() => {
+    // Handle initial load with slug
+    const path = location.pathname;
+    const slug = path.split('/resources/')[1];
+    if (slug) {
+      const postElement = document.getElementById(
+        blogPosts.find(post => post.slug === slug)?.id || ''
+      );
+      if (postElement) {
+        postElement.scrollIntoView({ behavior: "instant" });
+      }
+    }
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen bg-background">
