@@ -69,6 +69,43 @@ export const blogPosts: BlogPost[] = [
     The results were impressive: a 150% increase in productivity, 60% reduction in 
     quality issues, and significant cost savings. This success story demonstrates 
     the potential of smart factory solutions in modern manufacturing.`
+  },
+  {
+    id: "post-4",
+    title: "Predictive Maintenance: The Key to Equipment Longevity",
+    description: "Learn how predictive maintenance technologies are revolutionizing equipment management and reducing downtime.",
+    date: "March 1, 2024",
+    category: "Maintenance",
+    readTime: "7 min read",
+    slug: "predictive-maintenance-equipment-longevity",
+    content: `Predictive maintenance is transforming how manufacturing facilities manage their 
+    equipment. By leveraging advanced sensors, machine learning algorithms, and real-time 
+    data analysis, companies can now predict potential equipment failures before they occur.
+
+    This proactive approach has led to significant reductions in unplanned downtime, 
+    with some facilities reporting up to 70% fewer equipment failures. The cost savings 
+    are substantial, but equally important is the increased reliability and consistency 
+    in production schedules. Modern predictive maintenance systems can even integrate 
+    with ERP systems to automatically schedule maintenance activities during planned 
+    production breaks.`
+  },
+  {
+    id: "post-5",
+    title: "The Rise of Digital Twins in Manufacturing",
+    description: "Explore how digital twin technology is revolutionizing product development and production processes.",
+    date: "February 28, 2024",
+    category: "Technology",
+    readTime: "5 min read",
+    slug: "rise-of-digital-twins-manufacturing",
+    content: `Digital twin technology has emerged as a game-changer in modern manufacturing. 
+    By creating virtual replicas of physical products and processes, manufacturers can 
+    simulate, test, and optimize their operations in a risk-free virtual environment.
+
+    The applications are vast: from product design and testing to process optimization 
+    and predictive maintenance. Companies using digital twins report faster time-to-market, 
+    reduced development costs, and improved product quality. The technology is particularly 
+    valuable in complex manufacturing environments where real-world testing would be 
+    costly or impractical.`
   }
 ];
 
