@@ -2,9 +2,12 @@
 import { Blog } from "@/components/Blog";
 import { BlogSidebar } from "@/components/BlogSidebar";
 import { Navbar } from "@/components/Navbar";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
+import { blogPosts } from "@/components/Blog";
 
 const ResourcesPage = () => {
+  const firstPostSlug = blogPosts[0].slug;
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -15,7 +18,7 @@ const ResourcesPage = () => {
           </div>
           <div className="flex-1 max-w-4xl">
             <Routes>
-              <Route path="/" element={<Blog />} />
+              <Route path="/" element={<Navigate to={`/resources/${firstPostSlug}`} replace />} />
               <Route path="/:slug" element={<Blog />} />
             </Routes>
           </div>
