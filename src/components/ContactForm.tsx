@@ -41,7 +41,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     e.preventDefault();
     
     try {
-      const { error } = await supabase
+      const { error: supabaseError } = await supabase
         .from('contact_submissions')
         .insert([
           {
@@ -55,7 +55,19 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           }
         ]);
 
-      if (error) throw error;
+      if (supabaseError) throw supabaseError;
+
+      const response = await fetch('/functions/v1/send-contact-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to send email');
+      }
 
       toast({
         title: "Success!",
@@ -64,6 +76,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
 
       onSuccess?.();
     } catch (error) {
+      console.error('Error:', error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",

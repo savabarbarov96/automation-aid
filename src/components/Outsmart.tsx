@@ -5,15 +5,14 @@ const partners = [
   { src: "/lovable-uploads/c2b82e3c-97ab-462f-bd82-36e5ba67bd32.png", alt: "ParfumeTester" },
   { src: "/lovable-uploads/da04e3c9-0a1d-4978-851a-ced02054d743.png", alt: "Datex" },
   { src: "/lovable-uploads/41de0218-3567-497b-a5b7-0ed1e59a8c93.png", alt: "RM Sport Center" },
-  // Add more partner logos as needed
 ];
 
 export const Outsmart = () => {
   return (
-    <section className="relative py-24 overflow-hidden bg-black">
+    <section className="relative py-24 overflow-hidden bg-gradient-to-b from-[#F1F0FB] to-[#FFFFFF]">
       {/* Parallax Background */}
       <div 
-        className="absolute inset-0 bg-gradient-to-b from-black via-gray-900 to-black"
+        className="absolute inset-0 bg-gradient-to-b from-[#F3F3F3]/50 via-[#F1F0FB]/30 to-[#FFFFFF]/20"
         style={{
           transform: 'translateY(calc(var(--scroll) * -0.1))',
           willChange: 'transform'
@@ -22,10 +21,10 @@ export const Outsmart = () => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-8">
+          <h2 className="text-4xl md:text-5xl font-bold text-cool-100 mb-8">
             Outsmart, Outperform, Outgrow.<br/>
             <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Quantum Automations
+              Automation Aid
             </span>
           </h2>
         </div>
@@ -43,7 +42,7 @@ export const Outsmart = () => {
               <img
                 src={partner.src}
                 alt={partner.alt}
-                className="w-full h-auto object-contain filter brightness-100 hover:brightness-110 transition-all duration-300"
+                className="w-full h-auto object-contain filter brightness-90 hover:brightness-100 transition-all duration-300"
               />
             </motion.div>
           ))}
