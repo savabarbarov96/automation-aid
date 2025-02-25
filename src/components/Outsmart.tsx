@@ -27,6 +27,11 @@ export const Outsmart = () => {
               Automation Aid
             </span>
           </h2>
+          <img 
+            src="/lovable-uploads/73ca4938-1533-4c85-ac04-f6a4335e36ea.png"
+            alt="Automation Aid Logo"
+            className="h-16 w-auto mx-auto mb-8"
+          />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center justify-items-center">

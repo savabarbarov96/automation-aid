@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -55,7 +56,10 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
           }
         ]);
 
-      if (supabaseError) throw supabaseError;
+      if (supabaseError) {
+        console.error('Supabase error:', supabaseError);
+        throw supabaseError;
+      }
 
       const response = await fetch('/functions/v1/send-contact-email', {
         method: 'POST',
@@ -66,7 +70,9 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to send email');
+        const errorData = await response.json();
+        console.error('Email function error:', errorData);
+        throw new Error(errorData.error || 'Failed to send email');
       }
 
       toast({
@@ -76,7 +82,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
 
       onSuccess?.();
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Form submission error:', error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
