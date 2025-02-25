@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -9,16 +9,6 @@ import { ContactForm } from "./ContactForm";
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleGetStarted = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,9 +16,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-white/10 backdrop-blur-md shadow-lg' : 'bg-transparent'
-    }`}>
+    <nav className="fixed w-full bg-white/5 backdrop-blur-md z-50 border-b border-white/10">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
@@ -43,12 +31,32 @@ export const Navbar = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8 mx-auto">
-            <a href="#features" className="text-white/80 hover:text-white transition-colors">Функционалности</a>
-            <a href="#work" className="text-white/80 hover:text-white transition-colors">Нашата Работа</a>
-            <a href="#journey" className="text-white/80 hover:text-white transition-colors">Процес</a>
-            <a href="#testimonials" className="text-white/80 hover:text-white transition-colors">Отзиви</a>
-            <a href="#faq" className="text-white/80 hover:text-white transition-colors">Въпроси</a>
-            <Link to="/resources" className="text-white/80 hover:text-white transition-colors">Ресурси</Link>
+            {[
+              { href: "#features", label: "Функционалности" },
+              { href: "#work", label: "Нашата Работа" },
+              { href: "#journey", label: "Процес" },
+              { href: "#testimonials", label: "Отзиви" },
+              { href: "#faq", label: "Въпроси" },
+              { href: "/resources", label: "Ресурси", isLink: true }
+            ].map((item, index) => (
+              item.isLink ? (
+                <Link
+                  key={index}
+                  to={item.href}
+                  className="text-white/80 hover:text-white transition-colors duration-300"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={index}
+                  href={item.href}
+                  className="text-white/80 hover:text-white transition-colors duration-300"
+                >
+                  {item.label}
+                </a>
+              )
+            ))}
           </div>
 
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
@@ -72,7 +80,7 @@ export const Navbar = () => {
 
         {/* Mobile Menu */}
         {isOpen && (
-          <div className="md:hidden absolute top-20 left-0 right-0 bg-white/5 backdrop-blur-md border-b border-white/10 animate-slide-in">
+          <div className="md:hidden absolute top-20 left-0 right-0 bg-white/5 backdrop-blur-md border-b border-white/10 transition-all duration-300 animate-fade-in">
             <div className="flex flex-col space-y-4 px-4 py-6">
               <a href="#features" className="text-white/80 hover:text-white transition-colors">Функционалности</a>
               <a href="#work" className="text-white/80 hover:text-white transition-colors">Нашата Работа</a>

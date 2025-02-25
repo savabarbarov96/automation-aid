@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
@@ -12,39 +13,39 @@ interface TimelineEvent {
 
 const timelineEvents: TimelineEvent[] = [
   {
-    year: "Stage 1",
-    title: "Enter the Tunnel. Discovery Call (15 Min)",
-    description: "Let's map your current marketing, identify roadblocks, and ignite your tunnel journey in a quick 15-minute call."
+    year: "Етап 1",
+    title: "Влезте в тунела. Опознавателен разговор (15 мин)",
+    description: "Нека очертаем вашия текущ маркетинг, идентифицираме пречките и започнем вашето пътуване в кратък 15-минутен разговор."
   },
   {
-    year: "Stage 2",
-    title: "Tunnel Vision. Analyze Your Bottlenecks",
-    description: "We'll pinpoint the exact marketing barriers holding you back through a deep analysis of your current processes."
+    year: "Етап 2",
+    title: "Тунелна визия. Анализ на проблемите",
+    description: "Ще идентифицираме точните маркетингови бариери, които ви спират, чрез задълбочен анализ на текущите ви процеси."
   },
   {
-    year: "Stage 3",
-    title: "The Phase-Shift. See AI in Action for You",
-    description: "Prepare to witness a personalized AI demonstration, revealing how you can tunnel through your specific marketing limitations."
+    year: "Етап 3",
+    title: "Фазовият преход. Вижте AI в действие",
+    description: "Пригответе се да видите персонализирана AI демонстрация, разкриваща как можете да преминете през вашите специфични маркетингови ограничения."
   },
   {
-    year: "Stage 4",
-    title: "Navigation Blueprint. Secure Your Liberation Plan",
-    description: "Review your custom proposal – your actionable blueprint to navigate the Quantum Tunnel and achieve marketing freedom."
+    year: "Етап 4",
+    title: "Навигационен план. Осигурете своя път към свободата",
+    description: "Прегледайте вашето персонализирано предложение – вашият план за действие за навигация през Квантовия тунел и постигане на маркетингова свобода."
   },
   {
-    year: "Stage 5",
-    title: "Activate Your Quantum Engine. Implement AI Workflows",
-    description: "Our team expertly installs your AI workflows, seamlessly integrating them to power your journey through the tunnel."
+    year: "Етап 5",
+    title: "Активирайте своя Квантов двигател. Внедрете AI работни процеси",
+    description: "Нашият екип експертно инсталира вашите AI работни процеси, интегрирайки ги безпроблемно, за да захранват вашето пътуване през тунела."
   },
   {
-    year: "Stage 6",
-    title: "Emerge Liberated. Go LIVE with AI Automation",
-    description: "Your AI-powered marketing is now live! Start experiencing liberation from roadblocks and see immediate results."
+    year: "Етап 6",
+    title: "Излезте освободени. Стартирайте с AI автоматизация",
+    description: "Вашият AI-powered маркетинг вече е активен! Започнете да изпитвате освобождаване от пречките и виждайте незабавни резултати."
   },
   {
-    year: "Stage 7",
-    title: "Revenue Entanglement. Attain Perpetual Growth",
-    description: "Embrace the deep connection of Revenue Entanglement, watch as leads surge, ROI multiplies, and your revenue stream becomes perpetually enhanced by AI."
+    year: "Етап 7",
+    title: "Приходно преплитане. Постигнете постоянен растеж",
+    description: "Прегърнете дълбоката връзка на Приходното преплитане, наблюдавайте как лийдовете нарастват, ROI се умножава, и вашият поток от приходи става постоянно подобрен от AI."
   }
 ];
 
@@ -78,7 +79,7 @@ export const Journey = () => {
     <section id="journey" className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold text-center text-cool-300 mb-16">
-          Through the AI Tunnel: 7 Stages to Roadblock Liberation
+          Пътека на успеха
         </h2>
         <div className="relative">
           <div className="absolute left-4 md:left-1/2 h-full w-0.5 bg-primary/30 -translate-x-1/2" />
@@ -117,7 +118,7 @@ export const Journey = () => {
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
               <Button size="lg" className="bg-primary text-[#000080] hover:bg-primary/90">
-                Book Now
+                Запазете час
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
