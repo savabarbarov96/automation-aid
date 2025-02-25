@@ -7,34 +7,25 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.5.3
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v0.1.6
         with:
-          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-
-      - name: List SSH keys (debug)
-        run: ssh-add -l
-
-      - name: Deploy to Server
-        env:
-          SERVER_IP: ${{ secrets.SERVER_IP }}
-          SERVER_USER: ${{ secrets.SERVER_USER }}
-        run: |
-          ssh -vvv -tt -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << 'EOF'
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
             cd /var/www/automation-aid
             git fetch origin main
             git reset --hard origin/main
             npm install
             npm run build
             sudo systemctl reload nginx
-            exit
-            EOF
 
       - name: Notify Discord on Success
         if: success()
