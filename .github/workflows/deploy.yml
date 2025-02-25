@@ -18,39 +18,36 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.DEPLOY_KEY }}
 
+      - name: List SSH keys (debug)
+        run: ssh-add -l
+
       - name: Deploy to Server
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
         run: |
-          if [ -z "$SERVER_IP" ] || [ -z "$SERVER_USER" ]; then
-            echo "Error: SERVER_IP or SERVER_USER is not defined in secrets."
-            exit 1
-          fi
-          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << 'EOF'
-          cd /var/www/automation-aid
-          git fetch origin main
-          git reset --hard origin/main
-          npm install
-          npm run build
-          nohup sudo systemctl reload nginx > /dev/null 2>&1 &
-          exit
-          EOF
-
-
+          ssh -vvv -tt -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << 'EOF'
+            cd /var/www/automation-aid
+            git fetch origin main
+            git reset --hard origin/main
+            npm install
+            npm run build
+            sudo systemctl reload nginx
+            exit
+            EOF
 
       - name: Notify Discord on Success
         if: success()
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{"content": "Deployment succeeded for automationaid! Way to go Sava and Slav! "}' \
-               "https://discord.com/api/webhooks/1341708827183157349/HouXP_cSD1s-BzC3OYlBq83lZZIRQVCLszWhPas3rpcZhrn08B2qM0_1ybzCJyIAy54z"
+               -d '{"content": "Deployment succeeded for automationaid!"}' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
 
       - name: Notify Discord on Failure
         if: failure()
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{"content": "Deployment failed for automationaid. Check GitHub Actions logs for details. Shit hit the fan yo!!"}' \
-               "https://discord.com/api/webhooks/1341708827183157349/HouXP_cSD1s-BzC3OYlBq83lZZIRQVCLszWhPas3rpcZhrn08B2qM0_1ybzCJyIAy54z"
+               -d '{"content": "Deployment failed for automationaid. Check GitHub Actions logs for details."}' \
+               "${{ secrets.DISCORD_WEBHOOK }}"
