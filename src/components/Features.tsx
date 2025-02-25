@@ -4,33 +4,33 @@ import { Bot, Users, LineChart, Database, MessageSquare, Zap } from "lucide-reac
 const features = [
   {
     icon: Bot,
-    title: "AI-Powered Automation",
-    description: "Leverage cutting-edge AI to automate repetitive tasks and streamline workflows."
+    title: "AI-Powered Автоматизация",
+    description: "Използвайте най-съвременен AI за автоматизиране на повтарящи се задачи и оптимизиране на работните процеси."
   },
   {
     icon: Users,
-    title: "Lead Generation",
-    description: "Generate and nurture high-quality leads through intelligent automation."
+    title: "Генериране на Лийдове",
+    description: "Генерирайте и развивайте висококачествени лийдове чрез интелигентна автоматизация."
   },
   {
     icon: LineChart,
-    title: "Revenue Growth",
-    description: "Accelerate your business growth with data-driven automation strategies."
+    title: "Растеж на Приходите",
+    description: "Ускорете растежа на бизнеса си с автоматизационни стратегии, базирани на данни."
   },
   {
     icon: Database,
-    title: "CRM Integration",
-    description: "Seamlessly integrate with your existing CRM systems for enhanced efficiency."
+    title: "CRM Интеграция",
+    description: "Безпроблемна интеграция с вашите съществуващи CRM системи за повишена ефективност."
   },
   {
     icon: MessageSquare,
-    title: "Marketing Automation",
-    description: "Automate your marketing campaigns for better engagement and conversion."
+    title: "Маркетинг Автоматизация",
+    description: "Автоматизирайте вашите маркетинг кампании за по-добро ангажиране и конверсия."
   },
   {
     icon: Zap,
-    title: "Intelligent Solutions",
-    description: "Custom solutions designed to meet your specific business needs."
+    title: "Интелигентни Решения",
+    description: "Персонализирани решения, създадени да отговорят на вашите специфични бизнес нужди."
   }
 ];
 
@@ -39,9 +39,9 @@ export const Features = () => {
     <section id="features" className="py-16 bg-gradient-to-b from-cool-100 to-background">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-cool-400 mb-4">Our Solutions</h2>
+          <h2 className="text-3xl font-bold text-cool-400 mb-4">Нашите Решения</h2>
           <p className="text-cool-300 max-w-2xl mx-auto">
-            Transform your business with our comprehensive suite of automation solutions.
+            Трансформирайте бизнеса си с нашия цялостен набор от автоматизационни решения.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

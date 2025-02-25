@@ -13,24 +13,24 @@ interface FAQItem {
 
 const faqItems: FAQItem[] = [
   {
-    question: "What types of automation solutions do you offer?",
-    answer: "We provide a comprehensive range of automation solutions including robotic process automation (RPA), industrial automation, smart manufacturing systems, and custom-tailored solutions for specific industry needs. Our solutions can be integrated with existing systems or implemented as standalone solutions.",
+    question: "Какви видове решения за автоматизация предлагате?",
+    answer: "Предлагаме широка гама от решения за автоматизация, включително роботизирана процесна автоматизация (RPA), индустриална автоматизация, системи за интелигентно производство и персонализирани решения за специфичните нужди на индустрията. Нашите решения могат да бъдат интегрирани със съществуващи системи или внедрени като самостоятелни решения.",
   },
   {
-    question: "How long does implementation typically take?",
-    answer: "Implementation timelines vary based on the complexity and scope of the project. Simple automation solutions can be implemented within 2-4 weeks, while more complex enterprise-wide systems might take 3-6 months. We provide detailed timeline estimates during the initial consultation.",
+    question: "Колко време отнема внедряването?",
+    answer: "Времето за внедряване варира в зависимост от сложността и обхвата на проекта. Простите решения за автоматизация могат да бъдат внедрени в рамките на 2-4 седмици, докато по-сложните системи за цялото предприятие могат да отнемат 3-6 месеца. Предоставяме подробни времеви оценки по време на първоначалната консултация.",
   },
   {
-    question: "What kind of support do you provide after implementation?",
-    answer: "We offer comprehensive post-implementation support including 24/7 technical assistance, regular maintenance checks, software updates, and continuous optimization services. Our support team is always available to address any concerns and ensure your automation systems run smoothly.",
+    question: "Каква поддръжка предоставяте след внедряването?",
+    answer: "Предлагаме цялостна поддръжка след внедряване, включително денонощна техническа помощ, редовни проверки за поддръжка, актуализации на софтуера и услуги за непрекъсната оптимизация. Нашият екип за поддръжка винаги е на разположение, за да отговори на всички въпроси и да гарантира безпроблемната работа на вашите системи за автоматизация.",
   },
   {
-    question: "Can your solutions integrate with our existing systems?",
-    answer: "Yes, our automation solutions are designed to seamlessly integrate with most existing systems and software. We conduct thorough compatibility assessments before implementation and can customize our solutions to work with your current infrastructure.",
+    question: "Могат ли вашите решения да се интегрират със съществуващите ни системи?",
+    answer: "Да, нашите решения за автоматизация са проектирани да се интегрират безпроблемно с повечето съществуващи системи и софтуер. Извършваме задълбочени оценки на съвместимостта преди внедряването и можем да персонализираме нашите решения, за да работят с вашата текуща инфраструктура.",
   },
   {
-    question: "What ROI can we expect from your automation solutions?",
-    answer: "While ROI varies by project, our clients typically see returns within 6-12 months of implementation. This includes reduced operational costs, increased productivity, improved accuracy, and better resource utilization. We provide detailed ROI projections during the planning phase.",
+    question: "Каква възвръщаемост на инвестицията можем да очакваме?",
+    answer: "Въпреки че възвръщаемостта варира според проекта, нашите клиенти обикновено виждат резултати в рамките на 6-12 месеца след внедряването. Това включва намалени оперативни разходи, повишена производителност, подобрена точност и по-добро използване на ресурсите. Предоставяме подробни прогнози за възвръщаемостта по време на фазата на планиране.",
   },
 ];
 
@@ -39,9 +39,9 @@ export const FAQ = () => {
     <section id="faq" className="py-24 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-4 text-black">Frequently Asked Questions</h2>
+          <h2 className="text-4xl font-bold mb-4 text-black">Често Задавани Въпроси</h2>
           <p className="text-lg text-black mx-auto max-w-2xl">
-            Find answers to common questions about our automation solutions and services.
+            Намерете отговори на често задавани въпроси за нашите решения и услуги за автоматизация.
           </p>
         </div>
 

@@ -13,26 +13,26 @@ interface Testimonial {
 
 const testimonials: Testimonial[] = [
   {
-    name: "Sarah Johnson",
-    role: "Operations Manager",
-    company: "TechCorp Inc.",
-    content: "Quantum Automations has transformed our manufacturing process. The automation solutions have increased our efficiency by 200% while reducing errors significantly.",
+    name: "Мария Иванова",
+    role: "Оперативен Мениджър",
+    company: "ТехКорп ООД",
+    content: "Automation Aid трансформира нашия производствен процес. Решенията за автоматизация увеличиха ефективността ни с 200%, като същевременно значително намалиха грешките.",
     rating: 5,
     image: "/placeholder.svg"
   },
   {
-    name: "Michael Chen",
-    role: "Production Director",
-    company: "InnovateX",
-    content: "The implementation was seamless, and the results were immediate. Our team adapted quickly to the new systems, and the support has been exceptional.",
+    name: "Георги Димитров",
+    role: "Директор Производство",
+    company: "ИноватеX",
+    content: "Внедряването беше безпроблемно, а резултатите бяха незабавни. Нашият екип се адаптира бързо към новите системи, а поддръжката беше изключителна.",
     rating: 5,
     image: "/placeholder.svg"
   },
   {
-    name: "Emily Rodriguez",
-    role: "Quality Control Supervisor",
-    company: "PrecisionTech",
-    content: "The automated quality control systems have revolutionized our inspection process. We've seen a 75% reduction in defects since implementation.",
+    name: "Елена Петрова",
+    role: "Супервайзор Качествен Контрол",
+    company: "ПрецизионТех",
+    content: "Автоматизираните системи за контрол на качеството революционизираха процеса ни на инспекция. Наблюдаваме 75% намаление на дефектите след внедряването.",
     rating: 4,
     image: "/placeholder.svg"
   }
@@ -43,9 +43,9 @@ export const Testimonials = () => {
     <section id="testimonials" className="py-24 bg-muted">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-4 text-white">What Our Clients Say</h2>
+          <h2 className="text-4xl font-bold mb-4 text-white">Какво Казват Нашите Клиенти</h2>
           <p className="text-lg text-white mx-auto max-w-2xl">
-            Discover how our automation solutions have transformed businesses and improved operations across industries.
+            Вижте как нашите решения за автоматизация трансформираха бизнеси и подобриха операциите в различни индустрии.
           </p>
         </div>
 
@@ -62,7 +62,7 @@ export const Testimonials = () => {
                   <div>
                     <h3 className="font-semibold text-white">{testimonial.name}</h3>
                     <p className="text-sm text-white">
-                      {testimonial.role} at {testimonial.company}
+                      {testimonial.role} в {testimonial.company}
                     </p>
                   </div>
                 </div>
