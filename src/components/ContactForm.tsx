@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -169,7 +168,6 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                   containerClass="!bg-transparent"
                   buttonClass="!bg-white/10 !border-white/20"
                   dropdownClass="!bg-cool-100 !text-white"
-                  required={formData.contactMethod === 'phone' || formData.contactMethod === 'both'}
                 />
               </div>
             )}
