@@ -78,7 +78,7 @@ export const Journey = () => {
     <section id="journey" className="py-24 bg-background relative overflow-hidden">
       <div className="container mx-auto px-4">
         <h2 className="text-4xl md:text-5xl font-bold text-center text-cool-300 mb-16">
-          Through the AI Tunnel: 7 Stages to Roadblock Liberation
+          Пътека на успеха
         </h2>
         <div className="relative">
           <div className="absolute left-4 md:left-1/2 h-full w-0.5 bg-primary/30 -translate-x-1/2" />
@@ -117,7 +117,7 @@ export const Journey = () => {
           <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
             <DialogTrigger asChild>
               <Button size="lg" className="bg-primary text-[#000080] hover:bg-primary/90">
-                Book Now
+                Запазете час
               </Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[600px]">
