@@ -41,7 +41,7 @@ jobs:
         run: |
           curl -H "Content-Type: application/json" \
                -X POST \
-               -d '{"content": "Deployment succeeded for automationaid!"}' \
+               -d '{"content": "Deployment succeeded for automationaid! Way to go!"}' \
                "${{ secrets.DISCORD_WEBHOOK }}"
 
       - name: Notify Discord on Failure
