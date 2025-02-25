@@ -8,25 +8,25 @@ export const Footer = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-white">Pages</h3>
+            <h3 className="text-sm font-semibold text-white">Страници</h3>
             <ul className="space-y-2 text-sm">
-              <li><a href="#features" className="text-white/60 hover:text-white transition-colors">Features</a></li>
-              <li><a href="#work" className="text-white/60 hover:text-white transition-colors">Our Work</a></li>
-              <li><a href="#journey" className="text-white/60 hover:text-white transition-colors">Journey</a></li>
+              <li><a href="#features" className="text-white/60 hover:text-white transition-colors">Функционалности</a></li>
+              <li><a href="#work" className="text-white/60 hover:text-white transition-colors">Нашата Работа</a></li>
+              <li><a href="#journey" className="text-white/60 hover:text-white transition-colors">Процес</a></li>
             </ul>
           </div>
 
           <div className="space-y-4">
-            <h3 className="text-sm font-semibold text-white">Resources</h3>
+            <h3 className="text-sm font-semibold text-white">Ресурси</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/resources" className="text-white/60 hover:text-white transition-colors">Resources</Link></li>
-              <li><a href="#testimonials" className="text-white/60 hover:text-white transition-colors">Testimonials</a></li>
-              <li><a href="#faq" className="text-white/60 hover:text-white transition-colors">FAQ</a></li>
+              <li><Link to="/resources" className="text-white/60 hover:text-white transition-colors">Ресурси</Link></li>
+              <li><a href="#testimonials" className="text-white/60 hover:text-white transition-colors">Отзиви</a></li>
+              <li><a href="#faq" className="text-white/60 hover:text-white transition-colors">Въпроси</a></li>
             </ul>
           </div>
 
           <div className="space-y-4 col-span-2 md:col-span-2">
-            <h3 className="text-sm font-semibold text-white">Contact</h3>
+            <h3 className="text-sm font-semibold text-white">Контакти</h3>
             <div className="flex items-center gap-4">
               <a 
                 href="https://www.linkedin.com/in/ghanem-mahmoud/" 
@@ -38,7 +38,7 @@ export const Footer = () => {
               </a>
             </div>
             <p className="text-white/60 text-sm">
-              © {new Date().getFullYear()} Automation Aid. All rights reserved.
+              © {new Date().getFullYear()} Automation Aid. Всички права запазени.
             </p>
           </div>
         </div>
