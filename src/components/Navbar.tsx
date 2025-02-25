@@ -21,7 +21,7 @@ export const Navbar = () => {
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
             <Link to="/">
-              <img src="/lovable-uploads/52b283b3-b8fa-4361-a7e5-f23ad7ab3166.png" alt="Automation Aid Logo" className="h-16" />
+              <img src="/lovable-uploads/automationaid-logo-white.png" alt="Automation Aid Logo" className="h-12" />
             </Link>
           </div>
 
@@ -74,5 +74,3 @@ export const Navbar = () => {
     </nav>
   );
 };
-
-export default Navbar;

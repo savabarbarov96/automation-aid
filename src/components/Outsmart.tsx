@@ -20,20 +20,6 @@ export const Outsmart = () => {
       />
       
       <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-cool-100 mb-8">
-            Outsmart, Outperform, Outgrow.<br/>
-            <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
-              Automation Aid
-            </span>
-          </h2>
-          <img 
-            src="/lovable-uploads/73ca4938-1533-4c85-ac04-f6a4335e36ea.png"
-            alt="Automation Aid Logo"
-            className="h-16 w-auto mx-auto mb-8"
-          />
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 items-center justify-items-center">
           {partners.map((partner, index) => (
             <motion.div
