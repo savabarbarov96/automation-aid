@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -9,6 +9,16 @@ import { ContactForm } from "./ContactForm";
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleGetStarted = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -16,12 +26,18 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="fixed w-full bg-white/5 backdrop-blur-md z-50 border-b border-white/10">
+    <nav className={`fixed w-full z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-white/10 backdrop-blur-md shadow-lg' : 'bg-transparent'
+    }`}>
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
-            <Link to="/">
-              <img src="/lovable-uploads/5f0bce7a-38e6-4daf-b989-6c44279836ea.png" alt="Automation Aid Logo" className="h-12" />
+            <Link to="/" className="transition-transform duration-300 hover:scale-105">
+              <img 
+                src="/lovable-uploads/5f0bce7a-38e6-4daf-b989-6c44279836ea.png" 
+                alt="Automation Aid Logo" 
+                className="h-16 w-auto"
+              />
             </Link>
           </div>
 
