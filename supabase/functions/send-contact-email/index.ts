@@ -6,17 +6,32 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Max-Age': '86400',
+  'Access-Control-Expose-Headers': '*'
 }
 
 serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders })
+    return new Response(null, {
+      status: 204,
+      headers: corsHeaders
+    })
+  }
+
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+    })
   }
 
   try {
     const { service, company, name, email, phone, message, contactMethod } = await req.json()
+
+    console.log('Attempting to send email with data:', { service, company, name, email })
 
     const data = await resend.emails.send({
       from: 'Automation Aid <mail@automationaid.eu>',

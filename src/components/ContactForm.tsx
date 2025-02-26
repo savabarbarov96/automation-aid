@@ -1,3 +1,4 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -8,6 +9,7 @@ import { useToast } from "./ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
+import { Loader2 } from "lucide-react";
 
 interface ContactFormProps {
   onSuccess?: () => void;
@@ -15,8 +17,11 @@ interface ContactFormProps {
 
 type ContactMethod = 'email' | 'phone' | 'both';
 
+type FormStep = 1 | 2 | 3;
+
 export const ContactForm = ({ onSuccess }: ContactFormProps) => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState<FormStep>(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const companyInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState({
@@ -34,15 +39,40 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     setStep(2);
   };
 
+  const handleContactMethodSelect = (value: ContactMethod) => {
+    setFormData(prev => ({ ...prev, contactMethod: value }));
+  };
+
+  const moveToNextStep = () => {
+    if (step === 2) {
+      const isValid = formData.company && formData.name && 
+        ((formData.contactMethod === 'email' && formData.email) ||
+         (formData.contactMethod === 'phone' && formData.phone) ||
+         (formData.contactMethod === 'both' && formData.email && formData.phone));
+      
+      if (!isValid) {
+        toast({
+          title: "Грешка",
+          description: "Моля, попълнете всички задължителни полета.",
+          variant: "destructive",
+        });
+        return;
+      }
+      setStep(3);
+    }
+  };
+
+  const moveBackStep = () => {
+    if (step > 1) {
+      setStep(prev => (prev > 1 ? (prev - 1) as FormStep : prev));
+    }
+  };
+
   useEffect(() => {
     if (step === 2 && companyInputRef.current) {
       companyInputRef.current.focus();
     }
   }, [step]);
-
-  const handleContactMethodSelect = (value: ContactMethod) => {
-    setFormData(prev => ({ ...prev, contactMethod: value }));
-  };
 
   const saveToDatabase = async () => {
     const { error: supabaseError } = await supabase
@@ -86,20 +116,19 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
     
     try {
-      // First, save to database
       await saveToDatabase();
       
-      // Try to send email, but don't block on failure
       try {
         await sendEmail();
       } catch (emailError) {
-        // Log email error but don't fail the submission
         console.error('Email sending failed:', emailError);
       }
 
-      // Show success message and trigger success callback
       toast({
         title: "Успешно!",
         description: "Ще се свържем с вас скоро.",
@@ -113,36 +142,36 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
         description: "Нещо се обърка. Моля, опитайте отново.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  return (
-    <div className="p-6 bg-gradient-to-br from-cool-100/50 to-background/50 backdrop-blur-md rounded-lg border border-white/20">
-      <h2 className="text-2xl font-bold mb-6 text-center text-white">
-        {step === 1 ? "Каква услуга търсите?" : "Вашите данни за контакт"}
-      </h2>
-
-      {step === 1 ? (
-        <RadioGroup
-          defaultValue={formData.service}
-          onValueChange={handleServiceSelect}
-          className="flex flex-col gap-4"
-        >
-          <div className="flex items-center space-x-2 p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
-            <RadioGroupItem value="software" id="software" />
-            <Label htmlFor="software" className="cursor-pointer flex-1 text-white/90">Разработка на Софтуер</Label>
-          </div>
-          <div className="flex items-center space-x-2 p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
-            <RadioGroupItem value="ai" id="ai" />
-            <Label htmlFor="ai" className="cursor-pointer flex-1 text-white/90">AI Решения</Label>
-          </div>
-          <div className="flex items-center space-x-2 p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
-            <RadioGroupItem value="both" id="both" />
-            <Label htmlFor="both" className="cursor-pointer flex-1 text-white/90">Софтуер & AI</Label>
-          </div>
-        </RadioGroup>
-      ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <RadioGroup
+            defaultValue={formData.service}
+            onValueChange={handleServiceSelect}
+            className="flex flex-col gap-4"
+          >
+            <div className="flex items-center space-x-2 p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
+              <RadioGroupItem value="software" id="software" />
+              <Label htmlFor="software" className="cursor-pointer flex-1 text-white/90">Разработка на Софтуер</Label>
+            </div>
+            <div className="flex items-center space-x-2 p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
+              <RadioGroupItem value="ai" id="ai" />
+              <Label htmlFor="ai" className="cursor-pointer flex-1 text-white/90">AI Решения</Label>
+            </div>
+            <div className="flex items-center space-x-2 p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
+              <RadioGroupItem value="both" id="both" />
+              <Label htmlFor="both" className="cursor-pointer flex-1 text-white/90">Софтуер & AI</Label>
+            </div>
+          </RadioGroup>
+        );
+      case 2:
+        return (
           <div className="space-y-4 animate-fade-in">
             <div className="space-y-2">
               <Label htmlFor="company" className="text-white/90">Име на компанията *</Label>
@@ -216,7 +245,11 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                 />
               </div>
             )}
-
+          </div>
+        );
+      case 3:
+        return (
+          <div className="space-y-4 animate-fade-in">
             <div className="space-y-2">
               <Label htmlFor="message" className="text-white/90">Съобщение *</Label>
               <Textarea
@@ -228,21 +261,71 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
               />
             </div>
           </div>
-          <div className="flex gap-4 pt-4">
+        );
+      default:
+        return null;
+    }
+  };
+
+  const getStepTitle = () => {
+    switch (step) {
+      case 1:
+        return "Каква услуга търсите?";
+      case 2:
+        return "Вашите данни за контакт";
+      case 3:
+        return "Вашето съобщение";
+      default:
+        return "";
+    }
+  };
+
+  return (
+    <div className="p-6 bg-gradient-to-br from-cool-100/50 to-background/50 backdrop-blur-md rounded-lg border border-white/20">
+      <h2 className="text-2xl font-bold mb-6 text-center text-white">
+        {getStepTitle()}
+      </h2>
+
+      <form onSubmit={handleSubmit}>
+        {renderStep()}
+        
+        <div className="flex gap-4 pt-4">
+          {step > 1 && (
             <Button 
               type="button" 
               variant="outline" 
-              onClick={() => setStep(1)}
+              onClick={moveBackStep}
               className="border-white/20 text-white hover:bg-white/10"
             >
               Назад
             </Button>
-            <Button type="submit" className="flex-1 bg-primary hover:bg-primary/90">
-              Изпрати
+          )}
+          {step === 3 ? (
+            <Button 
+              type="submit" 
+              className="flex-1 bg-primary hover:bg-primary/90" 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Изпращане...
+                </>
+              ) : (
+                'Изпрати'
+              )}
             </Button>
-          </div>
-        </form>
-      )}
+          ) : (
+            <Button 
+              type="button" 
+              onClick={moveToNextStep}
+              className="flex-1 bg-primary hover:bg-primary/90"
+            >
+              Напред
+            </Button>
+          )}
+        </div>
+      </form>
     </div>
   );
 };
