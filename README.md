@@ -7,8 +7,9 @@
 ## How can I edit this code?
 
 There are several ways of editing your application.
+
 **Use Lovable**
-FUCKING WORK OKAY?
+
 Simply visit the [Lovable Project](https://lovable.dev/projects/5d0b1712-97c2-4286-8645-5bf33aef4a52) and start prompting.
 
 Changes made via Lovable will be committed automatically to this repo.
@@ -18,7 +19,7 @@ Changes made via Lovable will be committed automatically to this repo.
 If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
 The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-t
+
 Follow these steps:
 
 ```sh

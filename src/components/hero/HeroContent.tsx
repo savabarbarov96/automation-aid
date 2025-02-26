@@ -13,8 +13,8 @@ export const HeroContent = () => {
   };
 
   return (
-    <div className="text-left px-4 md:px-0">
-      <h1 className="font-inter text-3xl md:text-4xl lg:text-6xl font-bold text-cool-300 mb-6 animate-fade-in leading-tight max-w-[90vw] md:max-w-none">
+    <div className="text-left">
+      <h1 className="font-inter text-4xl md:text-6xl font-bold text-cool-300 mb-6 animate-fade-in leading-tight">
         Трансформирайте Бизнеса си с AI Автоматизация
       </h1>
       <p className="text-lg md:text-xl text-cool-300/90 mb-8 animate-fade-in max-w-2xl" style={{ animationDelay: "0.2s" }}>
@@ -27,7 +27,7 @@ export const HeroContent = () => {
               Започнете сега <ArrowRight size={20} />
             </button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px] h-[90vh] sm:h-auto overflow-y-auto">
+          <DialogContent className="sm:max-w-[600px]">
             <ContactForm onSuccess={() => setIsFormOpen(false)} />
           </DialogContent>
         </Dialog>

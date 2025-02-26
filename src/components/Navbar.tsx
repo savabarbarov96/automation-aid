@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -9,16 +9,6 @@ import { ContactForm } from "./ContactForm";
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrollPosition(window.scrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleGetStarted = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -26,11 +16,7 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${
-      scrollPosition > 0 
-        ? "bg-white/10 backdrop-blur-md border-b border-white/10" 
-        : "bg-transparent"
-    }`}>
+    <nav className="fixed w-full bg-white/5 backdrop-blur-md z-50 border-b border-white/10">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
@@ -50,15 +36,26 @@ export const Navbar = () => {
               { href: "#work", label: "Нашата Работа" },
               { href: "#journey", label: "Процес" },
               { href: "#testimonials", label: "Отзиви" },
-              { href: "#faq", label: "Въпроси" }
+              { href: "#faq", label: "Въпроси" },
+              { href: "/resources", label: "Ресурси", isLink: true }
             ].map((item, index) => (
-              <a
-                key={index}
-                href={item.href}
-                className="text-white/80 hover:text-white transition-colors duration-300"
-              >
-                {item.label}
-              </a>
+              item.isLink ? (
+                <Link
+                  key={index}
+                  to={item.href}
+                  className="text-white/80 hover:text-white transition-colors duration-300"
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <a
+                  key={index}
+                  href={item.href}
+                  className="text-white/80 hover:text-white transition-colors duration-300"
+                >
+                  {item.label}
+                </a>
+              )
             ))}
           </div>
 
@@ -90,6 +87,7 @@ export const Navbar = () => {
               <a href="#journey" className="text-white/80 hover:text-white transition-colors">Процес</a>
               <a href="#testimonials" className="text-white/80 hover:text-white transition-colors">Отзиви</a>
               <a href="#faq" className="text-white/80 hover:text-white transition-colors">Въпроси</a>
+              <Link to="/resources" className="text-white/80 hover:text-white transition-colors">Ресурси</Link>
               <Button onClick={handleGetStarted} className="w-full">
                 Свържете се
               </Button>
