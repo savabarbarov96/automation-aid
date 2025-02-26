@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -67,18 +66,21 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
   };
 
   const sendEmail = async () => {
-    const response = await fetch('/functions/v1/send-contact-email', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
+    const { error } = await supabase.functions.invoke('send-contact-email', {
+      body: {
+        service: formData.service,
+        company: formData.company,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message,
+        contactMethod: formData.contactMethod
+      }
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('Email function error:', errorData);
-      throw new Error(errorData.error || 'Failed to send email');
+    if (error) {
+      console.error('Email sending error:', error);
+      throw error;
     }
   };
 
