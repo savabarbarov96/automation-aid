@@ -16,7 +16,6 @@ interface ContactFormProps {
 }
 
 type ContactMethod = 'email' | 'phone' | 'both';
-
 type FormStep = 1 | 2 | 3;
 
 export const ContactForm = ({ onSuccess }: ContactFormProps) => {
@@ -95,21 +94,64 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     }
   };
 
-  const sendEmail = async () => {
-    const { error } = await supabase.functions.invoke('send-contact-email', {
-      body: {
-        service: formData.service,
-        company: formData.company,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        message: formData.message,
-        contactMethod: formData.contactMethod
-      }
-    });
+  const sendDiscordNotification = async () => {
+    try {
+      const response = await fetch('https://discord.com/api/webhooks/1344263185963683851/cPYVoXYO2bKdcmaLpva7e_dNjPCSqyssCNK5fHXwP60cdl2sfM6u4iFbRAF7_7ipoEzM', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content: '📬 Ново запитване от уебсайта!',
+          embeds: [{
+            title: 'Детайли за запитването',
+            color: 0x00ff00,
+            fields: [
+              {
+                name: 'Име',
+                value: formData.name,
+                inline: true
+              },
+              {
+                name: 'Компания',
+                value: formData.company,
+                inline: true
+              },
+              {
+                name: 'Услуга',
+                value: formData.service,
+                inline: true
+              },
+              {
+                name: 'Email',
+                value: formData.email || 'Не е предоставен',
+                inline: true
+              },
+              {
+                name: 'Телефон',
+                value: formData.phone || 'Не е предоставен',
+                inline: true
+              },
+              {
+                name: 'Предпочитан начин за контакт',
+                value: formData.contactMethod,
+                inline: true
+              },
+              {
+                name: 'Съобщение',
+                value: formData.message || 'Няма съобщение'
+              }
+            ],
+            timestamp: new Date().toISOString()
+          }]
+        })
+      });
 
-    if (error) {
-      console.error('Email sending error:', error);
+      if (!response.ok) {
+        throw new Error('Failed to send Discord notification');
+      }
+    } catch (error) {
+      console.error('Discord notification error:', error);
       throw error;
     }
   };
@@ -122,12 +164,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     
     try {
       await saveToDatabase();
-      
-      try {
-        await sendEmail();
-      } catch (emailError) {
-        console.error('Email sending failed:', emailError);
-      }
+      await sendDiscordNotification();
 
       toast({
         title: "Успешно!",
