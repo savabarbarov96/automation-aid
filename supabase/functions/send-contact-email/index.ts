@@ -1,8 +1,7 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
-import { Resend } from "npm:resend@2.0.0"
 
-const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY")
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -33,24 +32,32 @@ serve(async (req) => {
 
     console.log('Attempting to send email with data:', { service, company, name, email })
 
-    const data = await resend.emails.send({
-      from: 'Automation Aid <mail@automationaid.eu>',
-      to: ['slavastinov@gmail.com'],
-      subject: 'Ново запитване от уебсайта',
-      html: `
-        <h2>Ново запитване от уебсайта</h2>
-        <p><strong>Име:</strong> ${name}</p>
-        <p><strong>Компания:</strong> ${company}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Телефон:</strong> ${phone}</p>
-        <p><strong>Услуга:</strong> ${service}</p>
-        <p><strong>Предпочитан начин за контакт:</strong> ${contactMethod}</p>
-        <p><strong>Съобщение:</strong></p>
-        <p>${message}</p>
-      `,
-    })
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${RESEND_API_KEY}`
+      },
+      body: JSON.stringify({
+        from: 'Automation Aid <mail@automationaid.eu>',
+        to: ['slavastinov@gmail.com'],
+        subject: 'Ново запитване от уебсайта',
+        html: `
+          <h2>Ново запитване от уебсайта</h2>
+          <p><strong>Име:</strong> ${name}</p>
+          <p><strong>Компания:</strong> ${company}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Телефон:</strong> ${phone}</p>
+          <p><strong>Услуга:</strong> ${service}</p>
+          <p><strong>Предпочитан начин за контакт:</strong> ${contactMethod}</p>
+          <p><strong>Съобщение:</strong></p>
+          <p>${message}</p>
+        `
+      })
+    });
 
-    console.log('Email sent successfully:', data)
+    const data = await res.json();
+    console.log('Email sent successfully:', data);
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
