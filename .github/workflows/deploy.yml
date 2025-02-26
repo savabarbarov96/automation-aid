@@ -1,3 +1,4 @@
+
 name: Deploy to Server
 
 on:
@@ -28,13 +29,20 @@ jobs:
             exit 1
           fi
           ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << 'EOF'
-          cd /var/www/automation-aid
-          git fetch origin main
-          git reset --hard origin/main
-          npm install
-          npm run build
-          nohup sudo systemctl reload nginx > /dev/null 2>&1 &
-          exit
+            cd /var/www/automation-aid
+            git fetch origin main
+            git reset --hard origin/main
+            npm install
+            npm run build
+            pm2 restart automation-aid || pm2 start npm --name "automation-aid" -- start
+            sudo systemctl reload nginx
+            echo "Clearing nginx cache..."
+            sudo rm -rf /var/cache/nginx
+            sudo mkdir /var/cache/nginx
+            sudo chown -R www-data:www-data /var/cache/nginx
+            sudo chmod -R 755 /var/cache/nginx
+            sudo nginx -t && sudo systemctl restart nginx
+            exit
           EOF
 
       - name: Notify Discord on Success
