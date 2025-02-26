@@ -45,43 +45,59 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     setFormData(prev => ({ ...prev, contactMethod: value }));
   };
 
+  const saveToDatabase = async () => {
+    const { error: supabaseError } = await supabase
+      .from('contact_submissions')
+      .insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || '',
+          company: formData.company,
+          message: formData.message,
+          purpose: formData.service,
+          contact_method: formData.contactMethod
+        }
+      ]);
+
+    if (supabaseError) {
+      console.error('Supabase error:', supabaseError);
+      throw supabaseError;
+    }
+  };
+
+  const sendEmail = async () => {
+    const response = await fetch('/functions/v1/send-contact-email', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('Email function error:', errorData);
+      throw new Error(errorData.error || 'Failed to send email');
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     try {
-      const { error: supabaseError } = await supabase
-        .from('contact_submissions')
-        .insert([
-          {
-            name: formData.name,
-            email: formData.email,
-            phone: formData.phone || '',
-            company: formData.company,
-            message: formData.message,
-            purpose: formData.service,
-            contact_method: formData.contactMethod
-          }
-        ]);
-
-      if (supabaseError) {
-        console.error('Supabase error:', supabaseError);
-        throw supabaseError;
+      // First, save to database
+      await saveToDatabase();
+      
+      // Try to send email, but don't block on failure
+      try {
+        await sendEmail();
+      } catch (emailError) {
+        // Log email error but don't fail the submission
+        console.error('Email sending failed:', emailError);
       }
 
-      const response = await fetch('/functions/v1/send-contact-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Email function error:', errorData);
-        throw new Error(errorData.error || 'Failed to send email');
-      }
-
+      // Show success message and trigger success callback
       toast({
         title: "Успешно!",
         description: "Ще се свържем с вас скоро.",
