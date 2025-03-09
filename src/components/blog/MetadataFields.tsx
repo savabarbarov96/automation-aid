@@ -86,14 +86,13 @@ export const MetadataFields = ({
       <div>
         <Label htmlFor="created_by">Автор (потребител)</Label>
         <Select 
-          value={created_by || ""}
+          value={created_by || undefined}
           onValueChange={handleUserSelect}
         >
           <SelectTrigger className="w-full">
             <SelectValue placeholder="Избери потребител" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">Не е избран</SelectItem>
             {users.map((user) => (
               <SelectItem key={user.id} value={user.id}>
                 {user.full_name || user.username}

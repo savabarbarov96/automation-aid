@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { BlogForm } from "@/components/BlogForm";
@@ -7,11 +7,12 @@ import { BlogPostList } from "@/components/BlogPostList";
 import { Navbar } from "@/components/Navbar";
 import { BlogPost } from "@/types/blog";
 import { UserAdmin } from "@/components/users/UserAdmin";
-import { logout } from "@/lib/auth";
+import { logout, useAuth } from "@/lib/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileEdit, Users, LogOut, Briefcase, ArrowLeft } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const BlogAdmin = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -19,6 +20,28 @@ const BlogAdmin = () => {
   const [activeTab, setActiveTab] = useState("posts");
   const navigate = useNavigate();
   const [error, setError] = useState<string | null>(null);
+  const { user } = useAuth();
+
+  // Check if storage bucket exists on component mount
+  useEffect(() => {
+    const checkStorage = async () => {
+      try {
+        const { data, error } = await supabase.storage
+          .from('blog-images')
+          .list();
+
+        if (error) {
+          console.error("Storage check error:", error);
+          setError(`Storage error: ${error.message}. Please check your Supabase storage configuration.`);
+        }
+      } catch (err: any) {
+        console.error("Storage bucket check failed:", err);
+        setError(`Failed to access storage: ${err.message}`);
+      }
+    };
+
+    checkStorage();
+  }, []);
 
   const handlePostEdit = (post: BlogPost) => {
     setCurrentPost(post);
@@ -40,12 +63,24 @@ const BlogAdmin = () => {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      console.log("Initiating logout...");
+      const { error: logoutError } = await logout();
+      
+      if (logoutError) {
+        console.error("Logout error:", logoutError);
+        throw logoutError;
+      }
+      
+      // Clear local storage as a backup measure
+      localStorage.removeItem("supabase.auth.token");
+      
       toast({
         title: "Успешно излизане",
         description: "Вие се отписахте успешно от системата."
       });
-      navigate('/login');
+      
+      // Force navigation to login
+      navigate('/login', { replace: true });
     } catch (error: any) {
       console.error("Logout error:", error);
       setError(error.message || "Error during logout");

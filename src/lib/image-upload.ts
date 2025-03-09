@@ -9,6 +9,13 @@ export const uploadImageToSupabase = async (
   folderPath: string = ""
 ): Promise<{ url: string; error: string | null }> => {
   try {
+    // Check if bucket exists first
+    const bucketError = await checkBucketExists(bucketName);
+    if (bucketError) {
+      console.error(`Cannot upload to bucket "${bucketName}": ${bucketError}`);
+      return { url: '', error: bucketError };
+    }
+
     // Create a unique file name
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
