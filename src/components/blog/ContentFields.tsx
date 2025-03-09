@@ -68,21 +68,11 @@ export const ContentFields = ({
       <div>
         <Label htmlFor="featured_image">Основно изображение</Label>
         <ImageUploader 
-          initialImage={featured_image}
+          initialImage={featured_image || ""}
           onImageUploaded={onFeaturedImageChange}
           bucketName="blog-images"
           folderPath="blog/"
         />
-        <div className="mt-2">
-          <Label htmlFor="featured_image_url">Или въведете URL на изображение</Label>
-          <Input
-            id="featured_image_url"
-            name="featured_image_url"
-            value={featured_image}
-            onChange={(e) => onFeaturedImageChange(e.target.value)}
-            placeholder="https://example.com/image.jpg"
-          />
-        </div>
       </div>
 
       <div>
@@ -90,7 +80,7 @@ export const ContentFields = ({
         <Input
           id="category"
           name="category"
-          value={category}
+          value={category || ""}
           onChange={(e) => onCategoryChange(e.target.value)}
           placeholder="Категория"
         />
@@ -101,7 +91,7 @@ export const ContentFields = ({
         <Input
           id="tags"
           name="tags"
-          value={tags.join(", ")}
+          value={tags ? tags.join(", ") : ""}
           onChange={handleTagsChange}
           placeholder="таг1, таг2, таг3"
         />

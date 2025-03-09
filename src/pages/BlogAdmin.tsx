@@ -11,27 +11,31 @@ import { logout } from "@/lib/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileEdit, Users, LogOut, Briefcase } from "lucide-react";
+import { FileEdit, Users, LogOut, Briefcase, ArrowLeft } from "lucide-react";
 
 const BlogAdmin = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [currentPost, setCurrentPost] = useState<BlogPost | null>(null);
   const [activeTab, setActiveTab] = useState("posts");
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   const handlePostEdit = (post: BlogPost) => {
     setCurrentPost(post);
     setIsEditing(true);
+    setError(null);
   };
 
   const handleNewPost = () => {
     setCurrentPost(null);
     setIsEditing(true);
+    setError(null);
   };
 
   const handleBackToList = () => {
     setIsEditing(false);
     setCurrentPost(null);
+    setError(null);
   };
 
   const handleLogout = async () => {
@@ -42,8 +46,9 @@ const BlogAdmin = () => {
         description: "Вие се отписахте успешно от системата."
       });
       navigate('/login');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Logout error:", error);
+      setError(error.message || "Error during logout");
       toast({
         title: "Грешка при излизане",
         description: "Възникна проблем при отписването. Моля, опитайте отново.",
@@ -51,6 +56,23 @@ const BlogAdmin = () => {
       });
     }
   };
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navbar />
+        <div className="container mx-auto px-4 pt-24 pb-12">
+          <div className="bg-destructive/10 p-6 rounded-lg border border-destructive mb-6">
+            <h2 className="text-xl font-semibold text-destructive mb-2">Възникна грешка</h2>
+            <p className="mb-4">{error}</p>
+            <Button variant="outline" onClick={() => setError(null)}>
+              Опитайте отново
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -83,9 +105,9 @@ const BlogAdmin = () => {
             <Button 
               onClick={handleBackToList} 
               variant="outline" 
-              className="mb-6"
+              className="mb-6 flex items-center gap-2"
             >
-              ← Назад към списъка
+              <ArrowLeft className="h-4 w-4" /> Назад към списъка
             </Button>
             <Card>
               <CardContent className="p-6">

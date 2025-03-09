@@ -20,7 +20,7 @@ export const ImageUploader = ({
   bucketName,
   folderPath = ""
 }: ImageUploaderProps) => {
-  const [imageUrl, setImageUrl] = useState(initialImage);
+  const [imageUrl, setImageUrl] = useState(initialImage || "");
   const [uploadStatus, setUploadStatus] = useState<UploadStatus>("idle");
   const [error, setError] = useState<string | null>(null);
 
@@ -33,8 +33,13 @@ export const ImageUploader = ({
   // Check if the storage bucket exists
   useEffect(() => {
     const verifyBucket = async () => {
-      const bucketError = await checkBucketExists(bucketName);
-      setError(bucketError);
+      try {
+        const bucketError = await checkBucketExists(bucketName);
+        setError(bucketError);
+      } catch (err: any) {
+        setError(err.message || "Error checking bucket");
+        console.error("Bucket check error:", err);
+      }
     };
     
     verifyBucket();

@@ -1,6 +1,5 @@
 
 import { supabase } from "@/integrations/supabase/client";
-import { toast } from "@/components/ui/use-toast";
 
 export type UploadStatus = "idle" | "uploading" | "error";
 
@@ -10,34 +9,33 @@ export const uploadImageToSupabase = async (
   folderPath: string = ""
 ): Promise<{ url: string; error: string | null }> => {
   try {
-    // Generate a unique file name
+    // Create a unique file name
     const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}-${Math.floor(Math.random() * 1000)}.${fileExt}`;
-    const filePath = `${folderPath}${fileName}`;
+    const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
+    const filePath = folderPath ? `${folderPath}${fileName}` : fileName;
 
-    // Upload the file to Supabase Storage
+    // Upload file to Supabase Storage
     const { data, error } = await supabase.storage
       .from(bucketName)
-      .upload(filePath, file);
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
 
-    if (error) throw error;
+    if (error) {
+      console.error('Error uploading file:', error);
+      return { url: '', error: error.message };
+    }
 
-    // Get the public URL
+    // Get public URL
     const { data: { publicUrl } } = supabase.storage
       .from(bucketName)
-      .getPublicUrl(filePath);
+      .getPublicUrl(data.path);
 
     return { url: publicUrl, error: null };
   } catch (error: any) {
-    console.error("Error uploading image:", error);
-    
-    // Set a more specific error message
-    let errorMessage = error.message || "Failed to upload image.";
-    if (errorMessage.includes("not found")) {
-      errorMessage = `Bucket "${bucketName}" does not exist. Please contact the administrator.`;
-    }
-    
-    return { url: "", error: errorMessage };
+    console.error('Unexpected error during upload:', error);
+    return { url: '', error: error.message || 'An unexpected error occurred' };
   }
 };
 
@@ -47,13 +45,19 @@ export const checkBucketExists = async (bucketName: string): Promise<string | nu
     const { data, error } = await supabase.storage.getBucket(bucketName);
     
     if (error) {
-      console.warn(`Bucket ${bucketName} may not exist. Error:`, error);
-      return `Warning: Storage bucket "${bucketName}" may not exist. File uploads may fail.`;
+      if (error.message.includes('The resource was not found')) {
+        return `Bucket "${bucketName}" does not exist. Please create it in Supabase storage.`;
+      }
+      return `Error checking bucket: ${error.message}`;
     }
     
-    return null;
-  } catch (err) {
-    console.error("Error checking bucket:", err);
-    return "Error checking storage bucket.";
+    if (!data) {
+      return `Bucket "${bucketName}" not found`;
+    }
+    
+    return null; // Bucket exists, no error
+  } catch (error: any) {
+    console.error('Error checking bucket:', error);
+    return error.message || 'Error checking storage bucket';
   }
 };

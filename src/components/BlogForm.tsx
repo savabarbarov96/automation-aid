@@ -31,6 +31,7 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
     published_at: null,
     created_by: null
   });
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     // Fetch available blog users
@@ -43,8 +44,9 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
           
         if (error) throw error;
         setUsers(data as User[] || []);
-      } catch (error) {
+      } catch (error: any) {
         console.error("Error fetching users:", error);
+        setError(`Error fetching users: ${error.message}`);
       }
     };
 
@@ -77,7 +79,7 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
         content: "",
         excerpt: "",
         featured_image: "",
-        author: currentUser ? (currentUser.full_name || currentUser.username) : "",
+        author: currentUser ? (currentUser.full_name || currentUser.username || "") : "",
         is_published: false,
         category: "",
         tags: [],
@@ -95,6 +97,7 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
       const postData = { ...formData };
@@ -111,7 +114,7 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
 
       // Make sure we have an author
       if (!postData.author && currentUser) {
-        postData.author = currentUser.full_name || currentUser.username;
+        postData.author = currentUser.full_name || currentUser.username || "";
       }
 
       console.log("Saving post data:", postData);
@@ -145,6 +148,7 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
       }
     } catch (error: any) {
       console.error("Error saving post:", error);
+      setError(error.message || "Неуспешно запазване на публикацията.");
       toast({
         title: "Грешка",
         description: error.message || "Неуспешно запазване на публикацията.",
@@ -155,8 +159,23 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
     }
   };
 
+  if (error) {
+    return (
+      <div className="bg-destructive/10 p-4 rounded-md border border-destructive mb-4">
+        <h3 className="font-medium text-destructive">Възникна грешка:</h3>
+        <p>{error}</p>
+        <button 
+          onClick={() => setError(null)}
+          className="mt-2 text-sm text-primary underline"
+        >
+          Опитайте отново
+        </button>
+      </div>
+    );
+  }
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-card p-6 rounded-lg">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-card rounded-lg">
       <div className="space-y-6">
         <MetadataFields 
           title={formData.title}
