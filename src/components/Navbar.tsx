@@ -43,7 +43,7 @@ export const Navbar = () => {
                 <Link
                   key={index}
                   to={item.href}
-                  className="text-white/80 hover:text-white transition-colors duration-300 font-medium tracking-wide"
+                  className="text-white hover:text-primary transition-colors duration-300 font-medium tracking-wide"
                 >
                   {item.label}
                 </Link>
@@ -51,7 +51,7 @@ export const Navbar = () => {
                 <a
                   key={index}
                   href={item.href}
-                  className="text-white/80 hover:text-white transition-colors duration-300 font-medium tracking-wide"
+                  className="text-white hover:text-primary transition-colors duration-300 font-medium tracking-wide"
                 >
                   {item.label}
                 </a>
@@ -82,12 +82,12 @@ export const Navbar = () => {
         {isOpen && (
           <div className="md:hidden absolute top-20 left-0 right-0 bg-white/5 backdrop-blur-md border-b border-white/10 transition-all duration-300 animate-fade-in">
             <div className="flex flex-col space-y-4 px-4 py-6">
-              <a href="#features" className="text-white/80 hover:text-white transition-colors py-2">Функционалности</a>
-              <a href="#work" className="text-white/80 hover:text-white transition-colors py-2">Нашата Работа</a>
-              <a href="#journey" className="text-white/80 hover:text-white transition-colors py-2">Процес</a>
-              <a href="#testimonials" className="text-white/80 hover:text-white transition-colors py-2">Отзиви</a>
-              <a href="#faq" className="text-white/80 hover:text-white transition-colors py-2">Въпроси</a>
-              <Link to="/blog" className="text-white/80 hover:text-white transition-colors py-2">Блог</Link>
+              <a href="#features" className="text-white hover:text-primary transition-colors py-2">Функционалности</a>
+              <a href="#work" className="text-white hover:text-primary transition-colors py-2">Нашата Работа</a>
+              <a href="#journey" className="text-white hover:text-primary transition-colors py-2">Процес</a>
+              <a href="#testimonials" className="text-white hover:text-primary transition-colors py-2">Отзиви</a>
+              <a href="#faq" className="text-white hover:text-primary transition-colors py-2">Въпроси</a>
+              <Link to="/blog" className="text-white hover:text-primary transition-colors py-2">Блог</Link>
               <Button onClick={handleGetStarted} className="w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 text-white font-bold mt-4">
                 Свържете се
               </Button>

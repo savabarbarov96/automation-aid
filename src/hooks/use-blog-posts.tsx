@@ -11,13 +11,10 @@ export const useBlogPosts = () => {
   const fetchPosts = async () => {
     setLoading(true);
     try {
-      // Use a simple join instead of nested selects to avoid schema cache issues
+      // Just fetch blog posts without trying to join to blog_users
       const { data, error } = await supabase
         .from('blog_posts')
-        .select(`
-          *,
-          created_by
-        `)
+        .select('*')
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -26,24 +23,23 @@ export const useBlogPosts = () => {
 
       // If we need user data, fetch it separately for each post
       const postsWithUserData = await Promise.all((data || []).map(async (post) => {
+        const postWithUser = { ...post } as BlogPostWithUser;
+        
         if (post.created_by) {
           const { data: userData, error: userError } = await supabase
             .from('blog_users')
-            .select('id, username, full_name, is_active')
+            .select('*')
             .eq('id', post.created_by)
             .single();
           
           if (!userError && userData) {
-            return {
-              ...post,
-              blog_users: userData
-            };
+            postWithUser.user = userData;
           }
         }
-        return post;
+        return postWithUser;
       }));
 
-      setPosts(postsWithUserData as BlogPostWithUser[] || []);
+      setPosts(postsWithUserData || []);
     } catch (error: any) {
       console.error("Error fetching posts:", error);
       toast({

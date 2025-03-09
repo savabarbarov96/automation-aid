@@ -113,12 +113,12 @@ export const Work = () => {
                   {project.description && (
                     <p className="text-cool-300/80 mb-4 line-clamp-2">{project.description}</p>
                   )}
-                  <Button variant="ghost" className="group/button flex items-center gap-2" asChild>
+                  <Button variant="ghost" className="group/button flex items-center gap-2">
                     <a 
                       href={project.link} 
                       target="_blank" 
                       rel="noopener noreferrer"
-                      className="hover:text-primary"
+                      className="hover:text-primary flex items-center gap-2"
                     >
                       Разгледай Проекта
                       <ExternalLink className="h-4 w-4 transition-transform group-hover/button:translate-x-1" />
