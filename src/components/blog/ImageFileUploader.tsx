@@ -21,6 +21,7 @@ export const ImageFileUploader = ({
   setUploadStatus
 }: ImageFileUploaderProps) => {
   const [fileInput, setFileInput] = useState<File | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleUpload = async () => {
     if (!fileInput) {
@@ -32,12 +33,14 @@ export const ImageFileUploader = ({
       return;
     }
 
+    setIsUploading(true);
     setUploadStatus("uploading");
     
     const { url, error } = await uploadImageToSupabase(fileInput, bucketName, folderPath);
     
     if (error) {
       setUploadStatus("error");
+      setIsUploading(false);
       toast({
         title: "Грешка при качване",
         description: error,
@@ -48,6 +51,7 @@ export const ImageFileUploader = ({
 
     onImageUploaded(url);
     setUploadStatus("idle");
+    setIsUploading(false);
     
     toast({
       title: "Изображението е качено",
@@ -70,11 +74,11 @@ export const ImageFileUploader = ({
       <Button 
         type="button" 
         onClick={handleUpload}
-        disabled={!fileInput || setUploadStatus === "uploading"}
+        disabled={!fileInput || isUploading}
         className="flex items-center gap-2"
       >
         <Upload className="h-4 w-4" />
-        {setUploadStatus === "uploading" ? "Качване..." : "Качи изображението"}
+        {isUploading ? "Качване..." : "Качи изображението"}
       </Button>
     </div>
   );
