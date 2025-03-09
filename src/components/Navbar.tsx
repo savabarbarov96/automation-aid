@@ -37,7 +37,8 @@ export const Navbar = () => {
               { href: "#journey", label: "Процес" },
               { href: "#testimonials", label: "Отзиви" },
               { href: "#faq", label: "Въпроси" },
-              { href: "/resources", label: "Ресурси", isLink: true }
+              { href: "/resources", label: "Ресурси", isLink: true },
+              { href: "/blog", label: "Блог", isLink: true }
             ].map((item, index) => (
               item.isLink ? (
                 <Link
@@ -88,6 +89,7 @@ export const Navbar = () => {
               <a href="#testimonials" className="text-white/80 hover:text-white transition-colors">Отзиви</a>
               <a href="#faq" className="text-white/80 hover:text-white transition-colors">Въпроси</a>
               <Link to="/resources" className="text-white/80 hover:text-white transition-colors">Ресурси</Link>
+              <Link to="/blog" className="text-white/80 hover:text-white transition-colors">Блог</Link>
               <Button onClick={handleGetStarted} className="w-full">
                 Свържете се
               </Button>

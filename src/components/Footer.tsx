@@ -20,6 +20,7 @@ export const Footer = () => {
             <h3 className="text-sm font-semibold text-white">Ресурси</h3>
             <ul className="space-y-2 text-sm">
               <li><Link to="/resources" className="text-white/60 hover:text-white transition-colors">Ресурси</Link></li>
+              <li><Link to="/blog" className="text-white/60 hover:text-white transition-colors">Блог</Link></li>
               <li><a href="#testimonials" className="text-white/60 hover:text-white transition-colors">Отзиви</a></li>
               <li><a href="#faq" className="text-white/60 hover:text-white transition-colors">Въпроси</a></li>
             </ul>
