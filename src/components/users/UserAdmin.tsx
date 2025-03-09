@@ -1,8 +1,9 @@
-
 import { useState } from "react";
 import { UserForm } from "./UserForm";
 import { UsersList } from "./UsersList";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ArrowLeft, UserPlus } from "lucide-react";
 
 export const UserAdmin = () => {
   const [editing, setEditing] = useState(false);
@@ -25,26 +26,40 @@ export const UserAdmin = () => {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-2xl font-bold">Управление на потребители</h2>
-      
       {editing ? (
-        <div>
+        <div className="space-y-4">
           <Button 
             onClick={handleBack}
-            className="mb-6 bg-muted hover:bg-muted/80 text-white"
+            variant="ghost"
+            className="flex items-center gap-2 hover:bg-secondary"
           >
-            ← Назад към списъка
+            <ArrowLeft size={16} /> Назад към списъка
           </Button>
-          <UserForm currentUser={currentUser} onSuccess={handleBack} />
+          
+          <Card className="shadow-sm border-muted">
+            <CardHeader className="bg-card border-b border-border/40 pb-3">
+              <CardTitle className="text-xl">
+                {currentUser ? "Редактиране на потребител" : "Нов потребител"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="p-6">
+              <UserForm currentUser={currentUser} onSuccess={handleBack} />
+            </CardContent>
+          </Card>
         </div>
       ) : (
-        <div>
-          <Button 
-            onClick={handleCreateNew}
-            className="mb-6 bg-primary hover:bg-primary/80 text-primary-foreground"
-          >
-            + Създай нов потребител
-          </Button>
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h2 className="text-2xl font-bold">Управление на потребители</h2>
+            
+            <Button 
+              onClick={handleCreateNew}
+              className="flex items-center gap-2"
+            >
+              <UserPlus size={16} /> Нов потребител
+            </Button>
+          </div>
+          
           <UsersList onEdit={handleEditUser} />
         </div>
       )}

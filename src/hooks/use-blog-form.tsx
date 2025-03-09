@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
@@ -96,7 +95,23 @@ export const useBlogForm = ({ currentPost, onSuccess }: UseBlogFormProps) => {
     setError(null);
 
     try {
-      const postData = { ...formData };
+      // Create a clean copy of the form data with only the fields we need
+      const postData = {
+        title: formData.title,
+        slug: formData.slug,
+        content: formData.content,
+        excerpt: formData.excerpt,
+        featured_image: formData.featured_image,
+        author: formData.author,
+        is_published: formData.is_published,
+        category: formData.category,
+        tags: formData.tags,
+        published_at: formData.published_at,
+        created_by: formData.created_by,
+        // Include these only if they exist in the current post
+        ...(formData.created_at ? { created_at: formData.created_at } : {}),
+        ...(formData.updated_at ? { updated_at: new Date().toISOString() } : {})
+      };
 
       // Add published_at timestamp if publishing for the first time
       if (formData.is_published && (!currentPost || !currentPost.is_published)) {

@@ -1,10 +1,14 @@
-
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "./ui/accordion";
+import { motion } from "framer-motion";
+import { HelpCircle } from "lucide-react";
+import { useState } from "react";
+import { Dialog, DialogContent } from "./ui/dialog";
+import { ContactForm } from "./ContactForm";
 
 interface FAQItem {
   question: string;
@@ -35,35 +39,92 @@ const faqItems: FAQItem[] = [
 ];
 
 export const FAQ = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  
+  const handleContactClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsFormOpen(true);
+  };
+
   return (
-    <section id="faq" className="py-24 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-in">
-          <h2 className="text-4xl font-bold mb-4 text-black">Често Задавани Въпроси</h2>
-          <p className="text-lg text-black mx-auto max-w-2xl">
+    <section id="faq" className="py-24 bg-background relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+      <div className="absolute -top-[500px] -right-[500px] w-[1000px] h-[1000px] bg-primary/5 rounded-full blur-3xl"></div>
+      <div className="absolute -bottom-[300px] -left-[300px] w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <div className="inline-flex items-center justify-center p-2 bg-primary/10 rounded-full mb-4">
+            <HelpCircle className="h-6 w-6 text-primary" />
+          </div>
+          <h2 className="text-4xl font-bold mb-4 text-white">Често Задавани Въпроси</h2>
+          <p className="text-lg text-white/70 mx-auto max-w-2xl">
             Намерете отговори на често задавани въпроси за нашите решения и услуги за автоматизация.
           </p>
-        </div>
+        </motion.div>
 
-        <div className="max-w-3xl mx-auto animate-fade-in">
+        <div className="max-w-3xl mx-auto relative">
+          {/* Background decorative elements */}
+          <div className="absolute -left-24 top-1/4 w-16 h-16 bg-primary/10 rounded-full opacity-50 hidden lg:block"></div>
+          <div className="absolute -right-16 top-3/4 w-12 h-12 bg-primary/10 rounded-full opacity-50 hidden lg:block"></div>
+          
           <Accordion type="single" collapsible className="w-full space-y-4">
             {faqItems.map((item, index) => (
-              <AccordionItem
+              <motion.div
                 key={index}
-                value={`item-${index}`}
-                className="border rounded-lg px-4"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
               >
-                <AccordionTrigger className="text-left text-lg font-semibold text-black">
-                  {item.question}
-                </AccordionTrigger>
-                <AccordionContent className="text-black">
-                  {item.answer}
-                </AccordionContent>
-              </AccordionItem>
+                <AccordionItem
+                  value={`item-${index}`}
+                  className="border border-white/10 rounded-xl overflow-hidden bg-white/5 backdrop-blur-sm"
+                >
+                  <AccordionTrigger className="text-left text-lg font-semibold text-white px-6 py-4 hover:bg-white/5">
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-white/70 px-6 pb-6 pt-2 leading-relaxed">
+                    {item.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              </motion.div>
             ))}
           </Accordion>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            viewport={{ once: true }}
+            className="text-center mt-12 pt-6 border-t border-white/10"
+          >
+            <p className="text-white/70">
+              Все още имате въпроси? <button 
+                onClick={handleContactClick}
+                className="text-primary font-medium hover:underline cursor-pointer bg-transparent border-none p-0 inline"
+              >
+                Свържете се с нас
+              </button> за персонализирана консултация.
+            </p>
+          </motion.div>
         </div>
       </div>
+
+      {/* Contact Form Dialog */}
+      <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+        <DialogContent className="sm:max-w-[600px]">
+          <ContactForm onSuccess={() => setIsFormOpen(false)} />
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };

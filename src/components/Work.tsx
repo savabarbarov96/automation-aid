@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
@@ -97,7 +96,7 @@ export const Work = () => {
             {filteredProjects.map((project) => (
               <div 
                 key={project.id}
-                className="group bg-cool-100 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl shadow-lg border border-white/5"
+                className="group bg-cool-100/10 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl shadow-lg border border-white/10"
               >
                 <div className="aspect-video relative overflow-hidden">
                   <img
@@ -105,25 +104,25 @@ export const Work = () => {
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-300"></div>
                 </div>
                 <div className="p-6">
-                  <div className="text-sm text-primary mb-2 font-medium">{project.category}</div>
-                  <h3 className="text-xl font-semibold text-cool-300 mb-4">{project.title}</h3>
+                  <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-3">
+                    {project.category}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">{project.title}</h3>
                   {project.description && (
-                    <p className="text-cool-300/80 mb-4 line-clamp-2">{project.description}</p>
+                    <p className="text-white/70 mb-4 line-clamp-2">{project.description}</p>
                   )}
-                  <Button variant="ghost" className="group/button flex items-center gap-2">
-                    <a 
-                      href={project.link} 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="hover:text-primary flex items-center gap-2"
-                    >
-                      Разгледай Проекта
-                      <ExternalLink className="h-4 w-4 transition-transform group-hover/button:translate-x-1" />
-                    </a>
-                  </Button>
+                  <a 
+                    href={project.link && project.link.startsWith('http') ? project.link : `https://${project.link}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-white bg-primary/20 hover:bg-primary px-4 py-2 rounded-lg transition-colors duration-300 mt-2"
+                  >
+                    Разгледай Проекта
+                    <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </a>
                 </div>
               </div>
             ))}

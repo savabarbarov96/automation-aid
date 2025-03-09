@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -109,7 +108,7 @@ export const ProjectList = ({ onEdit }: ProjectListProps) => {
               )}
               <div className="flex flex-wrap gap-2 mt-2">
                 <a 
-                  href={project.link} 
+                  href={project.link && project.link.startsWith('http') ? project.link : `https://${project.link}`} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-sm text-blue-400 hover:text-blue-300 flex items-center gap-1"

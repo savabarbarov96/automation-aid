@@ -1,11 +1,18 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { User } from "@/types/blog";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Loader2, UserIcon, Mail, Calendar, Pencil, Power, Trash2 } from "lucide-react";
+import { formatDate } from "@/lib/utils";
 
-export const UsersList = ({ onEdit }) => {
+interface UsersListProps {
+  onEdit: (user: User) => void;
+}
+
+export const UsersList = ({ onEdit }: UsersListProps) => {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -107,66 +114,96 @@ export const UsersList = ({ onEdit }) => {
   };
 
   if (loading) {
-    return <div className="text-center py-10">Зареждане...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
+        <Loader2 className="h-10 w-10 animate-spin mb-4 text-primary/70" />
+        <p className="text-lg font-medium">Зареждане на потребители...</p>
+      </div>
+    );
   }
 
   if (users.length === 0) {
-    return <div className="text-center py-10">Няма потребители. Създайте първия.</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-16 text-muted-foreground border border-dashed border-border rounded-lg bg-muted/20">
+        <UserIcon className="h-12 w-12 mb-4 text-muted-foreground/50" />
+        <p className="text-lg font-medium mb-1">Няма потребители</p>
+        <p className="text-sm">Използвайте бутона "Нов потребител", за да създадете първия.</p>
+      </div>
+    );
   }
 
   return (
     <div className="space-y-4">
       {users.map((user) => (
-        <div key={user.id} className="bg-card p-4 rounded-lg border border-muted">
-          <div className="flex items-start justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-white">
-                {user.full_name || user.username}
-                {user.is_active ? (
-                  <span className="ml-2 text-xs px-2 py-1 bg-green-900/30 text-green-400 rounded-full">
-                    Активен
-                  </span>
-                ) : (
-                  <span className="ml-2 text-xs px-2 py-1 bg-red-900/30 text-red-400 rounded-full">
-                    Неактивен
-                  </span>
-                )}
-              </h2>
-              <p className="text-sm text-muted-foreground mt-1">
-                Потребител: {user.username}
-              </p>
-              {user.email && (
-                <p className="text-sm text-muted-foreground">
-                  Email: {user.email}
-                </p>
-              )}
+        <Card key={user.id} className="overflow-hidden border border-border hover:shadow-md transition-shadow duration-200">
+          <CardContent className="p-5">
+            <div className="flex flex-col md:flex-row justify-between gap-4">
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-xl font-semibold text-foreground">
+                    {user.full_name || user.username}
+                  </h2>
+                  {user.is_active ? (
+                    <Badge variant="default" className="bg-green-600 hover:bg-green-700">
+                      Активен
+                    </Badge>
+                  ) : (
+                    <Badge variant="secondary" className="bg-red-600 hover:bg-red-700">
+                      Неактивен
+                    </Badge>
+                  )}
+                </div>
+                
+                <div className="text-sm text-muted-foreground space-y-1.5">
+                  <p className="flex items-center gap-1.5">
+                    <UserIcon size={14} className="text-muted-foreground/70" />
+                    <span>Потребител: {user.username}</span>
+                  </p>
+                  
+                  {user.email && (
+                    <p className="flex items-center gap-1.5">
+                      <Mail size={14} className="text-muted-foreground/70" />
+                      <span>{user.email}</span>
+                    </p>
+                  )}
+                  
+                  <p className="flex items-center gap-1.5">
+                    <Calendar size={14} className="text-muted-foreground/70" />
+                    <span>Създаден: {formatDate(user.created_at)}</span>
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
+          </CardContent>
           
-          <div className="flex space-x-2 mt-4">
+          <CardFooter className="flex justify-end gap-2 p-3 bg-muted/10 border-t border-border">
             <Button
               variant="outline"
               size="sm"
               onClick={() => onEdit(user)}
+              className="flex items-center gap-1 h-8"
             >
-              Редактирай
+              <Pencil size={14} /> Редактирай
             </Button>
             <Button
               variant={user.is_active ? "outline" : "default"}
               size="sm"
               onClick={() => toggleActive(user)}
+              className="flex items-center gap-1 h-8"
             >
+              <Power size={14} />
               {user.is_active ? "Деактивирай" : "Активирай"}
             </Button>
             <Button
               variant="destructive"
               size="sm"
               onClick={() => handleDelete(user.id)}
+              className="flex items-center gap-1 h-8"
             >
-              Изтрий
+              <Trash2 size={14} /> Изтрий
             </Button>
-          </div>
-        </div>
+          </CardFooter>
+        </Card>
       ))}
     </div>
   );

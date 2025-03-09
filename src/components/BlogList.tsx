@@ -1,10 +1,13 @@
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { formatDate } from "@/lib/utils";
 
-export const BlogList = () => {
+interface BlogListProps {
+  searchQuery?: string;
+}
+
+export const BlogList = ({ searchQuery = "" }: BlogListProps) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState([]);
@@ -22,6 +25,10 @@ export const BlogList = () => {
         
         if (selectedCategory) {
           query = query.eq('category', selectedCategory);
+        }
+
+        if (searchQuery) {
+          query = query.or(`title.ilike.%${searchQuery}%,content.ilike.%${searchQuery}%,excerpt.ilike.%${searchQuery}%`);
         }
 
         const { data, error } = await query;
@@ -45,7 +52,7 @@ export const BlogList = () => {
     };
 
     fetchPosts();
-  }, [selectedCategory]);
+  }, [selectedCategory, searchQuery]);
 
   if (loading) {
     return <div className="text-center py-10">Зареждане...</div>;

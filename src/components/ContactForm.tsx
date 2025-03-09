@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -9,7 +8,9 @@ import { useToast } from "./ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { Loader2 } from "lucide-react";
+import { Loader2, CheckCircle2, ArrowRight, ArrowLeft, Mail, Phone, MessageSquare, Building, User } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface ContactFormProps {
   onSuccess?: () => void;
@@ -37,8 +38,8 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     setStep(2);
   };
 
-  const handleContactMethodSelect = (value: ContactMethod) => {
-    setFormData(prev => ({ ...prev, contactMethod: value }));
+  const handleContactMethodSelect = (value: string) => {
+    setFormData(prev => ({ ...prev, contactMethod: value as ContactMethod }));
   };
 
   const getStepTitle = () => {
@@ -48,9 +49,9 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
       case 2:
         return "Вашите данни за контакт";
       case 3:
-        return "Оставете съобщение";
+        return "Разкажете ни повече";
       default:
-        return "";
+        return "Свържете се с нас";
     }
   };
 
@@ -161,169 +162,301 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     }
   };
 
+  const variants = {
+    hidden: { opacity: 0, x: 50 },
+    visible: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -50 }
+  };
+
+  const progressPercentage = ((step - 1) / 2) * 100;
+
   return (
-    <div className="p-6 bg-gradient-to-br from-cool-100/50 to-background/50 backdrop-blur-md rounded-lg border border-white/20">
-      <h2 className="text-2xl font-bold mb-6 text-center text-white">
-        {getStepTitle()}
-      </h2>
-
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {step === 1 && (
-          <RadioGroup
-            defaultValue={formData.service}
-            onValueChange={handleServiceSelect}
-            className="flex flex-col gap-3"
-          >
-            <div className="flex items-center space-x-2 p-3 sm:p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
-              <RadioGroupItem value="software" id="software" />
-              <Label htmlFor="software" className="cursor-pointer flex-1 text-white/90 text-sm sm:text-base">Разработка на Софтуер</Label>
-            </div>
-            <div className="flex items-center space-x-2 p-3 sm:p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
-              <RadioGroupItem value="ai" id="ai" />
-              <Label htmlFor="ai" className="cursor-pointer flex-1 text-white/90 text-sm sm:text-base">AI Решения</Label>
-            </div>
-            <div className="flex items-center space-x-2 p-3 sm:p-4 border border-white/20 rounded-lg hover:bg-white/5 cursor-pointer transition-all duration-300 hover:scale-[1.02]">
-              <RadioGroupItem value="both" id="both" />
-              <Label htmlFor="both" className="cursor-pointer flex-1 text-white/90 text-sm sm:text-base">Софтуер & AI</Label>
-            </div>
-          </RadioGroup>
-        )}
-
-        {step === 2 && (
-          <div className="space-y-3 sm:space-y-4 animate-fade-in">
-            <div className="space-y-1 sm:space-y-2">
-              <Label htmlFor="company" className="text-white/90 text-sm">Име на компанията *</Label>
-              <Input
-                id="company"
-                ref={companyInputRef}
-                required
-                value={formData.company}
-                onChange={e => setFormData(prev => ({ ...prev, company: e.target.value }))}
-                className="h-9 sm:h-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-primary/50 text-sm"
-              />
-            </div>
-            <div className="space-y-1 sm:space-y-2">
-              <Label htmlFor="name" className="text-white/90 text-sm">Вашето име *</Label>
-              <Input
-                id="name"
-                required
-                value={formData.name}
-                onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                className="h-9 sm:h-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-primary/50 text-sm"
-              />
-            </div>
-
-            <div className="flex justify-end gap-4 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setStep(1)}
-                className="border-white/20 text-white hover:bg-white/10"
-              >
-                Назад
-              </Button>
-              <Button 
-                type="button"
-                onClick={() => setStep(3)}
-                className="bg-primary hover:bg-primary/90"
-              >
-                Напред
-              </Button>
-            </div>
+    <div className="relative overflow-hidden bg-gradient-to-br from-background to-background/80 rounded-lg p-6 sm:p-8">
+      {/* Background decoration */}
+      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h2 className="text-2xl font-bold text-white mb-2">{getStepTitle()}</h2>
+          <div className="w-full bg-white/10 h-1 rounded-full overflow-hidden mt-6">
+            <div 
+              className="h-full bg-gradient-to-r from-primary/80 to-primary transition-all duration-500 ease-out"
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
           </div>
-        )}
+          <div className="flex justify-between mt-2 text-xs text-white/50">
+            <span className={step >= 1 ? "text-primary" : ""}>Услуга</span>
+            <span className={step >= 2 ? "text-primary" : ""}>Контакт</span>
+            <span className={step >= 3 ? "text-primary" : ""}>Детайли</span>
+          </div>
+        </div>
 
-        {step === 3 && (
-          <div className="space-y-3 sm:space-y-4 animate-fade-in">
-            <div className="space-y-1 sm:space-y-2">
-              <Label className="text-white/90 text-sm">Предпочитан начин за контакт *</Label>
-              <RadioGroup
-                value={formData.contactMethod}
-                onValueChange={handleContactMethodSelect}
-                className="flex flex-wrap gap-3 sm:gap-4"
-              >
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="email" id="email" />
-                  <Label htmlFor="email" className="cursor-pointer text-white/90 text-sm">Имейл</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="phone" id="phone" />
-                  <Label htmlFor="phone" className="cursor-pointer text-white/90 text-sm">Телефон</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="both" id="both-contact" />
-                  <Label htmlFor="both-contact" className="cursor-pointer text-white/90 text-sm">И двете</Label>
-                </div>
-              </RadioGroup>
-            </div>
-
-            {(formData.contactMethod === 'email' || formData.contactMethod === 'both') && (
-              <div className="space-y-1 sm:space-y-2">
-                <Label htmlFor="email" className="text-white/90 text-sm">Имейл *</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  required={formData.contactMethod === 'email' || formData.contactMethod === 'both'}
-                  value={formData.email}
-                  onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                  className="h-9 sm:h-10 bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-primary/50 text-sm"
+        <AnimatePresence mode="wait">
+          {step === 1 && (
+            <motion.div
+              key="step1"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={variants}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <ServiceCard
+                  title="Автоматизация"
+                  description="Оптимизирайте процесите си с интелигентна автоматизация"
+                  selected={formData.service === "automation"}
+                  onClick={() => handleServiceSelect("automation")}
+                  icon="🤖"
+                />
+                <ServiceCard
+                  title="AI Интеграция"
+                  description="Внедрете AI решения във вашия бизнес"
+                  selected={formData.service === "ai"}
+                  onClick={() => handleServiceSelect("ai")}
+                  icon="🧠"
+                />
+                <ServiceCard
+                  title="Разработка"
+                  description="Създаване на персонализиран софтуер за вашите нужди"
+                  selected={formData.service === "development"}
+                  onClick={() => handleServiceSelect("development")}
+                  icon="💻"
+                />
+                <ServiceCard
+                  title="Консултация"
+                  description="Експертни съвети за дигитална трансформация"
+                  selected={formData.service === "consulting"}
+                  onClick={() => handleServiceSelect("consulting")}
+                  icon="📊"
                 />
               </div>
-            )}
+            </motion.div>
+          )}
 
-            {(formData.contactMethod === 'phone' || formData.contactMethod === 'both') && (
-              <div className="space-y-1 sm:space-y-2">
-                <Label htmlFor="phone" className="text-white/90 text-sm">Телефон *</Label>
-                <PhoneInput
-                  country={'bg'}
-                  value={formData.phone}
-                  onChange={phone => setFormData(prev => ({ ...prev, phone }))}
-                  inputClass="!w-full !h-9 sm:!h-10 !bg-white/10 !border-white/20 !text-white !pl-12 !text-sm"
-                  containerClass="!bg-transparent"
-                  buttonClass="!bg-white/10 !border-white/20"
-                  dropdownClass="!bg-cool-100 !text-white"
-                />
-              </div>
-            )}
+          {step === 2 && (
+            <motion.div
+              key="step2"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={variants}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="company" className="flex items-center gap-2 text-white/90">
+                    <Building className="h-4 w-4 text-primary/80" />
+                    Име на компанията *
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="company"
+                      ref={companyInputRef}
+                      required
+                      value={formData.company}
+                      onChange={e => setFormData(prev => ({ ...prev, company: e.target.value }))}
+                      className="bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3"
+                      placeholder="Вашата компания"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="name" className="flex items-center gap-2 text-white/90">
+                    <User className="h-4 w-4 text-primary/80" />
+                    Вашето име *
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="name"
+                      required
+                      value={formData.name}
+                      onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                      className="bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3"
+                      placeholder="Вашето име"
+                    />
+                  </div>
+                </div>
 
-            <div className="space-y-1 sm:space-y-2">
-              <Label htmlFor="message" className="text-white/90 text-sm">Съобщение *</Label>
-              <Textarea
-                id="message"
-                required
-                value={formData.message}
-                onChange={e => setFormData(prev => ({ ...prev, message: e.target.value }))}
-                className="bg-white/10 border-white/20 text-white placeholder:text-white/50 focus:ring-primary/50 min-h-[80px] sm:min-h-[100px] text-sm"
-              />
-            </div>
+                <div className="space-y-2">
+                  <Label className="text-white/90">Предпочитан начин за контакт *</Label>
+                  <RadioGroup 
+                    value={formData.contactMethod} 
+                    onValueChange={handleContactMethodSelect}
+                    className="flex flex-col sm:flex-row gap-3"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="email" id="email" className="text-primary" />
+                      <Label htmlFor="email" className="flex items-center gap-2 cursor-pointer">
+                        <Mail className="h-4 w-4 text-primary/80" />
+                        Имейл
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="phone" id="phone" className="text-primary" />
+                      <Label htmlFor="phone" className="flex items-center gap-2 cursor-pointer">
+                        <Phone className="h-4 w-4 text-primary/80" />
+                        Телефон
+                      </Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="both" id="both" className="text-primary" />
+                      <Label htmlFor="both" className="cursor-pointer">И двете</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
 
-            <div className="flex gap-4 pt-4">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setStep(2)}
-                className="border-white/20 text-white hover:bg-white/10"
-              >
-                Назад
-              </Button>
-              <Button 
-                type="submit" 
-                className="flex-1 bg-primary hover:bg-primary/90"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Изпращане...
-                  </>
-                ) : (
-                  'Изпрати'
+                {(formData.contactMethod === 'email' || formData.contactMethod === 'both') && (
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="flex items-center gap-2 text-white/90">
+                      <Mail className="h-4 w-4 text-primary/80" />
+                      Имейл адрес *
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="email"
+                        type="email"
+                        required={formData.contactMethod === 'email' || formData.contactMethod === 'both'}
+                        value={formData.email}
+                        onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                        className="bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3"
+                        placeholder="вашият@имейл.com"
+                      />
+                    </div>
+                  </div>
                 )}
-              </Button>
-            </div>
-          </div>
-        )}
-      </form>
+
+                {(formData.contactMethod === 'phone' || formData.contactMethod === 'both') && (
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="flex items-center gap-2 text-white/90">
+                      <Phone className="h-4 w-4 text-primary/80" />
+                      Телефонен номер *
+                    </Label>
+                    <div 
+                      className="relative rounded-md overflow-hidden bg-white/5 border border-white/10"
+                      style={{ height: '40px' }}
+                    >
+                      <PhoneInput
+                        country={'bg'}
+                        value={formData.phone}
+                        onChange={phone => setFormData(prev => ({ ...prev, phone }))}
+                        inputProps={{
+                          id: 'phone',
+                          required: formData.contactMethod === 'phone' || formData.contactMethod === 'both',
+                        }}
+                        containerClass="!w-full"
+                        inputClass="!w-full !bg-transparent !border-none !text-white !py-2 !pl-12 !pr-3 !h-10"
+                        buttonClass="absolute !left-0 !top-0 !bottom-0 !border-none !bg-transparent"
+                        dropdownClass="!bg-background !text-white"
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-between pt-4">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setStep(1)}
+                  className="border-white/10 text-white hover:bg-white/10 flex items-center gap-2"
+                >
+                  <ArrowLeft className="h-4 w-4" /> Назад
+                </Button>
+                <Button 
+                  type="button"
+                  onClick={() => setStep(3)}
+                  className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                  disabled={!formData.company || !formData.name || 
+                    (formData.contactMethod === 'email' && !formData.email) || 
+                    (formData.contactMethod === 'phone' && !formData.phone) ||
+                    (formData.contactMethod === 'both' && (!formData.email || !formData.phone))}
+                >
+                  Напред <ArrowRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </motion.div>
+          )}
+
+          {step === 3 && (
+            <motion.div
+              key="step3"
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              variants={variants}
+              transition={{ duration: 0.3 }}
+              className="space-y-6"
+            >
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="message" className="flex items-center gap-2 text-white/90">
+                    <MessageSquare className="h-4 w-4 text-primary/80" />
+                    Вашето съобщение *
+                  </Label>
+                  <Textarea
+                    id="message"
+                    required
+                    value={formData.message}
+                    onChange={e => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                    placeholder="Опишете вашия проект или запитване..."
+                    className="min-h-[120px] bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-between pt-4">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setStep(2)}
+                  className="border-white/10 text-white hover:bg-white/10 flex items-center gap-2"
+                >
+                  <ArrowLeft className="h-4 w-4" /> Назад
+                </Button>
+                <Button 
+                  type="submit"
+                  onClick={handleSubmit}
+                  className="bg-primary hover:bg-primary/90 flex items-center gap-2"
+                  disabled={isSubmitting || !formData.message}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" /> Изпращане...
+                    </>
+                  ) : (
+                    <>
+                      Изпрати <CheckCircle2 className="h-4 w-4 ml-1" />
+                    </>
+                  )}
+                </Button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
+
+// Service card component
+const ServiceCard = ({ title, description, selected, onClick, icon }) => (
+  <div 
+    className={cn(
+      "p-4 rounded-lg border cursor-pointer transition-all duration-200 flex flex-col items-center text-center",
+      selected 
+        ? "border-primary bg-primary/10 shadow-lg shadow-primary/20" 
+        : "border-white/10 bg-white/5 hover:bg-white/10"
+    )}
+    onClick={onClick}
+  >
+    <div className="text-4xl mb-3">{icon}</div>
+    <h3 className="font-semibold text-white mb-1">{title}</h3>
+    <p className="text-sm text-white/70">{description}</p>
+  </div>
+);

@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { User } from "@/types/blog";
 import { useState, useEffect, createContext, useContext } from "react";
@@ -38,17 +37,24 @@ export const useAuthState = () => {
           
         if (userError) {
           console.error('Error fetching user data:', userError);
-          // If we can't find the user in blog_users, we'll use basic auth user info
+          // No matching user in blog_users - they are not authorized
+          await supabase.auth.signOut(); // Sign them out
           setAuthState({ 
-            user: { 
-              id: session.user.id,
-              email: session.user.email || '',
-              username: session.user.email?.split('@')[0] || 'user',
-              full_name: session.user.user_metadata?.full_name || '',
-              is_active: true
-            },
+            user: null,
             loading: false,
-            error: null,
+            error: new Error('User not authorized. Please contact administrator.'),
+          });
+          return;
+        }
+        
+        // Check if user is active
+        if (!userData.is_active) {
+          console.warn('User account is inactive:', userData.email);
+          await supabase.auth.signOut(); // Sign them out
+          setAuthState({ 
+            user: null,
+            loading: false,
+            error: new Error('Your account is inactive. Please contact administrator.'),
           });
           return;
         }
@@ -114,13 +120,34 @@ export const useAuth = () => {
 // Login function
 export const loginWithEmail = async (email: string, password: string) => {
   try {
-    const { data, error } = await supabase.auth.signInWithPassword({
+    // First try to sign in using Supabase Auth
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
     
-    if (error) throw error;
-    return { data, error: null };
+    if (authError) throw authError;
+    
+    // After successful authentication, check if the user exists in the blog_users table
+    const { data: userData, error: userError } = await supabase
+      .from('blog_users')
+      .select('*')
+      .eq('email', email)
+      .single();
+      
+    if (userError) {
+      // If the user doesn't exist in blog_users, sign them out
+      await supabase.auth.signOut();
+      throw new Error('User not authorized. Please contact administrator.');
+    }
+    
+    // Check if user is active
+    if (!userData.is_active) {
+      await supabase.auth.signOut();
+      throw new Error('Your account is inactive. Please contact administrator.');
+    }
+    
+    return { data: authData, error: null };
   } catch (error) {
     console.error('Login error:', error);
     return { data: null, error };
@@ -137,9 +164,6 @@ export const logout = async () => {
       console.error("Logout error from Supabase:", error);
       throw error;
     }
-    
-    // Force clear any auth state in storage
-    window.localStorage.removeItem("supabase.auth.token");
     
     console.log("Logout successful");
     return { error: null };

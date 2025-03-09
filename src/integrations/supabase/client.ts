@@ -8,7 +8,14 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+// Use environment variables if available, otherwise fall back to hardcoded values
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || SUPABASE_PUBLISHABLE_KEY;
+
+export const supabase = createClient<Database>(
+  supabaseUrl,
+  supabaseAnonKey
+);
 
 // Extend the Database type definition to include our new tables
 declare module '@supabase/supabase-js' {
@@ -353,7 +360,6 @@ declare module '@supabase/supabase-js' {
           }
           Relationships: []
         }
-        // Add project tables
         project_categories: {
           Row: {
             id: string;
@@ -403,6 +409,31 @@ declare module '@supabase/supabase-js' {
             updated_at?: string;
           };
         };
+        // Add clients table
+        clients: {
+          Row: {
+            id: string
+            name: string
+            logo: string
+            created_at: string
+            updated_at: string | null
+          }
+          Insert: {
+            id?: string
+            name: string
+            logo: string
+            created_at?: string
+            updated_at?: string | null
+          }
+          Update: {
+            id?: string
+            name?: string
+            logo?: string
+            created_at?: string
+            updated_at?: string | null
+          }
+          Relationships: []
+        }
       };
     };
   }
