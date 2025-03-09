@@ -15,6 +15,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface ProjectFormProps {
   currentProject: Project | null;
@@ -24,6 +26,7 @@ interface ProjectFormProps {
 export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [uploadError, setUploadError] = useState<string | null>(null);
   const [formData, setFormData] = useState<Project>({
     title: "",
     category: "",
@@ -82,6 +85,7 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
   };
 
   const handleImageChange = (url: string) => {
+    setUploadError(null);
     setFormData({
       ...formData,
       image: url
@@ -93,6 +97,12 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
     setLoading(true);
 
     try {
+      if (!formData.image) {
+        setUploadError("Моля, качете изображение или въведете URL");
+        setLoading(false);
+        return;
+      }
+
       if (currentProject) {
         // Update existing project
         const { error } = await supabase
@@ -168,10 +178,10 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
             onValueChange={handleCategoryChange}
             required
           >
-            <SelectTrigger>
+            <SelectTrigger className="w-full">
               <SelectValue placeholder="Изберете категория" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-[200px]">
               {categories.map((category) => (
                 <SelectItem key={category.id} value={category.name}>
                   {category.name}
@@ -180,9 +190,12 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
             </SelectContent>
           </Select>
           {categories.length === 0 && (
-            <p className="text-xs text-yellow-500 mt-1">
-              Нямате създадени категории. Моля, създайте категория от таб "Категории".
-            </p>
+            <Alert variant="warning" className="mt-2">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                Нямате създадени категории. Моля, създайте категория от таб "Категории".
+              </AlertDescription>
+            </Alert>
           )}
         </div>
 
@@ -212,6 +225,12 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
 
         <div>
           <Label>Изображение</Label>
+          {uploadError && (
+            <Alert variant="destructive" className="mb-2">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{uploadError}</AlertDescription>
+            </Alert>
+          )}
           <ImageUploader 
             initialImage={formData.image}
             onImageUploaded={handleImageChange}

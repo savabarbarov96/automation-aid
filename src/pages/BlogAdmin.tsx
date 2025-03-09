@@ -10,6 +10,7 @@ import { UserAdmin } from "@/components/users/UserAdmin";
 import { logout } from "@/lib/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
+import { Card, CardContent } from "@/components/ui/card";
 import { FileEdit, Users, LogOut, Briefcase } from "lucide-react";
 
 const BlogAdmin = () => {
@@ -56,7 +57,7 @@ const BlogAdmin = () => {
       <Navbar />
       <div className="container mx-auto px-4 pt-24 pb-12">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
-          <h1 className="text-3xl font-bold text-white">Администраторски панел</h1>
+          <h1 className="text-3xl font-bold text-foreground">Администраторски панел</h1>
           <div className="flex flex-wrap gap-2">
             <Button 
               variant="outline" 
@@ -86,10 +87,14 @@ const BlogAdmin = () => {
             >
               ← Назад към списъка
             </Button>
-            <BlogForm 
-              currentPost={currentPost} 
-              onSuccess={handleBackToList} 
-            />
+            <Card>
+              <CardContent className="p-6">
+                <BlogForm 
+                  currentPost={currentPost} 
+                  onSuccess={handleBackToList} 
+                />
+              </CardContent>
+            </Card>
           </div>
         ) : (
           <Tabs defaultValue="posts" value={activeTab} onValueChange={setActiveTab}>

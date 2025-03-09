@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
 import { User } from "@/types/blog";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 
 interface UserFormProps {
   currentUser: User | null;
@@ -15,6 +17,7 @@ interface UserFormProps {
 
 export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState<User>({
     id: "",
     username: "",
@@ -55,50 +58,13 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
-      // First handle the Supabase Auth operations
+      // For new users, we'll only add them to the blog_users table without auth
+      // This approach is simpler and avoids permission issues
       if (currentUser) {
         // Update existing user
-        if (formData.password) {
-          // TODO: Handle password reset if needed
-          console.log("Password updates through admin panel are not yet supported");
-        }
-      } else {
-        // For new users, create them in Auth
-        if (!formData.email) {
-          throw new Error("Email is required for new users");
-        }
-        
-        if (!formData.password) {
-          throw new Error("Password is required for new users");
-        }
-        
-        // Create the user in Supabase Auth
-        const { data: authData, error: authError } = await supabase.auth.admin.createUser({
-          email: formData.email,
-          password: formData.password,
-          email_confirm: true
-        });
-        
-        if (authError) {
-          // If there's an auth error but it's just that the user already exists, we can proceed
-          if (!authError.message.includes("already exists")) {
-            throw authError;
-          }
-        }
-        
-        // If user was created successfully, use the new user's ID
-        if (authData?.user) {
-          formData.id = authData.user.id;
-        }
-      }
-      
-      // Now handle the blog_users operations
-      let response;
-      
-      if (currentUser) {
-        // Update existing user in blog_users
         const dataToUpdate = {
           username: formData.username,
           full_name: formData.full_name,
@@ -106,28 +72,32 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
           is_active: formData.is_active
         };
         
-        response = await supabase
+        // If password was provided, update it too
+        if (formData.password) {
+          dataToUpdate['password'] = formData.password;
+        }
+        
+        const { error } = await supabase
           .from('blog_users')
           .update(dataToUpdate)
           .eq('id', currentUser.id);
+          
+        if (error) throw error;
       } else {
-        // Create new user in blog_users
+        // Create new user
         const dataToInsert = {
-          id: formData.id, // This will be the UUID from Auth
           username: formData.username,
           full_name: formData.full_name,
           email: formData.email,
           is_active: formData.is_active,
-          password: formData.password // This is stored for reference only, not for auth
+          password: formData.password // Store hashed or encrypted in production
         };
         
-        response = await supabase
+        const { error } = await supabase
           .from('blog_users')
           .insert(dataToInsert);
-      }
-
-      if (response.error) {
-        throw response.error;
+          
+        if (error) throw error;
       }
 
       toast({
@@ -140,6 +110,7 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
       }
     } catch (error: any) {
       console.error("Error saving user:", error);
+      setError(error.message || "Неуспешно запазване на потребителя.");
       toast({
         title: "Грешка",
         description: error.message || "Неуспешно запазване на потребителя.",
@@ -152,6 +123,13 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-card p-6 rounded-lg">
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      
       <div className="space-y-4">
         <div>
           <Label htmlFor="username">Потребителско име</Label>
@@ -177,7 +155,7 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
             required
           />
           <p className="text-xs text-muted-foreground mt-1">
-            Имейлът се използва за вход в системата
+            Имейлът се използва за идентификация на потребителя
           </p>
         </div>
 

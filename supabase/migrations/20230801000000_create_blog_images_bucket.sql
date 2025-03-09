@@ -5,19 +5,25 @@ VALUES ('blog-images', 'blog-images', true, 10485760, '{image/png,image/jpeg,ima
 ON CONFLICT (id) DO NOTHING;
 
 -- Create a policy to allow authenticated users to upload images
-INSERT INTO storage.policies (name, definition, bucket_id)
-VALUES (
-  'Blog Images Policy - Upload by authenticated users',
-  '(bucket_id = ''blog-images''::text AND auth.role() = ''authenticated''::text)',
-  'blog-images'
-)
-ON CONFLICT (name, bucket_id) DO NOTHING;
+CREATE POLICY "Blog Images Policy - Upload by authenticated users" 
+ON storage.objects FOR INSERT 
+TO authenticated 
+WITH CHECK (bucket_id = 'blog-images');
+
+-- Create a policy to allow authenticated users to update their uploaded images
+CREATE POLICY "Blog Images Policy - Update by authenticated users"
+ON storage.objects FOR UPDATE
+TO authenticated
+USING (bucket_id = 'blog-images');
+
+-- Create a policy to allow authenticated users to delete their uploaded images
+CREATE POLICY "Blog Images Policy - Delete by authenticated users"
+ON storage.objects FOR DELETE
+TO authenticated
+USING (bucket_id = 'blog-images');
 
 -- Create a policy to allow public to view images
-INSERT INTO storage.policies (name, definition, bucket_id)
-VALUES (
-  'Blog Images Policy - View by everyone',
-  '(bucket_id = ''blog-images''::text)',
-  'blog-images'
-)
-ON CONFLICT (name, bucket_id) DO NOTHING;
+CREATE POLICY "Blog Images Policy - View by everyone"
+ON storage.objects FOR SELECT
+TO public
+USING (bucket_id = 'blog-images');

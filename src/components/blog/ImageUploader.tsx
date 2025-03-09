@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
-import { Upload } from "lucide-react";
+import { Upload, AlertCircle } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 export interface ImageUploaderProps {
   initialImage: string;
@@ -23,12 +24,34 @@ export const ImageUploader = ({
   const [imageUrl, setImageUrl] = useState(initialImage);
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "error">("idle");
   const [fileInput, setFileInput] = useState<File | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (initialImage) {
       setImageUrl(initialImage);
     }
   }, [initialImage]);
+
+  // Check if the storage bucket exists
+  useEffect(() => {
+    const checkBucket = async () => {
+      try {
+        // Try to get bucket details
+        const { data, error } = await supabase.storage.getBucket(bucketName);
+        
+        if (error) {
+          console.warn(`Bucket ${bucketName} may not exist. Error:`, error);
+          setError(`Warning: Storage bucket "${bucketName}" may not exist. File uploads may fail.`);
+        } else {
+          setError(null);
+        }
+      } catch (err) {
+        console.error("Error checking bucket:", err);
+      }
+    };
+    
+    checkBucket();
+  }, [bucketName]);
 
   const handleUpload = async () => {
     if (!fileInput) {
@@ -42,6 +65,7 @@ export const ImageUploader = ({
 
     try {
       setUploadStatus("uploading");
+      setError(null);
       
       // Generate a unique file name
       const fileExt = fileInput.name.split('.').pop();
@@ -72,6 +96,13 @@ export const ImageUploader = ({
       console.error("Error uploading image:", error);
       setUploadStatus("error");
       
+      // Set a more specific error message
+      if (error.message && error.message.includes("not found")) {
+        setError(`Bucket "${bucketName}" не съществува. Моля, свържете се с администратора.`);
+      } else {
+        setError(error.message || "Неуспешно качване на изображението.");
+      }
+      
       toast({
         title: "Грешка при качване",
         description: error.message || "Неуспешно качване на изображението.",
@@ -82,6 +113,13 @@ export const ImageUploader = ({
 
   return (
     <div className="space-y-4">
+      {error && (
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+      
       <div className="flex flex-col space-y-2">
         <Label htmlFor="image-upload">Изберете изображение</Label>
         <Input
@@ -102,6 +140,20 @@ export const ImageUploader = ({
           <Upload className="h-4 w-4" />
           {uploadStatus === "uploading" ? "Качване..." : "Качи изображението"}
         </Button>
+      </div>
+
+      <div className="mt-2">
+        <Label htmlFor="image_url">Или въведете URL на изображение</Label>
+        <Input
+          id="image_url"
+          name="image_url"
+          value={imageUrl}
+          onChange={(e) => {
+            setImageUrl(e.target.value);
+            onImageUploaded(e.target.value);
+          }}
+          placeholder="https://example.com/image.jpg"
+        />
       </div>
 
       {imageUrl && (
