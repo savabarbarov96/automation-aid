@@ -8,4 +8,433 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+// Use environment variables if available, otherwise fall back to hardcoded values
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || SUPABASE_PUBLISHABLE_KEY;
+
+export const supabase = createClient<Database>(
+  supabaseUrl,
+  supabaseAnonKey
+);
+
+// Extend the Database type definition to include our new tables
+declare module '@supabase/supabase-js' {
+  interface Database {
+    public: {
+      Tables: {
+        // Keep existing tables
+        blog_posts: {
+          Row: {
+            author: string
+            category: string | null
+            content: string
+            created_at: string
+            created_by: string | null
+            excerpt: string | null
+            featured_image: string | null
+            id: string
+            is_published: boolean
+            published_at: string | null
+            slug: string
+            tags: string[] | null
+            title: string
+            updated_at: string
+          }
+          Insert: {
+            author: string
+            category?: string | null
+            content: string
+            created_at?: string
+            created_by?: string | null
+            excerpt?: string | null
+            featured_image?: string | null
+            id?: string
+            is_published?: boolean
+            published_at?: string | null
+            slug: string
+            tags?: string[] | null
+            title: string
+            updated_at?: string
+          }
+          Update: {
+            author?: string
+            category?: string | null
+            content?: string
+            created_at?: string
+            created_by?: string | null
+            excerpt?: string | null
+            featured_image?: string | null
+            id?: string
+            is_published?: boolean
+            published_at?: string | null
+            slug?: string
+            tags?: string[] | null
+            title?: string
+            updated_at?: string
+          }
+          Relationships: [
+            {
+              foreignKeyName: "blog_posts_created_by_fkey"
+              columns: ["created_by"]
+              isOneToOne: false
+              referencedRelation: "blog_users"
+              referencedColumns: ["id"]
+            },
+          ]
+        }
+        blog_users: {
+          Row: {
+            created_at: string
+            email: string | null
+            full_name: string | null
+            id: string
+            is_active: boolean
+            password: string
+            username: string
+          }
+          Insert: {
+            created_at?: string
+            email?: string | null
+            full_name?: string | null
+            id?: string
+            is_active?: boolean
+            password: string
+            username: string
+          }
+          Update: {
+            created_at?: string
+            email?: string | null
+            full_name?: string | null
+            id?: string
+            is_active?: boolean
+            password?: string
+            username?: string
+          }
+          Relationships: []
+        }
+        contact_submissions: {
+          Row: {
+            company: string
+            contact_method: string | null
+            contact_other: string | null
+            contact_preference: string
+            created_at: string
+            email: string
+            id: string
+            message: string
+            name: string
+            phone: string
+            purpose: string
+            user_id: string | null
+          }
+          Insert: {
+            company: string
+            contact_method?: string | null
+            contact_other?: string | null
+            contact_preference?: string
+            created_at?: string
+            email: string
+            id?: string
+            message: string
+            name?: string
+            phone?: string
+            purpose?: string
+            user_id?: string | null
+          }
+          Update: {
+            company?: string
+            contact_method?: string | null
+            contact_other?: string | null
+            contact_preference?: string
+            created_at?: string
+            email?: string
+            id?: string
+            message?: string
+            name?: string
+            phone?: string
+            purpose?: string
+            user_id?: string | null
+          }
+          Relationships: []
+        }
+        legal_documents: {
+          Row: {
+            content: string | null
+            id: number
+            title: string
+          }
+          Insert: {
+            content?: string | null
+            id?: number
+            title: string
+          }
+          Update: {
+            content?: string | null
+            id?: number
+            title?: string
+          }
+          Relationships: []
+        }
+        notification_settings: {
+          Row: {
+            created_at: string
+            discord: boolean | null
+            discord_webhook_url: string | null
+            email: boolean | null
+            id: string
+            slack: boolean | null
+            slack_webhook_url: string | null
+            updated_at: string
+            user_id: string | null
+            viber: boolean | null
+          }
+          Insert: {
+            created_at?: string
+            discord?: boolean | null
+            discord_webhook_url?: string | null
+            email?: boolean | null
+            id?: string
+            slack?: boolean | null
+            slack_webhook_url?: string | null
+            updated_at?: string
+            user_id?: string | null
+            viber?: boolean | null
+          }
+          Update: {
+            created_at?: string
+            discord?: boolean | null
+            discord_webhook_url?: string | null
+            email?: boolean | null
+            id?: string
+            slack?: boolean | null
+            slack_webhook_url?: string | null
+            updated_at?: string
+            user_id?: string | null
+            viber?: boolean | null
+          }
+          Relationships: []
+        }
+        profiles: {
+          Row: {
+            avatar_url: string | null
+            created_at: string
+            id: string
+            username: string | null
+          }
+          Insert: {
+            avatar_url?: string | null
+            created_at?: string
+            id: string
+            username?: string | null
+          }
+          Update: {
+            avatar_url?: string | null
+            created_at?: string
+            id?: string
+            username?: string | null
+          }
+          Relationships: []
+        }
+        research: {
+          Row: {
+            id: number
+            research: string | null
+            topic: string
+          }
+          Insert: {
+            id?: number
+            research?: string | null
+            topic: string
+          }
+          Update: {
+            id?: number
+            research?: string | null
+            topic?: string
+          }
+          Relationships: []
+        }
+        webhook_integrations: {
+          Row: {
+            body: JSON | null
+            created_at: string
+            description: string | null
+            id: string
+            is_active: boolean | null
+            last_run: string | null
+            method: string
+            name: string
+            schedule: string | null
+            url: string
+            user_id: string
+          }
+          Insert: {
+            body?: JSON | null
+            created_at?: string
+            description?: string | null
+            id?: string
+            is_active?: boolean | null
+            last_run?: string | null
+            method?: string
+            name?: string
+            schedule?: string | null
+            url: string
+            user_id: string
+          }
+          Update: {
+            body?: JSON | null
+            created_at?: string
+            description?: string | null
+            id?: string
+            is_active?: boolean | null
+            last_run?: string | null
+            method?: string
+            name?: string
+            schedule?: string | null
+            url?: string
+            user_id?: string
+          }
+          Relationships: []
+        }
+        webhook_logs: {
+          Row: {
+            created_at: string | null
+            id: string
+            request_data: JSON | null
+            response_data: JSON | null
+            status: string
+            user_id: string
+            webhook_id: string
+          }
+          Insert: {
+            created_at?: string | null
+            id?: string
+            request_data?: JSON | null
+            response_data?: JSON | null
+            status: string
+            user_id: string
+            webhook_id: string
+          }
+          Update: {
+            created_at?: string | null
+            id?: string
+            request_data?: JSON | null
+            response_data?: JSON | null
+            status?: string
+            user_id?: string
+            webhook_id?: string
+          }
+          Relationships: [
+            {
+              foreignKeyName: "webhook_logs_webhook_id_fkey"
+              columns: ["webhook_id"]
+              isOneToOne: false
+              referencedRelation: "webhook_integrations"
+              referencedColumns: ["id"]
+            },
+          ]
+        }
+        webhooks: {
+          Row: {
+            created_at: string | null
+            id: string
+            method: string
+            name: string
+            url: string
+            user_id: string
+          }
+          Insert: {
+            created_at?: string | null
+            id?: string
+            method?: string
+            name: string
+            url: string
+            user_id: string
+          }
+          Update: {
+            created_at?: string | null
+            id?: string
+            method?: string
+            name?: string
+            url?: string
+            user_id?: string
+          }
+          Relationships: []
+        }
+        project_categories: {
+          Row: {
+            id: string;
+            name: string;
+            created_at: string;
+          };
+          Insert: {
+            id?: string;
+            name: string;
+            created_at?: string;
+          };
+          Update: {
+            id?: string;
+            name?: string;
+            created_at?: string;
+          };
+        };
+        projects: {
+          Row: {
+            id: string;
+            title: string;
+            category: string;
+            image: string;
+            link: string;
+            description?: string;
+            created_at: string;
+            updated_at: string;
+          };
+          Insert: {
+            id?: string;
+            title: string;
+            category: string;
+            image: string;
+            link: string;
+            description?: string;
+            created_at?: string;
+            updated_at?: string;
+          };
+          Update: {
+            id?: string;
+            title?: string;
+            category?: string;
+            image?: string;
+            link?: string;
+            description?: string;
+            created_at?: string;
+            updated_at?: string;
+          };
+        };
+        // Add clients table
+        clients: {
+          Row: {
+            id: string
+            name: string
+            logo: string
+            created_at: string
+            updated_at: string | null
+          }
+          Insert: {
+            id?: string
+            name: string
+            logo: string
+            created_at?: string
+            updated_at?: string | null
+          }
+          Update: {
+            id?: string
+            name?: string
+            logo?: string
+            created_at?: string
+            updated_at?: string | null
+          }
+          Relationships: []
+        }
+      };
+    };
+  }
+}

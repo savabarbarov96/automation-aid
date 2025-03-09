@@ -1,48 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { ArrowRight } from "lucide-react";
-
-type Category = "All" | "LinkedIn Solutions" | "Lead Generation" | "Marketing Automations" | "Voice Agents";
-
-interface Project {
-  title: string;
-  category: Exclude<Category, "All">;
-  image: string;
-  link: string;
-}
-
-const projects: Project[] = [
-  {
-    title: "LinkedIn Growth Strategy",
-    category: "LinkedIn Solutions",
-    image: "/placeholder.svg",
-    link: "#"
-  },
-  {
-    title: "Automated Lead Generation",
-    category: "Lead Generation",
-    image: "/placeholder.svg",
-    link: "#"
-  },
-  {
-    title: "Marketing Workflow Automation",
-    category: "Marketing Automations",
-    image: "/placeholder.svg",
-    link: "#"
-  },
-  {
-    title: "AI Voice Assistant Integration",
-    category: "Voice Agents",
-    image: "/placeholder.svg",
-    link: "#"
-  }
-];
-
-const categories: Category[] = ["All", "LinkedIn Solutions", "Lead Generation", "Marketing Automations", "Voice Agents"];
+import { ArrowRight, ExternalLink } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Project } from "@/types/work";
 
 export const Work = () => {
-  const [selectedCategory, setSelectedCategory] = useState<Category>("All");
+  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [categories, setCategories] = useState<string[]>(["All"]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Fetch projects
+        const { data: projectsData, error: projectsError } = await supabase
+          .from('projects')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (projectsError) throw projectsError;
+        
+        // Fetch categories
+        const { data: categoriesData, error: categoriesError } = await supabase
+          .from('project_categories')
+          .select('name')
+          .order('name');
+          
+        if (categoriesError) throw categoriesError;
+        
+        setProjects(projectsData as Project[] || []);
+        
+        // Extract unique categories and add "All"
+        const uniqueCategories = ["All", ...categoriesData.map((cat: any) => cat.name)];
+        setCategories(uniqueCategories);
+
+      } catch (error) {
+        console.error("Error fetching work data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const filteredProjects = selectedCategory === "All" 
     ? projects 
@@ -53,54 +56,78 @@ export const Work = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-cool-300 mb-4">
-            Our Work
+            Нашата Работа
           </h2>
           <p className="text-cool-300/80 text-lg">
-            A showcase of our minimalist designs and creative solutions.
+            Разгледайте някои от нашите решения и проекти
           </p>
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
             <Button
               key={category}
               variant={selectedCategory === category ? "default" : "secondary"}
               onClick={() => setSelectedCategory(category)}
-              className="rounded-full"
+              className={cn(
+                "rounded-full px-6 py-2 transition-all duration-300",
+                selectedCategory === category 
+                  ? "bg-primary shadow-lg shadow-primary/20" 
+                  : "hover:bg-secondary/80"
+              )}
             >
               {category}
             </Button>
           ))}
         </div>
 
-        {/* Projects Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project, index) => (
-            <div 
-              key={index}
-              className="group bg-cool-100 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              </div>
-              <div className="p-6">
-                <div className="text-sm text-primary mb-2">{project.category}</div>
-                <h3 className="text-xl font-semibold text-cool-300 mb-4">{project.title}</h3>
-                <Button variant="ghost" className="group/button" asChild>
-                  <a href={project.link}>
-                    View Project
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
+        {loading ? (
+          <div className="text-center py-10">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-lg text-muted-foreground">Зареждане на проекти...</p>
+          </div>
+        ) : filteredProjects.length === 0 ? (
+          <div className="text-center py-10">
+            <p className="text-lg text-muted-foreground">Няма проекти в тази категория.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredProjects.map((project) => (
+              <div 
+                key={project.id}
+                className="group bg-cool-100/10 backdrop-blur-sm rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl shadow-lg border border-white/10"
+              >
+                <div className="aspect-video relative overflow-hidden">
+                  <img
+                    src={project.image || "/placeholder.svg"}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent opacity-70 group-hover:opacity-80 transition-opacity duration-300"></div>
+                </div>
+                <div className="p-6">
+                  <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-medium mb-3">
+                    {project.category}
+                  </div>
+                  <h3 className="text-xl font-semibold text-white mb-3">{project.title}</h3>
+                  {project.description && (
+                    <p className="text-white/70 mb-4 line-clamp-2">{project.description}</p>
+                  )}
+                  <a 
+                    href={project.link && project.link.startsWith('http') ? project.link : `https://${project.link}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-white bg-primary/20 hover:bg-primary px-4 py-2 rounded-lg transition-colors duration-300 mt-2"
+                  >
+                    Разгледай Проекта
+                    <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </a>
-                </Button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
