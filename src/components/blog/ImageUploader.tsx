@@ -1,125 +1,121 @@
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { UploadCloud, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/use-toast";
+import { Upload } from "lucide-react";
 
-interface ImageUploaderProps {
-  value: string;
-  onChange: (value: string) => void;
+export interface ImageUploaderProps {
+  initialImage: string;
+  onImageUploaded: (url: string) => void;
+  bucketName: string;
+  folderPath: string;
 }
 
-export const ImageUploader = ({ value, onChange }: ImageUploaderProps) => {
-  const [uploading, setUploading] = useState(false);
-  
-  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+export const ImageUploader = ({ 
+  initialImage = "", 
+  onImageUploaded, 
+  bucketName,
+  folderPath = ""
+}: ImageUploaderProps) => {
+  const [imageUrl, setImageUrl] = useState(initialImage);
+  const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "error">("idle");
+  const [fileInput, setFileInput] = useState<File | null>(null);
+
+  useEffect(() => {
+    if (initialImage) {
+      setImageUrl(initialImage);
+    }
+  }, [initialImage]);
+
+  const handleUpload = async () => {
+    if (!fileInput) {
+      toast({
+        title: "Моля, изберете файл",
+        description: "Не сте избрали файл за качване.",
+        variant: "destructive"
+      });
+      return;
+    }
+
     try {
-      setUploading(true);
+      setUploadStatus("uploading");
       
-      const files = event.target.files;
-      if (!files || files.length === 0) {
-        return;
-      }
-      
-      const file = files[0];
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
-      const filePath = `blog-images/${fileName}`;
-      
-      // Check if storage bucket exists, if not create it
-      const { data: buckets } = await supabase.storage.listBuckets();
-      const blogBucket = buckets?.find(bucket => bucket.name === 'blog-images');
-      
-      if (!blogBucket) {
-        // Create the bucket if it doesn't exist
-        await supabase.storage.createBucket('blog-images', {
-          public: true,
-          fileSizeLimit: 10485760 // 10MB limit
-        });
-      }
-      
-      // Upload the file
-      const { error: uploadError } = await supabase.storage
-        .from('blog-images')
-        .upload(filePath, file);
-        
-      if (uploadError) {
-        throw uploadError;
-      }
-      
+      // Generate a unique file name
+      const fileExt = fileInput.name.split('.').pop();
+      const fileName = `${Date.now()}-${Math.floor(Math.random() * 1000)}.${fileExt}`;
+      const filePath = `${folderPath}${fileName}`;
+
+      // Upload the file to Supabase Storage
+      const { data, error } = await supabase.storage
+        .from(bucketName)
+        .upload(filePath, fileInput);
+
+      if (error) throw error;
+
       // Get the public URL
-      const { data } = supabase.storage
-        .from('blog-images')
+      const { data: { publicUrl } } = supabase.storage
+        .from(bucketName)
         .getPublicUrl(filePath);
-        
-      // Set the image URL
-      onChange(data.publicUrl);
+
+      setImageUrl(publicUrl);
+      onImageUploaded(publicUrl);
+      setUploadStatus("idle");
       
       toast({
-        title: "Успешно качване",
-        description: "Изображението беше качено успешно",
+        title: "Изображението е качено",
+        description: "Изображението е успешно качено."
       });
     } catch (error: any) {
       console.error("Error uploading image:", error);
+      setUploadStatus("error");
+      
       toast({
-        title: "Грешка",
-        description: error.message || "Неуспешно качване на изображение",
+        title: "Грешка при качване",
+        description: error.message || "Неуспешно качване на изображението.",
         variant: "destructive"
       });
-    } finally {
-      setUploading(false);
     }
   };
-  
-  const handleClearImage = () => {
-    onChange("");
-  };
-  
+
   return (
     <div className="space-y-4">
-      {value ? (
-        <div className="relative">
-          <img 
-            src={value} 
-            alt="Основно изображение" 
-            className="w-full h-40 object-cover rounded-md"
-          />
-          <button
-            type="button"
-            onClick={handleClearImage}
-            className="absolute top-2 right-2 bg-black/40 text-white p-1 rounded-full hover:bg-black/60 transition-colors"
-          >
-            <X size={16} />
-          </button>
-        </div>
-      ) : (
-        <div className="border-2 border-dashed border-muted-foreground/25 rounded-md p-6 text-center">
-          <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground/50" />
-          <p className="mt-2 text-sm text-muted-foreground">
-            Качете изображение или посочете URL
-          </p>
-        </div>
-      )}
-      
-      <div className="flex flex-col sm:flex-row gap-2">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => document.getElementById('image-upload')?.click()}
-          disabled={uploading}
-          className="flex-1"
-        >
-          {uploading ? "Качване..." : "Качи изображение"}
-        </Button>
-        <input
+      <div className="flex flex-col space-y-2">
+        <Label htmlFor="image-upload">Изберете изображение</Label>
+        <Input
           id="image-upload"
           type="file"
           accept="image/*"
-          onChange={handleFileUpload}
-          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files ? e.target.files[0] : null;
+            setFileInput(file);
+          }}
         />
+        <Button 
+          type="button" 
+          onClick={handleUpload}
+          disabled={!fileInput || uploadStatus === "uploading"}
+          className="flex items-center gap-2"
+        >
+          <Upload className="h-4 w-4" />
+          {uploadStatus === "uploading" ? "Качване..." : "Качи изображението"}
+        </Button>
       </div>
+
+      {imageUrl && (
+        <div className="mt-4">
+          <Label>Преглед на изображението</Label>
+          <div className="mt-2 border rounded-md overflow-hidden aspect-video bg-gray-100 dark:bg-gray-800">
+            <img 
+              src={imageUrl} 
+              alt="Uploaded preview" 
+              className="w-full h-full object-contain"
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 };

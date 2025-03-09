@@ -248,7 +248,7 @@ declare module '@supabase/supabase-js' {
         }
         webhook_integrations: {
           Row: {
-            body: Json | null
+            body: JSON | null
             created_at: string
             description: string | null
             id: string
@@ -261,7 +261,7 @@ declare module '@supabase/supabase-js' {
             user_id: string
           }
           Insert: {
-            body?: Json | null
+            body?: JSON | null
             created_at?: string
             description?: string | null
             id?: string
@@ -274,7 +274,7 @@ declare module '@supabase/supabase-js' {
             user_id: string
           }
           Update: {
-            body?: Json | null
+            body?: JSON | null
             created_at?: string
             description?: string | null
             id?: string
@@ -292,8 +292,8 @@ declare module '@supabase/supabase-js' {
           Row: {
             created_at: string | null
             id: string
-            request_data: Json | null
-            response_data: Json | null
+            request_data: JSON | null
+            response_data: JSON | null
             status: string
             user_id: string
             webhook_id: string
@@ -301,8 +301,8 @@ declare module '@supabase/supabase-js' {
           Insert: {
             created_at?: string | null
             id?: string
-            request_data?: Json | null
-            response_data?: Json | null
+            request_data?: JSON | null
+            response_data?: JSON | null
             status: string
             user_id: string
             webhook_id: string
@@ -310,8 +310,8 @@ declare module '@supabase/supabase-js' {
           Update: {
             created_at?: string | null
             id?: string
-            request_data?: Json | null
-            response_data?: Json | null
+            request_data?: JSON | null
+            response_data?: JSON | null
             status?: string
             user_id?: string
             webhook_id?: string

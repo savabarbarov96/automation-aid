@@ -87,7 +87,7 @@ const BlogAdmin = () => {
               ← Назад към списъка
             </Button>
             <BlogForm 
-              initialData={currentPost} 
+              currentPost={currentPost} 
               onSuccess={handleBackToList} 
             />
           </div>
