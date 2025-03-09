@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Navbar } from "@/components/Navbar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -17,10 +17,12 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { user, loading: authLoading } = useAuth();
 
-  // If user is already authenticated, redirect to admin page
-  if (user && !authLoading) {
-    return <Navigate to="/blog-admin" />;
-  }
+  // Effect to redirect after login is confirmed
+  useEffect(() => {
+    if (user && !authLoading) {
+      navigate('/blog-admin');
+    }
+  }, [user, authLoading, navigate]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -37,8 +39,6 @@ const LoginPage = () => {
         title: "Успешно влизане",
         description: "Добре дошли в админ панела на блога!",
       });
-      
-      navigate('/blog-admin');
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
@@ -50,6 +50,11 @@ const LoginPage = () => {
       setLoading(false);
     }
   };
+
+  // If already authenticated and not in loading state, this will trigger the useEffect above
+  if (user && !authLoading) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-background">

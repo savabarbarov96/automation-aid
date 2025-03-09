@@ -6,6 +6,7 @@ import BlogAdmin from "./pages/BlogAdmin";
 import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
 import ResourcesPage from "./pages/ResourcesPage";
+import WorkAdmin from "./pages/WorkAdmin";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { AuthProvider } from "./lib/auth";
 import { Toaster } from "./components/ui/toaster";
@@ -26,6 +27,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <BlogAdmin />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/work-admin" 
+            element={
+              <ProtectedRoute>
+                <WorkAdmin />
               </ProtectedRoute>
             } 
           />

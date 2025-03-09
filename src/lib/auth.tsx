@@ -36,7 +36,22 @@ export const useAuthState = () => {
           .eq('email', session.user.email)
           .single();
           
-        if (userError) throw userError;
+        if (userError) {
+          console.error('Error fetching user data:', userError);
+          // If we can't find the user in blog_users, we'll use basic auth user info
+          setAuthState({ 
+            user: { 
+              id: session.user.id,
+              email: session.user.email || '',
+              username: session.user.email?.split('@')[0] || 'user',
+              full_name: session.user.user_metadata?.full_name || '',
+              is_active: true
+            },
+            loading: false,
+            error: null,
+          });
+          return;
+        }
         
         setAuthState({ 
           user: userData as User, 
