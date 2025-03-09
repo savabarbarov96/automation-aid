@@ -3,6 +3,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ImageUploader } from "./ImageUploader";
+import { RichTextEditor } from "./RichTextEditor";
 
 interface ContentFieldsProps {
   excerpt: string;
@@ -35,10 +36,8 @@ export const ContentFields = ({
     onTagsChange(tagsArray);
   };
 
-  console.log("ContentFields rendering with featured_image:", featured_image);
-
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div>
         <Label htmlFor="excerpt">Кратко резюме</Label>
         <Textarea
@@ -48,22 +47,20 @@ export const ContentFields = ({
           onChange={(e) => onExcerptChange(e.target.value)}
           placeholder="Кратко резюме на публикацията"
           rows={2}
+          className="resize-none"
         />
       </div>
 
       <div>
-        <Label htmlFor="content">Съдържание</Label>
-        <Textarea
-          id="content"
-          name="content"
+        <Label htmlFor="content" className="block mb-2">Съдържание</Label>
+        <RichTextEditor
           value={content}
-          onChange={(e) => onContentChange(e.target.value)}
-          placeholder="Съдържание на публикацията..."
-          rows={10}
-          required
+          onChange={onContentChange}
+          placeholder="Въведете съдържанието на публикацията тук..."
+          minRows={12}
         />
-        <p className="text-xs text-muted-foreground mt-1">
-          Поддържа се markdown форматиране.
+        <p className="text-xs text-muted-foreground mt-2">
+          Поддържа се markdown форматиране. Използвайте форматиращите бутони за по-лесно редактиране.
         </p>
       </div>
 

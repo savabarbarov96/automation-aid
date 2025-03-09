@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Project } from "@/types/work";
 
@@ -65,13 +65,18 @@ export const Work = () => {
         </div>
 
         {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-2 mb-12">
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
             <Button
               key={category}
               variant={selectedCategory === category ? "default" : "secondary"}
               onClick={() => setSelectedCategory(category)}
-              className="rounded-full"
+              className={cn(
+                "rounded-full px-6 py-2 transition-all duration-300",
+                selectedCategory === category 
+                  ? "bg-primary shadow-lg shadow-primary/20" 
+                  : "hover:bg-secondary/80"
+              )}
             >
               {category}
             </Button>
@@ -92,7 +97,7 @@ export const Work = () => {
             {filteredProjects.map((project) => (
               <div 
                 key={project.id}
-                className="group bg-cool-100 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-1 hover:shadow-lg"
+                className="group bg-cool-100 rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:-translate-y-2 hover:shadow-xl shadow-lg border border-white/5"
               >
                 <div className="aspect-video relative overflow-hidden">
                   <img
@@ -100,17 +105,23 @@ export const Work = () => {
                     alt={project.title}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </div>
                 <div className="p-6">
-                  <div className="text-sm text-primary mb-2">{project.category}</div>
+                  <div className="text-sm text-primary mb-2 font-medium">{project.category}</div>
                   <h3 className="text-xl font-semibold text-cool-300 mb-4">{project.title}</h3>
                   {project.description && (
                     <p className="text-cool-300/80 mb-4 line-clamp-2">{project.description}</p>
                   )}
-                  <Button variant="ghost" className="group/button" asChild>
-                    <a href={project.link} target="_blank" rel="noopener noreferrer">
+                  <Button variant="ghost" className="group/button flex items-center gap-2" asChild>
+                    <a 
+                      href={project.link} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="hover:text-primary"
+                    >
                       Разгледай Проекта
-                      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
+                      <ExternalLink className="h-4 w-4 transition-transform group-hover/button:translate-x-1" />
                     </a>
                   </Button>
                 </div>
