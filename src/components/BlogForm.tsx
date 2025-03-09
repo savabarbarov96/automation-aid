@@ -20,7 +20,8 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
     author: "",
     is_published: false,
     category: "",
-    tags: []
+    tags: [],
+    published_at: null // Add published_at to the initial state
   });
 
   useEffect(() => {
@@ -34,7 +35,8 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
         author: currentPost.author || "",
         is_published: currentPost.is_published || false,
         category: currentPost.category || "",
-        tags: currentPost.tags || []
+        tags: currentPost.tags || [],
+        published_at: currentPost.published_at || null // Include published_at when loading an existing post
       });
     }
   }, [currentPost]);
