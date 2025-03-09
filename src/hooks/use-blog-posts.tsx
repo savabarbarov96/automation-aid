@@ -33,7 +33,7 @@ export const useBlogPosts = () => {
             .single();
           
           if (!userError && userData) {
-            postWithUser.user = userData;
+            postWithUser.blog_users = userData;
           }
         }
         return postWithUser;
