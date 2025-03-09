@@ -14,7 +14,14 @@ export const BlogPostList = ({ onEdit }) => {
     try {
       const { data, error } = await supabase
         .from('blog_posts')
-        .select('*')
+        .select(`
+          *,
+          blog_users:created_by (
+            id,
+            username,
+            full_name
+          )
+        `)
         .order('created_at', { ascending: false });
 
       if (error) {
@@ -134,7 +141,16 @@ export const BlogPostList = ({ onEdit }) => {
                 )}
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
-                Автор: {post.author} | Създадена: {formatDate(post.created_at)}
+                Автор: {post.author}
+                {post.blog_users && (
+                  <span className="ml-2">(от потребител: {post.blog_users.full_name || post.blog_users.username})</span>
+                )}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Създадена: {formatDate(post.created_at)}
+                {post.published_at && post.is_published && (
+                  <span className="ml-2">| Публикувана: {formatDate(post.published_at)}</span>
+                )}
               </p>
               {post.category && (
                 <p className="text-sm text-muted-foreground">

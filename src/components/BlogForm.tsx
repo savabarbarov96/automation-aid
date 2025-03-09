@@ -8,9 +8,11 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
 import { slugify } from "@/lib/utils";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const BlogForm = ({ currentPost, onSuccess }) => {
   const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     slug: "",
@@ -21,8 +23,28 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
     is_published: false,
     category: "",
     tags: [],
-    published_at: null // Add published_at to the initial state
+    published_at: null,
+    created_by: null
   });
+
+  useEffect(() => {
+    // Fetch available blog users
+    const fetchUsers = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('blog_users')
+          .select('id, username, full_name')
+          .eq('is_active', true);
+          
+        if (error) throw error;
+        setUsers(data || []);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     if (currentPost) {
@@ -36,7 +58,8 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
         is_published: currentPost.is_published || false,
         category: currentPost.category || "",
         tags: currentPost.tags || [],
-        published_at: currentPost.published_at || null // Include published_at when loading an existing post
+        published_at: currentPost.published_at || null,
+        created_by: currentPost.created_by || null
       });
     }
   }, [currentPost]);
@@ -70,6 +93,24 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
       ...formData,
       tags: tagsArray
     });
+  };
+
+  const handleUserChange = (userId) => {
+    setFormData({
+      ...formData,
+      created_by: userId
+    });
+    
+    // If we have a user selected, automatically set the author name
+    if (userId) {
+      const selectedUser = users.find(user => user.id === userId);
+      if (selectedUser) {
+        setFormData(prev => ({
+          ...prev,
+          author: selectedUser.full_name || selectedUser.username
+        }));
+      }
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -156,7 +197,27 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
         </div>
 
         <div>
-          <Label htmlFor="author">Автор</Label>
+          <Label htmlFor="created_by">Автор (потребител)</Label>
+          <Select 
+            value={formData.created_by || ""} 
+            onValueChange={handleUserChange}
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Избери потребител" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">Не е избран</SelectItem>
+              {users.map((user) => (
+                <SelectItem key={user.id} value={user.id}>
+                  {user.full_name || user.username}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div>
+          <Label htmlFor="author">Име на автор</Label>
           <Input
             id="author"
             name="author"
@@ -165,6 +226,9 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
             placeholder="Име на автора"
             required
           />
+          <p className="text-xs text-muted-foreground mt-1">
+            Това е името, което ще се вижда публично
+          </p>
         </div>
 
         <div>
