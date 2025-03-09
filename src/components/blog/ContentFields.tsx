@@ -68,8 +68,10 @@ export const ContentFields = ({
       <div>
         <Label htmlFor="featured_image">Основно изображение</Label>
         <ImageUploader 
-          value={featured_image}
-          onChange={onFeaturedImageChange}
+          initialImage={featured_image}
+          onImageUploaded={onFeaturedImageChange}
+          bucketName="blog-images"
+          folderPath="blog/"
         />
         <div className="mt-2">
           <Label htmlFor="featured_image_url">Или въведете URL на изображение</Label>
