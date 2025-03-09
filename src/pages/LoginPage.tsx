@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { loginWithEmail } from "@/lib/auth";
-import { useNavigate, Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
 
 const LoginPage = () => {
@@ -39,6 +39,9 @@ const LoginPage = () => {
         title: "Успешно влизане",
         description: "Добре дошли в админ панела на блога!",
       });
+      
+      // Force navigation after successful login
+      navigate('/blog-admin');
     } catch (error: any) {
       console.error("Login error:", error);
       toast({
@@ -51,7 +54,7 @@ const LoginPage = () => {
     }
   };
 
-  // If already authenticated and not in loading state, this will trigger the useEffect above
+  // If already authenticated and not in loading state, redirect
   if (user && !authLoading) {
     return null;
   }

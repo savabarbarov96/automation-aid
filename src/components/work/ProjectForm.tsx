@@ -55,7 +55,7 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
         .order('name');
         
       if (error) throw error;
-      setCategories(data || []);
+      setCategories(data as Category[] || []);
     } catch (error) {
       console.error('Error fetching categories:', error);
       toast({
@@ -213,8 +213,8 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
         <div>
           <Label>Изображение</Label>
           <ImageUploader 
-            currentImage={formData.image} 
-            onImageChange={handleImageChange}
+            initialImage={formData.image}
+            onImageUploaded={handleImageChange}
             bucketName="blog-images"
             folderPath="projects/"
           />

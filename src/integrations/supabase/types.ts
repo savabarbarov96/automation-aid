@@ -221,6 +221,57 @@ export type Database = {
         }
         Relationships: []
       }
+      project_categories: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      projects: {
+        Row: {
+          category: string
+          created_at: string | null
+          description: string | null
+          id: string
+          image: string
+          link: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image: string
+          link: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image?: string
+          link?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       research: {
         Row: {
           id: number

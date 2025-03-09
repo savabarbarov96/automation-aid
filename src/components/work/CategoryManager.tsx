@@ -64,7 +64,7 @@ export const CategoryManager = () => {
         throw error;
       }
 
-      setCategories([...categories, data[0]]);
+      setCategories([...categories, data[0] as Category]);
       setNewCategory("");
       
       toast({
@@ -135,10 +135,13 @@ export const CategoryManager = () => {
   const handleDelete = async (id: string) => {
     // Check if category is used in any project
     try {
+      const categoryToDelete = categories.find(cat => cat.id === id);
+      if (!categoryToDelete) return;
+      
       const { data, error } = await supabase
         .from('projects')
         .select('id')
-        .eq('category', categories.find(cat => cat.id === id)?.name)
+        .eq('category', categoryToDelete.name)
         .limit(1);
         
       if (error) throw error;

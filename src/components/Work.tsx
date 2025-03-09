@@ -35,7 +35,7 @@ export const Work = () => {
         setProjects(projectsData as Project[] || []);
         
         // Extract unique categories and add "All"
-        const uniqueCategories = ["All", ...categoriesData.map(cat => cat.name)];
+        const uniqueCategories = ["All", ...categoriesData.map((cat: any) => cat.name)];
         setCategories(uniqueCategories);
 
       } catch (error) {
@@ -57,10 +57,10 @@ export const Work = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-cool-300 mb-4">
-            Our Work
+            Нашата Работа
           </h2>
           <p className="text-cool-300/80 text-lg">
-            A showcase of our minimalist designs and creative solutions.
+            Разгледайте някои от нашите решения и проекти
           </p>
         </div>
 
@@ -109,7 +109,7 @@ export const Work = () => {
                   )}
                   <Button variant="ghost" className="group/button" asChild>
                     <a href={project.link} target="_blank" rel="noopener noreferrer">
-                      View Project
+                      Разгледай Проекта
                       <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover/button:translate-x-1" />
                     </a>
                   </Button>
