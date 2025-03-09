@@ -190,7 +190,7 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
             </SelectContent>
           </Select>
           {categories.length === 0 && (
-            <Alert variant="warning" className="mt-2">
+            <Alert variant="default" className="mt-2">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
                 Нямате създадени категории. Моля, създайте категория от таб "Категории".
