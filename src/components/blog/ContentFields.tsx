@@ -35,6 +35,8 @@ export const ContentFields = ({
     onTagsChange(tagsArray);
   };
 
+  console.log("ContentFields rendering with featured_image:", featured_image);
+
   return (
     <div className="space-y-4">
       <div>

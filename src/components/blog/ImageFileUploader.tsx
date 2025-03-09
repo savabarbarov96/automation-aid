@@ -36,9 +36,12 @@ export const ImageFileUploader = ({
     setIsUploading(true);
     setUploadStatus("uploading");
     
+    console.log(`Starting upload to bucket: ${bucketName}, folder: ${folderPath}`);
+    
     const { url, error } = await uploadImageToSupabase(fileInput, bucketName, folderPath);
     
     if (error) {
+      console.error("Upload error:", error);
       setUploadStatus("error");
       setIsUploading(false);
       toast({
@@ -49,9 +52,11 @@ export const ImageFileUploader = ({
       return;
     }
 
+    console.log("Upload successful:", url);
     onImageUploaded(url);
     setUploadStatus("idle");
     setIsUploading(false);
+    setFileInput(null);
     
     toast({
       title: "Изображението е качено",

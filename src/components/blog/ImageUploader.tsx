@@ -35,10 +35,15 @@ export const ImageUploader = ({
     const verifyBucket = async () => {
       try {
         const bucketError = await checkBucketExists(bucketName);
-        setError(bucketError);
+        if (bucketError) {
+          console.error("Bucket error:", bucketError);
+          setError(bucketError);
+        } else {
+          setError(null);
+        }
       } catch (err: any) {
-        setError(err.message || "Error checking bucket");
         console.error("Bucket check error:", err);
+        setError(err.message || "Error checking bucket");
       }
     };
     

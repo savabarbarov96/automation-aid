@@ -14,6 +14,8 @@ export const uploadImageToSupabase = async (
     const fileName = `${Math.random().toString(36).substring(2, 15)}_${Date.now()}.${fileExt}`;
     const filePath = folderPath ? `${folderPath}${fileName}` : fileName;
 
+    console.log(`Uploading file to ${bucketName}/${filePath}`);
+
     // Upload file to Supabase Storage
     const { data, error } = await supabase.storage
       .from(bucketName)
@@ -27,11 +29,16 @@ export const uploadImageToSupabase = async (
       return { url: '', error: error.message };
     }
 
+    if (!data || !data.path) {
+      return { url: '', error: 'No data returned from upload' };
+    }
+
     // Get public URL
     const { data: { publicUrl } } = supabase.storage
       .from(bucketName)
       .getPublicUrl(data.path);
 
+    console.log(`File uploaded successfully. Public URL: ${publicUrl}`);
     return { url: publicUrl, error: null };
   } catch (error: any) {
     console.error('Unexpected error during upload:', error);
@@ -41,21 +48,31 @@ export const uploadImageToSupabase = async (
 
 export const checkBucketExists = async (bucketName: string): Promise<string | null> => {
   try {
-    // Try to get bucket details
-    const { data, error } = await supabase.storage.getBucket(bucketName);
+    console.log(`Checking if bucket "${bucketName}" exists...`);
+    
+    // Try to get a list of files from the bucket to verify access
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .list();
     
     if (error) {
-      if (error.message.includes('The resource was not found')) {
-        return `Bucket "${bucketName}" does not exist. Please create it in Supabase storage.`;
+      console.error(`Error accessing bucket "${bucketName}":`, error);
+      
+      if (error.message.includes('The resource was not found') || 
+          error.message.includes('does not exist') ||
+          error.status === 404) {
+        return `Bucket "${bucketName}" does not exist or is not accessible.`;
       }
+      
+      if (error.message.includes('Permission denied') || error.status === 403) {
+        return `Permission denied for bucket "${bucketName}". Check your storage policies.`;
+      }
+      
       return `Error checking bucket: ${error.message}`;
     }
     
-    if (!data) {
-      return `Bucket "${bucketName}" not found`;
-    }
-    
-    return null; // Bucket exists, no error
+    console.log(`Bucket "${bucketName}" exists and is accessible.`);
+    return null; // Bucket exists and is accessible
   } catch (error: any) {
     console.error('Error checking bucket:', error);
     return error.message || 'Error checking storage bucket';
