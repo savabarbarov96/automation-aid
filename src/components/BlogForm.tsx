@@ -1,19 +1,42 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
-import { slugify } from "@/lib/utils";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MetadataFields } from "./blog/MetadataFields";
+import { ContentFields } from "./blog/ContentFields";
+import { PublishSettings } from "./blog/PublishSettings";
+import { BlogFormSubmit } from "./blog/BlogFormSubmit";
 
-export const BlogForm = ({ currentPost, onSuccess }) => {
+interface BlogPost {
+  id?: string;
+  title: string;
+  slug: string;
+  content: string;
+  excerpt: string;
+  featured_image: string;
+  author: string;
+  is_published: boolean;
+  category: string;
+  tags: string[];
+  published_at: string | null;
+  created_by: string | null;
+}
+
+interface User {
+  id: string;
+  username: string;
+  full_name: string;
+}
+
+interface BlogFormProps {
+  currentPost: BlogPost | null;
+  onSuccess: () => void;
+}
+
+export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState([]);
-  const [formData, setFormData] = useState({
+  const [users, setUsers] = useState<User[]>([]);
+  const [formData, setFormData] = useState<BlogPost>({
     title: "",
     slug: "",
     content: "",
@@ -64,63 +87,17 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
     }
   }, [currentPost]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-
-    // Auto-generate slug from title
-    if (name === "title" && (!currentPost || !currentPost.slug)) {
-      setFormData(prev => ({
-        ...prev,
-        slug: slugify(value)
-      }));
-    }
+  // Update form field handlers
+  const updateField = <K extends keyof BlogPost>(field: K, value: BlogPost[K]) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleTogglePublish = (checked) => {
-    setFormData({
-      ...formData,
-      is_published: checked
-    });
-  };
-
-  const handleTagsChange = (e) => {
-    const tagsArray = e.target.value.split(",").map(tag => tag.trim());
-    setFormData({
-      ...formData,
-      tags: tagsArray
-    });
-  };
-
-  const handleUserChange = (userId) => {
-    setFormData({
-      ...formData,
-      created_by: userId
-    });
-    
-    // If we have a user selected, automatically set the author name
-    if (userId) {
-      const selectedUser = users.find(user => user.id === userId);
-      if (selectedUser) {
-        setFormData(prev => ({
-          ...prev,
-          author: selectedUser.full_name || selectedUser.username
-        }));
-      }
-    }
-  };
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      const postData = {
-        ...formData,
-      };
+      const postData = { ...formData };
 
       // Add published_at timestamp if publishing for the first time
       if (formData.is_published && (!currentPost || !currentPost.is_published)) {
@@ -154,7 +131,7 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
       if (onSuccess) {
         onSuccess();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving post:", error);
       toast({
         title: "Грешка",
@@ -168,143 +145,40 @@ export const BlogForm = ({ currentPost, onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-card p-6 rounded-lg">
-      <div className="space-y-4">
-        <div>
-          <Label htmlFor="title">Заглавие</Label>
-          <Input
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            placeholder="Заглавие на публикацията"
-            required
-          />
-        </div>
+      <div className="space-y-6">
+        <MetadataFields 
+          title={formData.title}
+          slug={formData.slug}
+          author={formData.author}
+          created_by={formData.created_by}
+          users={users}
+          onTitleChange={(value) => updateField('title', value)}
+          onSlugChange={(value) => updateField('slug', value)}
+          onAuthorChange={(value) => updateField('author', value)}
+          onUserChange={(value) => updateField('created_by', value)}
+          isEditing={!!currentPost}
+        />
 
-        <div>
-          <Label htmlFor="slug">URL Идентификатор (slug)</Label>
-          <Input
-            id="slug"
-            name="slug"
-            value={formData.slug}
-            onChange={handleChange}
-            placeholder="url-identifier"
-            required
-          />
-          <p className="text-xs text-muted-foreground mt-1">
-            Използва се в URL адреса: /blog/url-identifier
-          </p>
-        </div>
+        <ContentFields 
+          excerpt={formData.excerpt}
+          content={formData.content}
+          featured_image={formData.featured_image}
+          category={formData.category}
+          tags={formData.tags}
+          onExcerptChange={(value) => updateField('excerpt', value)}
+          onContentChange={(value) => updateField('content', value)}
+          onFeaturedImageChange={(value) => updateField('featured_image', value)}
+          onCategoryChange={(value) => updateField('category', value)}
+          onTagsChange={(value) => updateField('tags', value)}
+        />
 
-        <div>
-          <Label htmlFor="created_by">Автор (потребител)</Label>
-          <Select 
-            value={formData.created_by || ""} 
-            onValueChange={handleUserChange}
-          >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Избери потребител" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">Не е избран</SelectItem>
-              {users.map((user) => (
-                <SelectItem key={user.id} value={user.id}>
-                  {user.full_name || user.username}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-
-        <div>
-          <Label htmlFor="author">Име на автор</Label>
-          <Input
-            id="author"
-            name="author"
-            value={formData.author}
-            onChange={handleChange}
-            placeholder="Име на автора"
-            required
-          />
-          <p className="text-xs text-muted-foreground mt-1">
-            Това е името, което ще се вижда публично
-          </p>
-        </div>
-
-        <div>
-          <Label htmlFor="excerpt">Кратко резюме</Label>
-          <Textarea
-            id="excerpt"
-            name="excerpt"
-            value={formData.excerpt}
-            onChange={handleChange}
-            placeholder="Кратко резюме на публикацията"
-            rows={2}
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="content">Съдържание</Label>
-          <Textarea
-            id="content"
-            name="content"
-            value={formData.content}
-            onChange={handleChange}
-            placeholder="Съдържание на публикацията..."
-            rows={10}
-            required
-          />
-          <p className="text-xs text-muted-foreground mt-1">
-            Поддържа се markdown форматиране.
-          </p>
-        </div>
-
-        <div>
-          <Label htmlFor="featured_image">URL на основно изображение</Label>
-          <Input
-            id="featured_image"
-            name="featured_image"
-            value={formData.featured_image}
-            onChange={handleChange}
-            placeholder="https://example.com/image.jpg"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="category">Категория</Label>
-          <Input
-            id="category"
-            name="category"
-            value={formData.category}
-            onChange={handleChange}
-            placeholder="Категория"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="tags">Тагове (разделени със запетая)</Label>
-          <Input
-            id="tags"
-            name="tags"
-            value={formData.tags.join(", ")}
-            onChange={handleTagsChange}
-            placeholder="таг1, таг2, таг3"
-          />
-        </div>
-
-        <div className="flex items-center space-x-2">
-          <Switch
-            id="is_published"
-            checked={formData.is_published}
-            onCheckedChange={handleTogglePublish}
-          />
-          <Label htmlFor="is_published">Публикувай</Label>
-        </div>
+        <PublishSettings 
+          isPublished={formData.is_published}
+          onPublishChange={(checked) => updateField('is_published', checked)}
+        />
       </div>
 
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? "Запазване..." : currentPost ? "Обнови публикацията" : "Създай публикация"}
-      </Button>
+      <BlogFormSubmit loading={loading} isEditing={!!currentPost} />
     </form>
   );
 };

@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,15 +7,36 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
 
-export const UserForm = ({ currentUser = null, onSuccess }) => {
+interface User {
+  id?: string;
+  username: string;
+  password: string;
+  full_name: string;
+  email: string;
+  is_active: boolean;
+}
+
+export const UserForm = ({ currentUser, onSuccess }) => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    username: currentUser?.username || "",
+  const [formData, setFormData] = useState<User>({
+    username: "",
     password: "",
-    full_name: currentUser?.full_name || "",
-    email: currentUser?.email || "",
-    is_active: currentUser?.is_active ?? true,
+    full_name: "",
+    email: "",
+    is_active: true
   });
+
+  useEffect(() => {
+    if (currentUser) {
+      setFormData({
+        username: currentUser.username || "",
+        password: "", // Don't populate password for security
+        full_name: currentUser.full_name || "",
+        email: currentUser.email || "",
+        is_active: currentUser.is_active ?? true
+      });
+    }
+  }, [currentUser]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,13 +58,8 @@ export const UserForm = ({ currentUser = null, onSuccess }) => {
     setLoading(true);
 
     try {
-      // Validate required fields
-      if (!formData.username || (!currentUser && !formData.password)) {
-        throw new Error("Потребителското име и паролата са задължителни полета");
-      }
-
+      // Prepare user data, excluding password if it's empty (for updates)
       const userData = { ...formData };
-      // Don't update password if it's empty on user edit
       if (!userData.password && currentUser) {
         delete userData.password;
       }
@@ -52,10 +68,21 @@ export const UserForm = ({ currentUser = null, onSuccess }) => {
       
       if (currentUser) {
         // Update existing user
+        const { password, ...dataToUpdate } = userData;
         response = await supabase
           .from('blog_users')
-          .update(userData)
+          .update(dataToUpdate)
           .eq('id', currentUser.id);
+          
+        // If password is provided, update it separately
+        if (userData.password) {
+          const passwordResponse = await supabase
+            .from('blog_users')
+            .update({ password: userData.password })
+            .eq('id', currentUser.id);
+            
+          if (passwordResponse.error) throw passwordResponse.error;
+        }
       } else {
         // Create new user
         response = await supabase
@@ -88,7 +115,7 @@ export const UserForm = ({ currentUser = null, onSuccess }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4 bg-card p-6 rounded-lg">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-card p-6 rounded-lg">
       <div className="space-y-4">
         <div>
           <Label htmlFor="username">Потребителско име</Label>
@@ -104,7 +131,7 @@ export const UserForm = ({ currentUser = null, onSuccess }) => {
 
         <div>
           <Label htmlFor="password">
-            {currentUser ? "Парола (остави празно за да не я променяш)" : "Парола"}
+            {currentUser ? "Нова парола (оставете празно за да запазите текущата)" : "Парола"}
           </Label>
           <Input
             id="password"
@@ -112,7 +139,7 @@ export const UserForm = ({ currentUser = null, onSuccess }) => {
             type="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Парола"
+            placeholder="••••••••"
             required={!currentUser}
           />
         </div>
@@ -136,7 +163,7 @@ export const UserForm = ({ currentUser = null, onSuccess }) => {
             type="email"
             value={formData.email}
             onChange={handleChange}
-            placeholder="email@example.com"
+            placeholder="example@domain.com"
           />
         </div>
 
@@ -146,7 +173,7 @@ export const UserForm = ({ currentUser = null, onSuccess }) => {
             checked={formData.is_active}
             onCheckedChange={handleToggleActive}
           />
-          <Label htmlFor="is_active">Активен потребител</Label>
+          <Label htmlFor="is_active">Активен</Label>
         </div>
       </div>
 

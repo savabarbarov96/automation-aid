@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
-import { formatDate } from "@/lib/utils";
 
 export const UsersList = ({ onEdit }) => {
   const [users, setUsers] = useState([]);
@@ -69,7 +68,7 @@ export const UsersList = ({ onEdit }) => {
     }
   };
 
-  const toggleActive = async (user) => {
+  const toggleActiveStatus = async (user) => {
     try {
       const updates = {
         is_active: !user.is_active
@@ -93,11 +92,11 @@ export const UsersList = ({ onEdit }) => {
       toast({
         title: updates.is_active ? "Потребителят е активиран" : "Потребителят е деактивиран",
         description: updates.is_active 
-          ? "Потребителят вече може да влиза в системата." 
-          : "Потребителят вече не може да влиза в системата."
+          ? "Потребителят вече може да се логва." 
+          : "Потребителят вече не може да се логва."
       });
     } catch (error) {
-      console.error("Error toggling active status:", error);
+      console.error("Error toggling user status:", error);
       toast({
         title: "Грешка",
         description: "Неуспешна промяна на статуса на потребителя.",
@@ -118,7 +117,7 @@ export const UsersList = ({ onEdit }) => {
     <div className="space-y-4">
       {users.map((user) => (
         <div key={user.id} className="bg-card p-4 rounded-lg border border-muted">
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-start justify-between">
             <div>
               <h2 className="text-xl font-semibold text-white">
                 {user.username}
@@ -128,27 +127,27 @@ export const UsersList = ({ onEdit }) => {
                   </span>
                 ) : (
                   <span className="ml-2 text-xs px-2 py-1 bg-red-900/30 text-red-400 rounded-full">
-                    Неактивен
+                    Деактивиран
                   </span>
                 )}
               </h2>
               {user.full_name && (
-                <p className="text-sm text-muted-foreground">
-                  {user.full_name}
+                <p className="text-sm text-muted-foreground mt-1">
+                  Име: {user.full_name}
                 </p>
               )}
               {user.email && (
                 <p className="text-sm text-muted-foreground">
-                  {user.email}
+                  Имейл: {user.email}
                 </p>
               )}
-              <p className="text-sm text-muted-foreground mt-1">
-                Създаден: {formatDate(user.created_at)}
+              <p className="text-sm text-muted-foreground">
+                Регистриран: {new Date(user.created_at).toLocaleDateString('bg-BG')}
               </p>
             </div>
           </div>
           
-          <div className="flex space-x-2 mt-4">
+          <div className="flex flex-wrap gap-2 mt-4">
             <Button
               variant="outline"
               size="sm"
@@ -159,7 +158,7 @@ export const UsersList = ({ onEdit }) => {
             <Button
               variant={user.is_active ? "outline" : "default"}
               size="sm"
-              onClick={() => toggleActive(user)}
+              onClick={() => toggleActiveStatus(user)}
             >
               {user.is_active ? "Деактивирай" : "Активирай"}
             </Button>
