@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_DEPLOY_TOKEN }}
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -22,16 +24,19 @@ jobs:
         env:
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SERVER_USER: ${{ secrets.SERVER_USER }}
+          GITHUB_DEPLOY_TOKEN: ${{ secrets.GITHUB_DEPLOY_TOKEN }}
         run: |
           if [ -z "$SERVER_IP" ] || [ -z "$SERVER_USER" ]; then
             echo "Error: SERVER_IP or SERVER_USER is not defined in secrets."
             exit 1
           fi
-          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << 'EOF'
+          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP <<EOF
             cd /var/www/automation-aid
+            echo "Setting remote URL for private repository..."
+            git remote set-url origin https://x-access-token:${GITHUB_DEPLOY_TOKEN}@github.com/savabarbarov96/automation-aid.git
             echo "Fetching latest changes..."
             git fetch origin main
-            echo "Resetting local branch..."
+            echo "Resetting local branch to origin/main..."
             git reset --hard origin/main
             echo "Installing dependencies..."
             npm install
@@ -42,7 +47,7 @@ jobs:
             echo "Reloading nginx..."
             sudo systemctl reload nginx
             exit
-          EOF
+EOF
 
       - name: Notify Discord on Success
         if: success()
