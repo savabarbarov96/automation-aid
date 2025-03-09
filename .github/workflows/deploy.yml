@@ -47,7 +47,7 @@ jobs:
             echo "Reloading nginx..."
             sudo systemctl reload nginx
             exit
-EOF
+            EOF
 
       - name: Notify Discord on Success
         if: success()
