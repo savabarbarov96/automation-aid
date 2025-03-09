@@ -4,9 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { formatDate } from "@/lib/utils";
+import { BlogPost, User } from "@/types/blog";
 
-export const BlogPostList = ({ onEdit }) => {
-  const [posts, setPosts] = useState([]);
+interface BlogPostListProps {
+  onEdit: (post: BlogPost) => void;
+}
+
+export const BlogPostList = ({ onEdit }: BlogPostListProps) => {
+  const [posts, setPosts] = useState<(BlogPost & { blog_users?: User })[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchPosts = async () => {
@@ -29,7 +34,7 @@ export const BlogPostList = ({ onEdit }) => {
       }
 
       setPosts(data || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error fetching posts:", error);
       toast({
         title: "Грешка",
@@ -45,7 +50,7 @@ export const BlogPostList = ({ onEdit }) => {
     fetchPosts();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (!window.confirm("Сигурни ли сте, че искате да изтриете тази публикация?")) {
       return;
     }
@@ -66,7 +71,7 @@ export const BlogPostList = ({ onEdit }) => {
         title: "Публикацията е изтрита",
         description: "Публикацията беше успешно изтрита.",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting post:", error);
       toast({
         title: "Грешка",
@@ -76,7 +81,7 @@ export const BlogPostList = ({ onEdit }) => {
     }
   };
 
-  const togglePublish = async (post) => {
+  const togglePublish = async (post: BlogPost) => {
     try {
       const updates = {
         is_published: !post.is_published,
@@ -104,7 +109,7 @@ export const BlogPostList = ({ onEdit }) => {
           ? "Публикацията вече е видима за всички." 
           : "Публикацията вече не е видима за посетителите."
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error toggling publish status:", error);
       toast({
         title: "Грешка",
@@ -147,7 +152,7 @@ export const BlogPostList = ({ onEdit }) => {
                 )}
               </p>
               <p className="text-sm text-muted-foreground">
-                Създадена: {formatDate(post.created_at)}
+                Създадена: {formatDate(post.created_at || "")}
                 {post.published_at && post.is_published && (
                   <span className="ml-2">| Публикувана: {formatDate(post.published_at)}</span>
                 )}
@@ -181,7 +186,7 @@ export const BlogPostList = ({ onEdit }) => {
             <Button
               variant="destructive"
               size="sm"
-              onClick={() => handleDelete(post.id)}
+              onClick={() => handleDelete(post.id as string)}
             >
               Изтрий
             </Button>

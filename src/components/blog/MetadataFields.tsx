@@ -4,12 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { slugify } from "@/lib/utils";
-
-interface User {
-  id: string;
-  username: string;
-  full_name: string;
-}
+import { User } from "@/types/blog";
 
 interface MetadataFieldsProps {
   title: string;

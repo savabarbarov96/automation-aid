@@ -15,6 +15,7 @@ export type Database = {
           category: string | null
           content: string
           created_at: string
+          created_by: string | null
           excerpt: string | null
           featured_image: string | null
           id: string
@@ -30,6 +31,7 @@ export type Database = {
           category?: string | null
           content: string
           created_at?: string
+          created_by?: string | null
           excerpt?: string | null
           featured_image?: string | null
           id?: string
@@ -45,6 +47,7 @@ export type Database = {
           category?: string | null
           content?: string
           created_at?: string
+          created_by?: string | null
           excerpt?: string | null
           featured_image?: string | null
           id?: string
@@ -54,6 +57,44 @@ export type Database = {
           tags?: string[] | null
           title?: string
           updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blog_posts_created_by_fkey"
+            columns: ["created_by"]
+            isOneToOne: false
+            referencedRelation: "blog_users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blog_users: {
+        Row: {
+          created_at: string
+          email: string | null
+          full_name: string | null
+          id: string
+          is_active: boolean
+          password: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          is_active?: boolean
+          password: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          is_active?: boolean
+          password?: string
+          username?: string
         }
         Relationships: []
       }

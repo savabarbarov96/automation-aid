@@ -6,19 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
+import { User } from "@/types/blog";
 
-interface User {
-  id?: string;
-  username: string;
-  password: string;
-  full_name: string;
-  email: string;
-  is_active: boolean;
+interface UserFormProps {
+  currentUser: User | null;
+  onSuccess: () => void;
 }
 
-export const UserForm = ({ currentUser, onSuccess }) => {
+export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<User>({
+    id: "",
     username: "",
     password: "",
     full_name: "",
@@ -29,6 +27,7 @@ export const UserForm = ({ currentUser, onSuccess }) => {
   useEffect(() => {
     if (currentUser) {
       setFormData({
+        id: currentUser.id,
         username: currentUser.username || "",
         password: "", // Don't populate password for security
         full_name: currentUser.full_name || "",
@@ -38,7 +37,7 @@ export const UserForm = ({ currentUser, onSuccess }) => {
     }
   }, [currentUser]);
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -46,14 +45,14 @@ export const UserForm = ({ currentUser, onSuccess }) => {
     });
   };
 
-  const handleToggleActive = (checked) => {
+  const handleToggleActive = (checked: boolean) => {
     setFormData({
       ...formData,
       is_active: checked
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
@@ -102,7 +101,7 @@ export const UserForm = ({ currentUser, onSuccess }) => {
       if (onSuccess) {
         onSuccess();
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving user:", error);
       toast({
         title: "Грешка",
@@ -161,7 +160,7 @@ export const UserForm = ({ currentUser, onSuccess }) => {
             id="email"
             name="email"
             type="email"
-            value={formData.email}
+            value={formData.email || ""}
             onChange={handleChange}
             placeholder="example@domain.com"
           />

@@ -3,9 +3,10 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { User } from "@/types/blog";
 
 export const UsersList = ({ onEdit }) => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchUsers = async () => {
@@ -20,8 +21,8 @@ export const UsersList = ({ onEdit }) => {
         throw error;
       }
 
-      setUsers(data || []);
-    } catch (error) {
+      setUsers(data as User[] || []);
+    } catch (error: any) {
       console.error("Error fetching users:", error);
       toast({
         title: "Грешка",
@@ -37,7 +38,7 @@ export const UsersList = ({ onEdit }) => {
     fetchUsers();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: string) => {
     if (!window.confirm("Сигурни ли сте, че искате да изтриете този потребител?")) {
       return;
     }
@@ -58,17 +59,17 @@ export const UsersList = ({ onEdit }) => {
         title: "Потребителят е изтрит",
         description: "Потребителят беше успешно изтрит.",
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error deleting user:", error);
       toast({
         title: "Грешка",
-        description: "Неуспешно изтриване на потребителя.",
+        description: error.message || "Неуспешно изтриване на потребителя.",
         variant: "destructive"
       });
     }
   };
 
-  const toggleActiveStatus = async (user) => {
+  const toggleActive = async (user: User) => {
     try {
       const updates = {
         is_active: !user.is_active
@@ -92,14 +93,14 @@ export const UsersList = ({ onEdit }) => {
       toast({
         title: updates.is_active ? "Потребителят е активиран" : "Потребителят е деактивиран",
         description: updates.is_active 
-          ? "Потребителят вече може да се логва." 
-          : "Потребителят вече не може да се логва."
+          ? "Потребителят вече може да бъде избран като автор." 
+          : "Потребителят вече не може да бъде избран като автор."
       });
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error toggling user status:", error);
       toast({
         title: "Грешка",
-        description: "Неуспешна промяна на статуса на потребителя.",
+        description: error.message || "Неуспешна промяна на статуса на потребителя.",
         variant: "destructive"
       });
     }
@@ -117,37 +118,32 @@ export const UsersList = ({ onEdit }) => {
     <div className="space-y-4">
       {users.map((user) => (
         <div key={user.id} className="bg-card p-4 rounded-lg border border-muted">
-          <div className="flex flex-col sm:flex-row sm:items-start justify-between">
+          <div className="flex items-start justify-between">
             <div>
               <h2 className="text-xl font-semibold text-white">
-                {user.username}
+                {user.full_name || user.username}
                 {user.is_active ? (
                   <span className="ml-2 text-xs px-2 py-1 bg-green-900/30 text-green-400 rounded-full">
                     Активен
                   </span>
                 ) : (
                   <span className="ml-2 text-xs px-2 py-1 bg-red-900/30 text-red-400 rounded-full">
-                    Деактивиран
+                    Неактивен
                   </span>
                 )}
               </h2>
-              {user.full_name && (
-                <p className="text-sm text-muted-foreground mt-1">
-                  Име: {user.full_name}
-                </p>
-              )}
+              <p className="text-sm text-muted-foreground mt-1">
+                Потребител: {user.username}
+              </p>
               {user.email && (
                 <p className="text-sm text-muted-foreground">
-                  Имейл: {user.email}
+                  Email: {user.email}
                 </p>
               )}
-              <p className="text-sm text-muted-foreground">
-                Регистриран: {new Date(user.created_at).toLocaleDateString('bg-BG')}
-              </p>
             </div>
           </div>
           
-          <div className="flex flex-wrap gap-2 mt-4">
+          <div className="flex space-x-2 mt-4">
             <Button
               variant="outline"
               size="sm"
@@ -158,7 +154,7 @@ export const UsersList = ({ onEdit }) => {
             <Button
               variant={user.is_active ? "outline" : "default"}
               size="sm"
-              onClick={() => toggleActiveStatus(user)}
+              onClick={() => toggleActive(user)}
             >
               {user.is_active ? "Деактивирай" : "Активирай"}
             </Button>

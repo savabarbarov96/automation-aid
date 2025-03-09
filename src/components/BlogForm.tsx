@@ -6,27 +6,7 @@ import { MetadataFields } from "./blog/MetadataFields";
 import { ContentFields } from "./blog/ContentFields";
 import { PublishSettings } from "./blog/PublishSettings";
 import { BlogFormSubmit } from "./blog/BlogFormSubmit";
-
-interface BlogPost {
-  id?: string;
-  title: string;
-  slug: string;
-  content: string;
-  excerpt: string;
-  featured_image: string;
-  author: string;
-  is_published: boolean;
-  category: string;
-  tags: string[];
-  published_at: string | null;
-  created_by: string | null;
-}
-
-interface User {
-  id: string;
-  username: string;
-  full_name: string;
-}
+import { BlogPost, User } from "@/types/blog";
 
 interface BlogFormProps {
   currentPost: BlogPost | null;
@@ -56,11 +36,11 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
       try {
         const { data, error } = await supabase
           .from('blog_users')
-          .select('id, username, full_name')
+          .select('id, username, full_name, is_active')
           .eq('is_active', true);
           
         if (error) throw error;
-        setUsers(data || []);
+        setUsers(data as User[] || []);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
