@@ -57,8 +57,10 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
     setLoading(true);
 
     try {
-      // Prepare user data, excluding password if it's empty (for updates)
-      const userData = { ...formData };
+      // Prepare user data for submission
+      const userData: any = { ...formData };
+      
+      // For updates, only send password if provided
       if (!userData.password && currentUser) {
         delete userData.password;
       }
@@ -67,10 +69,14 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
       
       if (currentUser) {
         // Update existing user
-        const { password, ...dataToUpdate } = userData;
         response = await supabase
           .from('blog_users')
-          .update(dataToUpdate)
+          .update({
+            username: userData.username,
+            full_name: userData.full_name,
+            email: userData.email,
+            is_active: userData.is_active
+          })
           .eq('id', currentUser.id);
           
         // If password is provided, update it separately
@@ -83,10 +89,16 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
           if (passwordResponse.error) throw passwordResponse.error;
         }
       } else {
-        // Create new user
+        // Create new user - password is required for new users
         response = await supabase
           .from('blog_users')
-          .insert(userData);
+          .insert({
+            username: userData.username,
+            password: userData.password,
+            full_name: userData.full_name,
+            email: userData.email,
+            is_active: userData.is_active
+          });
       }
 
       if (response.error) {

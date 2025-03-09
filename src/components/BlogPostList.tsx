@@ -4,14 +4,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { formatDate } from "@/lib/utils";
-import { BlogPost, User } from "@/types/blog";
+import { BlogPost, User, BlogPostWithUser } from "@/types/blog";
 
 interface BlogPostListProps {
   onEdit: (post: BlogPost) => void;
 }
 
 export const BlogPostList = ({ onEdit }: BlogPostListProps) => {
-  const [posts, setPosts] = useState<(BlogPost & { blog_users?: User })[]>([]);
+  const [posts, setPosts] = useState<BlogPostWithUser[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchPosts = async () => {
@@ -24,7 +24,8 @@ export const BlogPostList = ({ onEdit }: BlogPostListProps) => {
           blog_users:created_by (
             id,
             username,
-            full_name
+            full_name,
+            is_active
           )
         `)
         .order('created_at', { ascending: false });
@@ -33,7 +34,7 @@ export const BlogPostList = ({ onEdit }: BlogPostListProps) => {
         throw error;
       }
 
-      setPosts(data || []);
+      setPosts(data as BlogPostWithUser[] || []);
     } catch (error: any) {
       console.error("Error fetching posts:", error);
       toast({

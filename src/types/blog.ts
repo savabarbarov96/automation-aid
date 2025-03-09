@@ -26,3 +26,8 @@ export interface BlogPost {
   created_at?: string;
   updated_at?: string;
 }
+
+// Define types for joined data
+export interface BlogPostWithUser extends BlogPost {
+  blog_users?: User;
+}
