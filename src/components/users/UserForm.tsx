@@ -57,48 +57,73 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
     setLoading(true);
 
     try {
-      // Prepare user data for submission
-      const userData: any = { ...formData };
-      
-      // For updates, only send password if provided
-      if (!userData.password && currentUser) {
-        delete userData.password;
+      // First handle the Supabase Auth operations
+      if (currentUser) {
+        // Update existing user
+        if (formData.password) {
+          // TODO: Handle password reset if needed
+          console.log("Password updates through admin panel are not yet supported");
+        }
+      } else {
+        // For new users, create them in Auth
+        if (!formData.email) {
+          throw new Error("Email is required for new users");
+        }
+        
+        if (!formData.password) {
+          throw new Error("Password is required for new users");
+        }
+        
+        // Create the user in Supabase Auth
+        const { data: authData, error: authError } = await supabase.auth.admin.createUser({
+          email: formData.email,
+          password: formData.password,
+          email_confirm: true
+        });
+        
+        if (authError) {
+          // If there's an auth error but it's just that the user already exists, we can proceed
+          if (!authError.message.includes("already exists")) {
+            throw authError;
+          }
+        }
+        
+        // If user was created successfully, use the new user's ID
+        if (authData?.user) {
+          formData.id = authData.user.id;
+        }
       }
-
+      
+      // Now handle the blog_users operations
       let response;
       
       if (currentUser) {
-        // Update existing user
+        // Update existing user in blog_users
+        const dataToUpdate = {
+          username: formData.username,
+          full_name: formData.full_name,
+          email: formData.email,
+          is_active: formData.is_active
+        };
+        
         response = await supabase
           .from('blog_users')
-          .update({
-            username: userData.username,
-            full_name: userData.full_name,
-            email: userData.email,
-            is_active: userData.is_active
-          })
+          .update(dataToUpdate)
           .eq('id', currentUser.id);
-          
-        // If password is provided, update it separately
-        if (userData.password) {
-          const passwordResponse = await supabase
-            .from('blog_users')
-            .update({ password: userData.password })
-            .eq('id', currentUser.id);
-            
-          if (passwordResponse.error) throw passwordResponse.error;
-        }
       } else {
-        // Create new user - password is required for new users
+        // Create new user in blog_users
+        const dataToInsert = {
+          id: formData.id, // This will be the UUID from Auth
+          username: formData.username,
+          full_name: formData.full_name,
+          email: formData.email,
+          is_active: formData.is_active,
+          password: formData.password // This is stored for reference only, not for auth
+        };
+        
         response = await supabase
           .from('blog_users')
-          .insert({
-            username: userData.username,
-            password: userData.password,
-            full_name: userData.full_name,
-            email: userData.email,
-            is_active: userData.is_active
-          });
+          .insert(dataToInsert);
       }
 
       if (response.error) {
@@ -141,6 +166,22 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
         </div>
 
         <div>
+          <Label htmlFor="email">Имейл</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email || ""}
+            onChange={handleChange}
+            placeholder="example@domain.com"
+            required
+          />
+          <p className="text-xs text-muted-foreground mt-1">
+            Имейлът се използва за вход в системата
+          </p>
+        </div>
+
+        <div>
           <Label htmlFor="password">
             {currentUser ? "Нова парола (оставете празно за да запазите текущата)" : "Парола"}
           </Label>
@@ -163,18 +204,6 @@ export const UserForm = ({ currentUser, onSuccess }: UserFormProps) => {
             value={formData.full_name}
             onChange={handleChange}
             placeholder="Име и фамилия"
-          />
-        </div>
-
-        <div>
-          <Label htmlFor="email">Имейл</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email || ""}
-            onChange={handleChange}
-            placeholder="example@domain.com"
           />
         </div>
 

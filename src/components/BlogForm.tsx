@@ -7,6 +7,7 @@ import { ContentFields } from "./blog/ContentFields";
 import { PublishSettings } from "./blog/PublishSettings";
 import { BlogFormSubmit } from "./blog/BlogFormSubmit";
 import { BlogPost, User } from "@/types/blog";
+import { useAuth } from "@/lib/auth";
 
 interface BlogFormProps {
   currentPost: BlogPost | null;
@@ -16,6 +17,7 @@ interface BlogFormProps {
 export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<User[]>([]);
+  const { user: currentUser } = useAuth();
   const [formData, setFormData] = useState<BlogPost>({
     title: "",
     slug: "",
@@ -51,7 +53,10 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
 
   useEffect(() => {
     if (currentPost) {
+      console.log("Setting form data from current post:", currentPost);
       setFormData({
+        ...currentPost,
+        // Ensure we don't pass undefined values that could cause issues
         title: currentPost.title || "",
         slug: currentPost.slug || "",
         content: currentPost.content || "",
@@ -62,10 +67,25 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
         category: currentPost.category || "",
         tags: currentPost.tags || [],
         published_at: currentPost.published_at || null,
-        created_by: currentPost.created_by || null
+        created_by: currentPost.created_by || (currentUser ? currentUser.id : null)
+      });
+    } else {
+      // For new posts, initialize with current user if available
+      setFormData({
+        title: "",
+        slug: "",
+        content: "",
+        excerpt: "",
+        featured_image: "",
+        author: currentUser ? (currentUser.full_name || currentUser.username) : "",
+        is_published: false,
+        category: "",
+        tags: [],
+        published_at: null,
+        created_by: currentUser ? currentUser.id : null
       });
     }
-  }, [currentPost]);
+  }, [currentPost, currentUser]);
 
   // Update form field handlers
   const updateField = <K extends keyof BlogPost>(field: K, value: BlogPost[K]) => {
@@ -84,9 +104,21 @@ export const BlogForm = ({ currentPost, onSuccess }: BlogFormProps) => {
         postData.published_at = new Date().toISOString();
       }
 
+      // Make sure we have a created_by value if the current user is logged in
+      if (!postData.created_by && currentUser) {
+        postData.created_by = currentUser.id;
+      }
+
+      // Make sure we have an author
+      if (!postData.author && currentUser) {
+        postData.author = currentUser.full_name || currentUser.username;
+      }
+
+      console.log("Saving post data:", postData);
+      
       let response;
       
-      if (currentPost) {
+      if (currentPost?.id) {
         // Update existing post
         response = await supabase
           .from('blog_posts')

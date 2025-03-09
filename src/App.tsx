@@ -1,34 +1,40 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
-import ResourcesPage from "./pages/ResourcesPage";
 import BlogPage from "./pages/BlogPage";
 import BlogAdmin from "./pages/BlogAdmin";
+import LoginPage from "./pages/LoginPage";
 import NotFound from "./pages/NotFound";
+import ResourcesPage from "./pages/ResourcesPage";
+import { ProtectedRoute } from "./components/ProtectedRoute";
+import { AuthProvider } from "./lib/auth";
+import { Toaster } from "./components/ui/toaster";
+import "./App.css";
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+function App() {
+  return (
+    <AuthProvider>
+      <Router>
         <Routes>
           <Route path="/" element={<Index />} />
-          <Route path="/resources/*" element={<ResourcesPage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPage />} />
-          <Route path="/blog-admin" element={<BlogAdmin />} />
+          <Route path="/resources" element={<ResourcesPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route 
+            path="/blog-admin" 
+            element={
+              <ProtectedRoute>
+                <BlogAdmin />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+      </Router>
+      <Toaster />
+    </AuthProvider>
+  );
+}
 
 export default App;
