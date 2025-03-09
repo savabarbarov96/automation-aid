@@ -2,6 +2,7 @@
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { ImageUploader } from "./ImageUploader";
 
 interface ContentFieldsProps {
   excerpt: string;
@@ -65,14 +66,21 @@ export const ContentFields = ({
       </div>
 
       <div>
-        <Label htmlFor="featured_image">URL на основно изображение</Label>
-        <Input
-          id="featured_image"
-          name="featured_image"
+        <Label htmlFor="featured_image">Основно изображение</Label>
+        <ImageUploader 
           value={featured_image}
-          onChange={(e) => onFeaturedImageChange(e.target.value)}
-          placeholder="https://example.com/image.jpg"
+          onChange={onFeaturedImageChange}
         />
+        <div className="mt-2">
+          <Label htmlFor="featured_image_url">Или въведете URL на изображение</Label>
+          <Input
+            id="featured_image_url"
+            name="featured_image_url"
+            value={featured_image}
+            onChange={(e) => onFeaturedImageChange(e.target.value)}
+            placeholder="https://example.com/image.jpg"
+          />
+        </div>
       </div>
 
       <div>
