@@ -59,12 +59,11 @@ export const checkBucketExists = async (bucketName: string): Promise<string | nu
       console.error(`Error accessing bucket "${bucketName}":`, error);
       
       if (error.message.includes('The resource was not found') || 
-          error.message.includes('does not exist') ||
-          error.status === 404) {
+          error.message.includes('does not exist')) {
         return `Bucket "${bucketName}" does not exist or is not accessible.`;
       }
       
-      if (error.message.includes('Permission denied') || error.status === 403) {
+      if (error.message.includes('Permission denied')) {
         return `Permission denied for bucket "${bucketName}". Check your storage policies.`;
       }
       
