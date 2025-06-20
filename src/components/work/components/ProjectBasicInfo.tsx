@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Project } from "@/types/work";
-import { RotateCw, FileText, Link as LinkIcon } from "lucide-react";
+import { RotateCw, FileText, Link as LinkIcon, BookOpen } from "lucide-react";
 import { slugify } from "@/lib/utils";
 import { useState, useEffect } from "react";
 
@@ -13,6 +13,7 @@ interface ProjectBasicInfoProps {
 
 export const ProjectBasicInfo = ({ formData, handleChange }: ProjectBasicInfoProps) => {
   const [isValidUrl, setIsValidUrl] = useState(true);
+  const [isValidDocUrl, setIsValidDocUrl] = useState(true);
 
   useEffect(() => {
     if (formData.link) {
@@ -30,12 +31,44 @@ export const ProjectBasicInfo = ({ formData, handleChange }: ProjectBasicInfoPro
     }
   }, [formData.link]);
 
+  useEffect(() => {
+    if (formData.documentation_url) {
+      try {
+        // Check if URL has protocol, add https:// if it doesn't
+        const urlWithProtocol = formData.documentation_url.startsWith('http') 
+          ? formData.documentation_url 
+          : `https://${formData.documentation_url}`;
+        
+        new URL(urlWithProtocol);
+        setIsValidDocUrl(true);
+      } catch (e) {
+        setIsValidDocUrl(false);
+      }
+    } else {
+      setIsValidDocUrl(true); // Empty is valid (optional field)
+    }
+  }, [formData.documentation_url]);
+
   const addHttpsIfNeeded = (e: React.FocusEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (value && !value.startsWith('http')) {
       const newEvent = {
         target: {
           name: 'link',
+          value: `https://${value}`
+        }
+      } as React.ChangeEvent<HTMLInputElement>;
+      
+      handleChange(newEvent);
+    }
+  };
+
+  const addHttpsToDocUrl = (e: React.FocusEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value && !value.startsWith('http')) {
+      const newEvent = {
+        target: {
+          name: 'documentation_url',
           value: `https://${value}`
         }
       } as React.ChangeEvent<HTMLInputElement>;
@@ -84,6 +117,27 @@ export const ProjectBasicInfo = ({ formData, handleChange }: ProjectBasicInfoPro
           {!isValidUrl 
             ? "Моля, въведете валиден URL адрес (напр. https://example.com)" 
             : "Пълният URL адрес, към който ще води бутонът 'Разгледай проекта'"}
+        </p>
+      </div>
+
+      <div>
+        <Label htmlFor="documentation_url" className={`flex items-center gap-2 mb-1.5 ${!isValidDocUrl ? "text-destructive" : ""}`}>
+          <BookOpen className={`h-4 w-4 ${!isValidDocUrl ? "text-destructive" : "text-primary"}`} />
+          Документация (незадължително)
+        </Label>
+        <Input
+          id="documentation_url"
+          name="documentation_url"
+          value={formData.documentation_url || ""}
+          onChange={handleChange}
+          onBlur={addHttpsToDocUrl}
+          placeholder="https://docs.example.com"
+          className={`bg-background ${!isValidDocUrl ? "border-destructive ring-destructive" : ""}`}
+        />
+        <p className={`text-xs ${!isValidDocUrl ? "text-destructive" : "text-muted-foreground"} mt-1.5`}>
+          {!isValidDocUrl 
+            ? "Моля, въведете валиден URL адрес (напр. https://docs.example.com)" 
+            : "Линк към документацията или техническите детайли на проекта"}
         </p>
       </div>
 

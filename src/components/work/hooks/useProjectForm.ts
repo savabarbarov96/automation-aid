@@ -1,8 +1,7 @@
-
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/components/ui/use-toast";
-import { Project, Category } from "@/types/work";
+import { Project, Category, GalleryItem } from "@/types/work";
 
 export const useProjectForm = (currentProject: Project | null, onSuccess: () => void) => {
   const [loading, setLoading] = useState(false);
@@ -13,7 +12,9 @@ export const useProjectForm = (currentProject: Project | null, onSuccess: () => 
     category: "",
     image: "",
     link: "",
-    description: ""
+    description: "",
+    gallery: [],
+    documentation_url: ""
   });
 
   useEffect(() => {
@@ -26,7 +27,16 @@ export const useProjectForm = (currentProject: Project | null, onSuccess: () => 
         category: currentProject.category,
         image: currentProject.image,
         link: currentProject.link,
-        description: currentProject.description || ""
+        description: currentProject.description || "",
+        gallery: currentProject.gallery || [],
+        slug: currentProject.slug,
+        detailed_description: currentProject.detailed_description,
+        technologies: currentProject.technologies,
+        client: currentProject.client,
+        duration: currentProject.duration,
+        team_size: currentProject.team_size,
+        status: currentProject.status,
+        documentation_url: currentProject.documentation_url || ""
       });
     }
   }, [currentProject]);
@@ -50,7 +60,7 @@ export const useProjectForm = (currentProject: Project | null, onSuccess: () => 
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | { target: { name: string; value: any } }) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
@@ -73,6 +83,14 @@ export const useProjectForm = (currentProject: Project | null, onSuccess: () => 
     });
   };
 
+  const generateSlug = (title: string) => {
+    return title
+      .toLowerCase()
+      .replace(/[^\w\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .trim();
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -84,6 +102,8 @@ export const useProjectForm = (currentProject: Project | null, onSuccess: () => 
         return;
       }
 
+      const slug = formData.slug || generateSlug(formData.title);
+
       if (currentProject) {
         // Update existing project
         const { error } = await supabase
@@ -94,6 +114,15 @@ export const useProjectForm = (currentProject: Project | null, onSuccess: () => 
             image: formData.image,
             link: formData.link,
             description: formData.description,
+            gallery: formData.gallery || [],
+            slug: slug,
+            detailed_description: formData.detailed_description,
+            technologies: formData.technologies,
+            client: formData.client,
+            duration: formData.duration,
+            team_size: formData.team_size,
+            status: formData.status,
+            documentation_url: formData.documentation_url || null,
             updated_at: new Date().toISOString()
           })
           .eq('id', currentProject.id);
@@ -113,7 +142,16 @@ export const useProjectForm = (currentProject: Project | null, onSuccess: () => 
             category: formData.category,
             image: formData.image,
             link: formData.link,
-            description: formData.description
+            description: formData.description,
+            gallery: formData.gallery || [],
+            slug: slug,
+            detailed_description: formData.detailed_description,
+            technologies: formData.technologies,
+            client: formData.client,
+            duration: formData.duration,
+            team_size: formData.team_size,
+            status: formData.status || 'in_progress',
+            documentation_url: formData.documentation_url || null
           });
           
         if (error) throw error;

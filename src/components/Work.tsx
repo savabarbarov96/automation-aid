@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Project } from "@/types/work";
 
@@ -226,15 +226,23 @@ export const Work = () => {
                   {project.description && (
                     <p className="text-white/70 mb-4 line-clamp-2">{project.description}</p>
                   )}
-                  <a 
-                    href={project.link && project.link.startsWith('http') ? project.link : `https://${project.link}`} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 text-white bg-primary/20 hover:bg-primary px-4 py-2 rounded-lg transition-colors duration-300 mt-2"
-                  >
-                    Разгледай Проекта
-                    <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                  </a>
+                  <div className="flex gap-2 mt-4">
+                    <a 
+                      href={`/project/${project.slug || project.id}`}
+                      className="inline-flex items-center gap-2 text-white bg-primary/20 hover:bg-primary px-4 py-2 rounded-lg transition-colors duration-300 flex-1 justify-center"
+                    >
+                      <Eye className="h-4 w-4" />
+                      Детайли
+                    </a>
+                    <a 
+                      href={project.link && project.link.startsWith('http') ? project.link : `https://${project.link}`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-white bg-secondary/20 hover:bg-secondary px-4 py-2 rounded-lg transition-colors duration-300"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                    </a>
+                  </div>
                 </div>
               </div>
             ))}
