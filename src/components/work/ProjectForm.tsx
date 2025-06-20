@@ -5,10 +5,11 @@ import { useProjectForm } from "./hooks/useProjectForm";
 import { ProjectBasicInfo } from "./components/ProjectBasicInfo";
 import { ProjectCategorySelect } from "./components/ProjectCategorySelect";
 import { ProjectImageUploader } from "./components/ProjectImageUploader";
+import { ProjectGalleryManager } from "./components/ProjectGalleryManager";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Check, ExternalLink, AlertTriangle, FileText, Image as ImageIcon, Tag } from "lucide-react";
+import { Check, ExternalLink, AlertTriangle, FileText, Image as ImageIcon, Tag, Images } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface ProjectFormProps {
@@ -76,7 +77,7 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
       
       <form onSubmit={handleSubmit}>
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid grid-cols-2 mb-8">
+          <TabsList className="grid grid-cols-3 mb-8">
             <TabsTrigger value="basic" className="flex items-center gap-2">
               <FileText className="h-4 w-4" />
               <span>Основна информация</span>
@@ -96,6 +97,10 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
               {isMediaComplete && (
                 <Check className="h-4 w-4 text-green-500 ml-auto" />
               )}
+            </TabsTrigger>
+            <TabsTrigger value="gallery" className="flex items-center gap-2">
+              <Images className="h-4 w-4" />
+              <span>Галерия</span>
             </TabsTrigger>
           </TabsList>
 
@@ -194,6 +199,49 @@ export const ProjectForm = ({ currentProject, onSuccess }: ProjectFormProps) => 
                   type="button" 
                   variant="outline" 
                   onClick={() => setActiveTab("basic")}
+                >
+                  Назад
+                </Button>
+                <div className="flex gap-2">
+                  <Button 
+                    type="button" 
+                    onClick={() => setActiveTab("gallery")}
+                  >
+                    Продължете към галерия
+                  </Button>
+                  <Button type="submit" disabled={loading || categories.length === 0}>
+                    {loading ? "Запазване..." : currentProject ? "Обнови проекта" : "Създай проект"}
+                  </Button>
+                </div>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="gallery" className="space-y-6 mt-0">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Images className="h-4 w-4 text-primary" /> 
+                    Галерия на проекта
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <ProjectGalleryManager 
+                    gallery={formData.gallery || []}
+                    onGalleryChange={(gallery) => {
+                      // Update formData with new gallery
+                      handleChange({
+                        target: { name: 'gallery', value: gallery }
+                      } as any);
+                    }}
+                  />
+                </CardContent>
+              </Card>
+
+              <div className="flex justify-between">
+                <Button 
+                  type="button" 
+                  variant="outline" 
+                  onClick={() => setActiveTab("media")}
                 >
                   Назад
                 </Button>
