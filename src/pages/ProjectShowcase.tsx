@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Project, GalleryItem } from "@/types/work";
@@ -15,11 +15,53 @@ export const ProjectShowcase = () => {
   const [loading, setLoading] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
+  // Refs for scroll animations
+  const heroRef = useRef<HTMLDivElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
+  const descriptionRef = useRef<HTMLDivElement>(null);
+  const detailsRef = useRef<HTMLDivElement>(null);
+  const metaGridRef = useRef<HTMLDivElement>(null);
+  const techRef = useRef<HTMLDivElement>(null);
+  const ctaRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (slug) {
       fetchProject(slug);
     }
   }, [slug]);
+
+  // Scroll animation setup
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all animation elements
+    const elements = [
+      heroRef.current,
+      sliderRef.current,
+      descriptionRef.current,
+      detailsRef.current,
+      metaGridRef.current,
+      techRef.current,
+      ctaRef.current
+    ].filter(Boolean);
+
+    elements.forEach((el) => {
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [project]);
 
   const fetchProject = async (projectSlug: string) => {
     try {
@@ -122,17 +164,12 @@ export const ProjectShowcase = () => {
       </div>
 
       {/* Hero Section with Project Title */}
-      <div className="relative py-16 px-6">
+      <div ref={heroRef} className="relative py-16 px-6 scroll-fade-in">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-transparent"></div>
         <div className="relative container mx-auto text-center space-y-6">
           <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
             {project.title}
           </h1>
-          {project.description && (
-            <p className="text-xl md:text-2xl text-white/70 max-w-4xl mx-auto leading-relaxed">
-              {project.description}
-            </p>
-          )}
         </div>
       </div>
 
@@ -148,12 +185,8 @@ export const ProjectShowcase = () => {
                     <img
                       src={sortedGallery[currentImageIndex].image}
                       alt={sortedGallery[currentImageIndex].title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
                     />
-                    
-                    {/* Gradient Overlays */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
-                    <div className="absolute inset-0 bg-gradient-to-r from-black/20 via-transparent to-black/20"></div>
                     
                     {/* Navigation Arrows */}
                     {sortedGallery.length > 1 && (
@@ -185,21 +218,21 @@ export const ProjectShowcase = () => {
                         </span>
                       </div>
                     )}
-
-                    {/* Image Title Overlay */}
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                        <h3 className="text-2xl font-bold text-white mb-2">
-                          {sortedGallery[currentImageIndex].title}
-                        </h3>
-                        {sortedGallery[currentImageIndex].description && (
-                          <p className="text-white/80 text-lg leading-relaxed">
-                            {sortedGallery[currentImageIndex].description}
-                          </p>
-                        )}
-                      </div>
-                    </div>
                   </div>
+                </div>
+              </div>
+
+              {/* Image Title and Description - Moved below image */}
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {sortedGallery[currentImageIndex].title}
+                  </h3>
+                  {sortedGallery[currentImageIndex].description && (
+                    <p className="text-white/80 text-lg leading-relaxed">
+                      {sortedGallery[currentImageIndex].description}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -220,7 +253,7 @@ export const ProjectShowcase = () => {
                         <img
                           src={item.image}
                           alt={item.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-contain"
                         />
                       </button>
                     ))}
@@ -230,19 +263,22 @@ export const ProjectShowcase = () => {
             </div>
           ) : (
             // Fallback to main project image with premium styling
-            <div className="aspect-[16/10] rounded-3xl overflow-hidden bg-black/40 backdrop-blur-sm border border-white/10 shadow-2xl">
-              <div className="relative h-full group">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/20"></div>
-                <div className="absolute bottom-6 left-6 right-6">
-                  <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
-                    <h3 className="text-2xl font-bold text-white mb-2">Основно изображение</h3>
-                    <p className="text-white/80 text-lg">Представяне на проекта</p>
-                  </div>
+            <div className="space-y-8">
+              <div className="aspect-[16/10] rounded-3xl overflow-hidden bg-black/40 backdrop-blur-sm border border-white/10 shadow-2xl">
+                <div className="relative h-full group">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-contain transition-transform duration-700 group-hover:scale-105"
+                  />
+                </div>
+              </div>
+
+              {/* Image Title and Description - Below image */}
+              <div className="max-w-4xl mx-auto">
+                <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
+                  <h3 className="text-2xl font-bold text-white mb-2">Основно изображение</h3>
+                  <p className="text-white/80 text-lg">Представяне на проекта</p>
                 </div>
               </div>
             </div>
@@ -268,14 +304,38 @@ export const ProjectShowcase = () => {
                     <h3 className="text-xl font-semibold text-white/90">Описание</h3>
                     <div className="space-y-4">
                       {project.description && (
-                        <p className="text-white/70 text-lg leading-relaxed">
-                          {project.description}
-                        </p>
+                        <div className="text-white/70 text-lg leading-relaxed">
+                          <div 
+                            className="[&>ul]:list-disc [&>ul]:ml-6 [&>ul]:space-y-2 [&>ol]:list-decimal [&>ol]:ml-6 [&>ol]:space-y-2 [&>strong]:font-bold [&>strong]:text-white/90 [&>em]:italic [&>br]:block [&>br]:mb-2"
+                            dangerouslySetInnerHTML={{ 
+                            __html: project.description
+                              .replace(/\n\n/g, '<br><br>')
+                              .replace(/\n/g, '<br>')
+                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                              .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                              .replace(/^- (.+)/gm, '<li>$1</li>')
+                              .replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>')
+                              .replace(/^(\d+\. .+)/gm, '<li>$1</li>')
+                              .replace(/(<li>\d+\. .*?<\/li>)/gs, '<ol>$1</ol>')
+                          }} />
+                        </div>
                       )}
                       {project.detailed_description && (
-                        <p className="text-white/70 text-lg leading-relaxed whitespace-pre-wrap">
-                          {project.detailed_description}
-                        </p>
+                        <div className="text-white/70 text-lg leading-relaxed">
+                          <div 
+                            className="[&>ul]:list-disc [&>ul]:ml-6 [&>ul]:space-y-2 [&>ol]:list-decimal [&>ol]:ml-6 [&>ol]:space-y-2 [&>strong]:font-bold [&>strong]:text-white/90 [&>em]:italic [&>br]:block [&>br]:mb-2"
+                            dangerouslySetInnerHTML={{ 
+                            __html: project.detailed_description
+                              .replace(/\n\n/g, '<br><br>')
+                              .replace(/\n/g, '<br>')
+                              .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                              .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                              .replace(/^- (.+)/gm, '<li>$1</li>')
+                              .replace(/(<li>.*?<\/li>)/gs, '<ul>$1</ul>')
+                              .replace(/^(\d+\. .+)/gm, '<li>$1</li>')
+                              .replace(/(<li>\d+\. .*?<\/li>)/gs, '<ol>$1</ol>')
+                          }} />
+                        </div>
                       )}
                     </div>
                   </div>
