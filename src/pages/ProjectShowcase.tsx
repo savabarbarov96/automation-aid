@@ -174,7 +174,7 @@ export const ProjectShowcase = () => {
       </div>
 
       {/* Premium Image Slider - Centerpiece */}
-      <div className="container mx-auto px-6 pb-16">
+      <div ref={sliderRef} className="container mx-auto px-6 pb-16 scroll-scale">
         <div className="relative">
           {hasGallery ? (
             <div className="space-y-8">
@@ -223,7 +223,7 @@ export const ProjectShowcase = () => {
               </div>
 
               {/* Image Title and Description - Moved below image */}
-              <div className="max-w-4xl mx-auto">
+              <div ref={descriptionRef} className="max-w-4xl mx-auto scroll-slide-left">
                 <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                   <h3 className="text-2xl font-bold text-white mb-2">
                     {sortedGallery[currentImageIndex].title}
@@ -275,7 +275,7 @@ export const ProjectShowcase = () => {
               </div>
 
               {/* Image Title and Description - Below image */}
-              <div className="max-w-4xl mx-auto">
+              <div ref={descriptionRef} className="max-w-4xl mx-auto scroll-slide-left">
                 <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
                   <h3 className="text-2xl font-bold text-white mb-2">Основно изображение</h3>
                   <p className="text-white/80 text-lg">Представяне на проекта</p>
@@ -290,7 +290,7 @@ export const ProjectShowcase = () => {
       <div className="container mx-auto px-6 pb-20">
         <div className="max-w-4xl mx-auto space-y-8">
           {/* Main Details Card */}
-          <Card className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden">
+          <Card ref={detailsRef} className="bg-black/20 backdrop-blur-sm border border-white/10 rounded-3xl overflow-hidden scroll-fade-in">
             <CardContent className="p-8 md:p-12">
               <div className="space-y-8">
                 <div className="text-center space-y-4">
@@ -342,7 +342,7 @@ export const ProjectShowcase = () => {
                 )}
 
                 {/* Project Meta Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div ref={metaGridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 scroll-slide-right">
                   {project.client && (
                     <div className="bg-white/5 rounded-2xl p-6 border border-white/10">
                       <div className="space-y-2">
@@ -394,7 +394,7 @@ export const ProjectShowcase = () => {
 
                 {/* Technologies */}
                 {project.technologies && project.technologies.length > 0 && (
-                  <div className="space-y-4">
+                  <div ref={techRef} className="space-y-4 scroll-fade-in">
                     <h3 className="text-xl font-semibold text-white/90">Използвани технологии</h3>
                     <div className="flex flex-wrap gap-3">
                       {project.technologies.map((tech, index) => (
@@ -414,7 +414,7 @@ export const ProjectShowcase = () => {
           </Card>
 
           {/* Call to Action */}
-          <div className="text-center space-y-4">
+          <div ref={ctaRef} className="text-center space-y-4 scroll-scale">
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
                 asChild 
