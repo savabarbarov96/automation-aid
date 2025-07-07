@@ -32,6 +32,7 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
     message: "",
     contactMethod: 'email' as ContactMethod
   });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const handleServiceSelect = (value: string) => {
     setFormData(prev => ({ ...prev, service: value }));
@@ -40,6 +41,57 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
 
   const handleContactMethodSelect = (value: string) => {
     setFormData(prev => ({ ...prev, contactMethod: value as ContactMethod }));
+  };
+
+  // Auto-save form data to localStorage
+  useEffect(() => {
+    const savedData = localStorage.getItem('contactFormData');
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        setFormData(prev => ({ ...prev, ...parsed }));
+      } catch (error) {
+        console.error('Error parsing saved form data:', error);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('contactFormData', JSON.stringify(formData));
+  }, [formData]);
+
+  // Real-time validation
+  const validateField = (field: string, value: string) => {
+    let error = '';
+    switch (field) {
+      case 'email':
+        if (value && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          error = 'Моля въведете валиден имейл адрес';
+        }
+        break;
+      case 'name':
+        if (value && value.length < 2) {
+          error = 'Името трябва да е поне 2 символа';
+        }
+        break;
+      case 'company':
+        if (value && value.length < 2) {
+          error = 'Името на компанията трябва да е поне 2 символа';
+        }
+        break;
+    }
+    
+    setFieldErrors(prev => ({ ...prev, [field]: error }));
+    return error === '';
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (value) {
+      validateField(field, value);
+    } else {
+      setFieldErrors(prev => ({ ...prev, [field]: '' }));
+    }
   };
 
   const getStepTitle = () => {
@@ -149,6 +201,9 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
         description: "Ще се свържем с вас скоро.",
       });
 
+      // Clear saved form data
+      localStorage.removeItem('contactFormData');
+      
       onSuccess?.();
     } catch (error) {
       console.error('Form submission error:', error);
@@ -206,32 +261,32 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <ServiceCard
-                  title="Автоматизация"
-                  description="Оптимизирайте процесите си с интелигентна автоматизация"
-                  selected={formData.service === "automation"}
-                  onClick={() => handleServiceSelect("automation")}
-                  icon="🤖"
+                  title="Недвижими имоти"
+                  description="ImotiDesk CRM за брокерски агенции и управление на имоти"
+                  selected={formData.service === "real_estate"}
+                  onClick={() => handleServiceSelect("real_estate")}
+                  icon="🏢"
                 />
                 <ServiceCard
-                  title="AI Интеграция"
-                  description="Внедрете AI решения във вашия бизнес"
-                  selected={formData.service === "ai"}
-                  onClick={() => handleServiceSelect("ai")}
-                  icon="🧠"
+                  title="Туризъм и хотелиерство"
+                  description="MenuMaster дигитални менюта и Property Pro за вили"
+                  selected={formData.service === "hospitality"}
+                  onClick={() => handleServiceSelect("hospitality")}
+                  icon="🍽️"
                 />
                 <ServiceCard
-                  title="Разработка"
-                  description="Създаване на персонализиран софтуер за вашите нужди"
-                  selected={formData.service === "development"}
-                  onClick={() => handleServiceSelect("development")}
-                  icon="💻"
+                  title="Фитнес и здраве"
+                  description="FitManager за зали и AI персонализирани планове"
+                  selected={formData.service === "fitness"}
+                  onClick={() => handleServiceSelect("fitness")}
+                  icon="💪"
                 />
                 <ServiceCard
-                  title="Консултация"
-                  description="Експертни съвети за дигитална трансформация"
-                  selected={formData.service === "consulting"}
-                  onClick={() => handleServiceSelect("consulting")}
-                  icon="📊"
+                  title="Персонализирано решение"
+                  description="Създаване на специализиран софтуер за вашия бизнес"
+                  selected={formData.service === "custom"}
+                  onClick={() => handleServiceSelect("custom")}
+                  icon="⚙️"
                 />
               </div>
             </motion.div>
@@ -259,10 +314,16 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                       ref={companyInputRef}
                       required
                       value={formData.company}
-                      onChange={e => setFormData(prev => ({ ...prev, company: e.target.value }))}
-                      className="bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3"
+                      onChange={e => handleInputChange('company', e.target.value)}
+                      className={cn(
+                        "bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3",
+                        fieldErrors.company && "border-red-500"
+                      )}
                       placeholder="Вашата компания"
                     />
+                    {fieldErrors.company && (
+                      <p className="text-red-400 text-xs mt-1">{fieldErrors.company}</p>
+                    )}
                   </div>
                 </div>
                 
@@ -276,10 +337,16 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                       id="name"
                       required
                       value={formData.name}
-                      onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
-                      className="bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3"
+                      onChange={e => handleInputChange('name', e.target.value)}
+                      className={cn(
+                        "bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3",
+                        fieldErrors.name && "border-red-500"
+                      )}
                       placeholder="Вашето име"
                     />
+                    {fieldErrors.name && (
+                      <p className="text-red-400 text-xs mt-1">{fieldErrors.name}</p>
+                    )}
                   </div>
                 </div>
 
@@ -323,10 +390,16 @@ export const ContactForm = ({ onSuccess }: ContactFormProps) => {
                         type="email"
                         required={formData.contactMethod === 'email' || formData.contactMethod === 'both'}
                         value={formData.email}
-                        onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                        className="bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3"
+                        onChange={e => handleInputChange('email', e.target.value)}
+                        className={cn(
+                          "bg-white/5 border-white/10 text-white focus:border-primary/50 focus:ring-primary/20 pl-3",
+                          fieldErrors.email && "border-red-500"
+                        )}
                         placeholder="вашият@имейл.com"
                       />
+                      {fieldErrors.email && (
+                        <p className="text-red-400 text-xs mt-1">{fieldErrors.email}</p>
+                      )}
                     </div>
                   </div>
                 )}

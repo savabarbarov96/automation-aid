@@ -7,11 +7,12 @@ import { Navbar } from "@/components/Navbar";
 import { BlogPost } from "@/types/blog";
 import { UserAdmin } from "@/components/users/UserAdmin";
 import { ClientAdmin } from "@/components/clients/ClientAdmin";
+import { CalendarSettings } from "@/components/CalendarSettings";
 import { logout, useAuth } from "@/lib/auth";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { FileEdit, Users, LogOut, Briefcase, ArrowLeft, AlertCircle, Building, Menu } from "lucide-react";
+import { FileEdit, Users, LogOut, Briefcase, ArrowLeft, AlertCircle, Building, Menu, Calendar } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
@@ -234,6 +235,9 @@ const BlogAdmin = () => {
                   <TabsTrigger value="clients" className="flex items-center gap-2 whitespace-nowrap px-4">
                     <Building className="h-4 w-4" /> Клиенти
                   </TabsTrigger>
+                  <TabsTrigger value="calendar" className="flex items-center gap-2 whitespace-nowrap px-4">
+                    <Calendar className="h-4 w-4" /> Календар
+                  </TabsTrigger>
                 </TabsList>
                 
                 {activeTab === "posts" && (
@@ -254,6 +258,10 @@ const BlogAdmin = () => {
 
                 <TabsContent value="clients" className="mt-0">
                   <ClientAdmin />
+                </TabsContent>
+
+                <TabsContent value="calendar" className="mt-0">
+                  <CalendarSettings />
                 </TabsContent>
               </CardContent>
             </Tabs>
