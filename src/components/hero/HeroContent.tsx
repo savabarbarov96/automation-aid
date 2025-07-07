@@ -95,7 +95,7 @@ export const HeroContent = () => {
               Резервирай консултация
             </button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[600px]">
+          <DialogContent className="sm:max-w-[700px] max-h-[90vh] overflow-hidden">
             <CalendarBooking />
           </DialogContent>
         </Dialog>

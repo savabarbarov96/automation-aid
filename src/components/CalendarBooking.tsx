@@ -301,7 +301,7 @@ export const CalendarBooking = () => {
   };
 
   return (
-    <div className="relative overflow-hidden bg-gradient-to-br from-background to-background/80 rounded-lg p-6 sm:p-8">
+    <div className="relative bg-gradient-to-br from-background to-background/80 rounded-lg p-4 sm:p-6 max-h-[85vh] overflow-y-auto">
       {/* Background decoration */}
       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-primary/5 rounded-full translate-x-1/2 translate-y-1/2 blur-3xl"></div>
