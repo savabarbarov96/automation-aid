@@ -1,3 +1,4 @@
+
 name: Deploy to Server
 
 on:
@@ -35,6 +36,68 @@ jobs:
           npm run build
           nohup sudo systemctl reload nginx > /dev/null 2>&1 &
           exit
+          EOF
+
+      - name: Notify Discord on Success
+        if: success()
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{"content": "Deployment succeeded for automationaid! Way to go Sava and Slav!"}' \
+               "https://discord.com/api/webhooks/1341708827183157349/HouXP_cSD1s-BzC3OYlBq83lZZIRQVCLszWhPas3rpcZhrn08B2qM0_1ybzCJyIAy54z"
+
+      - name: Notify Discord on Failure
+        if: failure()
+        run: |
+          curl -H "Content-Type: application/json" \
+               -X POST \
+               -d '{"content": "Deployment failed for automationaid. Check GitHub Actions logs for details. Shit hit the fan yo!!"}' \
+               "https://discord.com/api/webhooks/1341708827183157349/HouXP_cSD1s-BzC3OYlBq83lZZIRQVCLszWhPas3rpcZhrn08B2qM0_1ybzCJyIAy54z"
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+      - name: Deploy to Server
+        env:
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          SERVER_USER: ${{ secrets.SERVER_USER }}
+        run: |
+          if [ -z "$SERVER_IP" ] || [ -z "$SERVER_USER" ]; then
+            echo "Error: SERVER_IP or SERVER_USER is not defined in secrets."
+            exit 1
+          fi
+          ssh -o StrictHostKeyChecking=no $SERVER_USER@$SERVER_IP << 'EOF'
+            cd /var/www/automation-aid
+            echo "Fetching latest changes..."
+            git fetch origin main
+            echo "Resetting local branch..."
+            git reset --hard origin/main
+            echo "Installing dependencies..."
+            npm install
+            echo "Building project..."
+            npm run build
+            echo "Restarting PM2 process..."
+            pm2 restart automation-aid
+            echo "Reloading nginx..."
+            sudo systemctl reload nginx
+            exit
+            echo "IF THE CHANGES ARE NOT REFLECTED - CHANGE THE REPO TO PUBLIC!"
           EOF
 
       - name: Notify Discord on Success
